@@ -1,5 +1,4 @@
-
-# Lab 03 - Creating a labeled dataset using Azure Machine Learning data labeling tools
+# Lab 02 - Creating a labeled dataset using Azure Machine Learning data labeling tools
 
 Expected execution time: **40 min**
 
