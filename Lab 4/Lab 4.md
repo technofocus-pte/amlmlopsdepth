@@ -1,5 +1,5 @@
 
-# **Lab 06 – Training a classification model with no-code AutoML in the Azure Machine Learning Studio**
+# **Lab 04 – Training a classification model with no-code AutoML in the Azure Machine Learning Studio**
 
 **Lab Type** – Instructor Led
 
