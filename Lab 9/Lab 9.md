@@ -26,7 +26,7 @@ We are at the MLOps phase of the Azure Machine Learning
 
 2.  From the Azure portal home page, select **+ Create a resource**.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image2.png)
 
 3.  On the **Create a resource** page, use the search bar to find
@@ -34,13 +34,12 @@ generated](./media/image2.png)
 
 4.  Select **Machine Learning**.
 
-> ![](./media/image3.png)
+    ![](./media/image3.png)
 
 5.  Under **Marketplace**, click on **Create dropdown** and select
     **Azure Machine Learning**.
 
-> ![A screenshot of a computer Description automatically
-> generated](./media/image4.png)
+    ![A screenshot of a computer Description automatically generated](./media/image4.png)
 
 6.  Provide the following information to configure your new workspace:
 
@@ -48,39 +47,37 @@ generated](./media/image2.png)
 
     - **Resource group**: Select the **Resource Group assigned** to you.
 
-> **Workspace Details:**
+    **Workspace Details:**
 
-- **Workspace name:** +++**Azuremlws@lab.LabInstance.Id**+++
+    - **Workspace name:** +++**Azuremlws@lab.LabInstance.Id**+++
+    
+    - **Region**: Select your nearest region **(North Central US** is
+      selected here)
 
-- **Region**: Select your nearest region **(North Central US** is
-  selected here)
-
-&nbsp;
-
-- **Container registry: Select Create new. Enter
+    - **Container registry: Select Create new. Enter
   +++azuremlcr@lab.LabInstance.Id+++**
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image5.png)
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image6.png)
 
 7.  Once the Validation is passed, click on **Create**.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image7.png)
 
 8.  Click on **Go to resource**, to view the new workspace.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image8.png)
 
 9.  **On the Microsoft.MachineLEarningServices | Overview page**,
     select **Launch studio** under **Work with your model in Azure
     Machine Learning studio**.
 
-![A screenshot of a software update Description automatically
+    ![A screenshot of a software update Description automatically
 generated](./media/image9.png)
 
 ### **Task 2: Create a compute**
@@ -88,49 +85,46 @@ generated](./media/image9.png)
 1.  Once the Azure Machine Learning Studio opens, click on **Compute**
     under **Manage** from the left pane.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image10.png)
 
 2.  Select the **Compute clusters** tab and click on **+ New**.
 
-![](./media/image11.png)
+    ![](./media/image11.png)
 
 3.  On the **Create compute cluster** screen, enter the below details.
 
-    1.  Location – Select the **Region** in which you had created your
+    -  Location – Select the **Region** in which you had created your
         Azure Machine Learning Workspace
 
-    2.  Virtual machine tier – **Dedicated**
+    -  Virtual machine tier – **Dedicated**
 
-    3.  Virtual machine type – **CPU**
+    -  Virtual machine type – **CPU**
 
-    4.  Virtual machine size –Select **Standard_E4s_v3 (** Check Select
+    -  Virtual machine size –Select **Standard_E4s_v3 (** Check Select
         from all options to find the VM Size**)**
 
-> Click on **Next**.
->
-> ![A screenshot of a computer Description automatically
-> generated](./media/image12.png)
+    Click on **Next**.
+
+    ![A screenshot of a computer Description automatically generated](./media/image12.png)
 
 4.  On the **Advanced Settings** page, enter the below details.
 
-&nbsp;
+    -  Compute name – +++**cpu-cluster@lab.LabInstanceId**+++
+    
+    -  Minimum number of nodes – 0
+    
+    -  Maximum number of nodes – 1
 
-1.  Compute name – +++**cpu-cluster@lab.LabInstanceId**+++
+    Click on **Create**.
 
-2.  Minimum number of nodes – 0
-
-3.  Maximum number of nodes – 1
-
-> Click on **Create**.
-
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image13.png)
 
-**Note:** The compute takes around 10 minutes to come up to the Running
+    >[!Note] **Note:** The compute takes around 10 minutes to come up to the Running
 state.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image14.png)
 
 ## **Exercise 2: Retrieve the Azure resources**
@@ -139,24 +133,24 @@ generated](./media/image14.png)
     Resource group and make a note of the names of the following
     resources,
 
-    1.  **Azure Machine Learning Workspace**
+    -  **Azure Machine Learning Workspace**
 
-    2.  **Application Insights**
+    -  **Application Insights**
 
-    3.  **Key Vault**
+    -  **Key Vault**
 
-    4.  **Container Registry**
+    -  **Container Registry**
 
-    5.  **Storage account**
+    -  **Storage account**
 
-> And save them locally in a notepad to be updated in the config file.
+    And save them locally in a notepad to be updated in the config file.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image15.png)
 
 ## **Exercise 3: Getting the GitHub account and resources ready**
 
-**Note:** If you do not have an account with GitHub already, create one
+    >[!Note] **Note:** If you do not have an account with GitHub already, create one
 from here +++**https://github.com/**+++ -\> **Signup**.
 
 ### **Task 2: Fork the repo mlops demo into your GitHub account**
@@ -166,79 +160,67 @@ from here +++**https://github.com/**+++ -\> **Signup**.
 
 2.  Click on **Fork** on the top right.
 
-![A screenshot of a chat Description automatically generated with medium
+    ![A screenshot of a chat Description automatically generated with medium
 confidence](./media/image16.png)
 
 3.  This opens a **Create a new fork** page. Click on **Create fork.**
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image17.png)
 
 4.  From your GitHub project, select **Settings**.
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image18.png)
 
 5.  Select **Actions** under **Secrets and variables.**
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image19.png)
 
 6.  Select **New repository secret**.
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image20.png)
 
 7.  Name this secret as **+++AZURE_CREDENTIALS+++** and paste the below
     **Service Principal** output as the content of the secret. This
     Service Principal is pre-created for you. Select **Add secret**.
+    
+    ```
+    {
+      "clientId": "+++@lab .Variable(spAppId)+++",
+      "clientSecret": "+++@lab .Variable(spClientSecret)+++",
+      "subscriptionId": "+++@lab.CloudSubscription.Id+++",
+      "tenantId": "+++@lab.CloudSubscription.TenantId+++",
+      "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+      "resourceManagerEndpointUrl": "https://management.azure.com/",
+      "activeDirectoryGraphResourceId": "https://graph.windows.net/",
+      "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+      "galleryEndpointUrl": "https://gallery.azure.com/",
+      "managementEndpointUrl": "https://management.core.windows.net/"
+    }
+    ```
 
-> {
->
-> "clientId": "+++@lab .Variable(spAppId)+++",
->
->   "clientSecret": "+++@lab .Variable(spClientSecret)+++",
->
->   "subscriptionId": "+++@lab.CloudSubscription.Id+++",
->
->   "tenantId": "+++@lab.CloudSubscription.TenantId+++",
->
->   "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
->
->   "resourceManagerEndpointUrl": "https://management.azure.com/",
->
->   "activeDirectoryGraphResourceId": "https://graph.windows.net/",
->
->   "sqlManagementEndpointUrl":
-> "https://management.core.windows.net:8443/",
->
->   "galleryEndpointUrl": "https://gallery.azure.com/",
->
->   "managementEndpointUrl": "https://management.core.windows.net/"
->
-> }
->
-> ![A screen shot of a computer Description automatically generated with
-> low confidence](./media/image21.png)
+    ![A screen shot of a computer Description automatically generated with low confidence](./media/image21.png)
 
 8.  The secret **AZURE_CREDENTIALS** that is added, gets displayed under
     **Repository secrets**.
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image22.png)
 
 9.  Click on **New repository secret**.
 
-![](./media/image23.png)
+    ![](./media/image23.png)
 
 10. Provide the below details.
 
-    1.  Name – +++ARM_CLIENT_ID+++
+    -  Name – +++ARM_CLIENT_ID+++
 
-    2.  Secret – +++@lab .Variable(spAppId)+++
+    -  Secret – +++@lab .Variable(spAppId)+++
 
-> ![A screenshot of a computer secret Description automatically
-> generated with low confidence](./media/image24.png)
+    ![A screenshot of a computer secret Description automatically generated with low confidence](./media/image24.png)
 
 11. Repeat steps 9 and 10 for the following values, creating additional
     GitHub secrets.
@@ -254,93 +236,89 @@ medium confidence](./media/image22.png)
 1.  From the secrets page, navigate to the repository page by clicking
     on **mlops-v2-gha-demo** next to your GitHub id on the top left.
 
-![](./media/image25.png)
+    ![](./media/image25.png)
 
 2.  Select the **config-infra-prod.yml** file in the root. Click on
     **Edit** (The pencil icon).
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image26.png)
 
 3.  Change the values,
 
-    1.  **Namespace** – **mlopsliteXX**(Replace XX with a random number)
+    -  **Namespace** – **mlopsliteXX**(Replace XX with a random number)
 
-    2.  **Postfix** – **c**
+    -  **Postfix** – **c**
 
-    3.  **location** – **Same as your workspace region**
+    -  **location** – **Same as your workspace region**
 
-> Click on **Commit changes**.
->
-> Under the **For pipeline reference section**, replace the **values**
-> of the Azure Resources with the values that we fetched and saved in
-> Exercise 2.
->
-> ![A screenshot of a computer Description automatically
-> generated](./media/image27.png)
+    Click on **Commit changes**.
+
+    Under the **For pipeline reference section**, replace the **values** of the Azure Resources with the values that we fetched and saved in Exercise 2.
+
+    ![A screenshot of a computer Description automatically generated](./media/image27.png)
 
 4.  Click on **Commit changes** in the commit changes pane.
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image28.png)
 
 5.  Open **deploy-model-training-pipeline-classical.yml** from
     **.github/workflows**. Click on **Edit**(The pencil icon).
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image29.png)
 
 6.  In the contents of the file, replace the value of **Size** with
     **+++Standard_E4s_v3+++**
 
-Select **Commit changes**.
+    Select **Commit changes**.
 
-> ![A screenshot of a computer Description automatically generated with
-> medium confidence](./media/image30.png)
+    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image30.png)
 
 7.  Open the file **online-deployment.yml** from
     **mlops/azureml/deploy/online.** Click on **Edit**(the pencil icon).
 
-![](./media/image31.png)
+    ![](./media/image31.png)
 
 8.  Replace the value of **instance_type** as **+++Standard_E4s_v3+++**.
     Click on **Commit changes**.
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 low confidence](./media/image32.png)
 
 9.  Open **tf-gha-deploy-infra.yml** file under **.github/workflows**.
     Click on **Edit** and replace Azure with +++CoursesTF+++ in lines 9
     and 14.
 
-Select **Commit changes**.
+    Select **Commit changes**.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image33.png)
 
 10. From the top menu bar, select **Actions**. Click on **I understand
     my workflows, go ahead and enable them**.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image34.png)
 
 11. This displays the pre-defined GitHub workflows associated with your
     project.
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image35.png)
 
 ## **Exercise 5: Deploy Machine Learning infrastructure**
 
 1.  Select **tf-gha-deploy-infra.yml**. Click on **Runworkflow**.
 
-Select
+    Select
+    
+    - Branch – **main**
+    
+    Select **Run workflow**
 
-- Branch – **main**
-
-Select **Run workflow**
-
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image36.png)
 
 2.  This would deploy the Machine Learning infrastructure using GitHub
@@ -349,10 +327,10 @@ medium confidence](./media/image36.png)
 3.  Track the status of the job and confirm that the execution is
     successful.
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image37.png)
 
-**Note:** This workflow takes around 5 minutes to complete.
+    >[!Note] **Note:** This workflow takes around 5 minutes to complete.
 
 ## **Exercise 6: Deploying the Model Training Pipeline**
 
@@ -367,33 +345,33 @@ described in the last section. 
 1.  From the **tf-gha-deploy-infra.yml** workflow page, Click on
     **Actions**.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image38.png)
 
 2.  This displays the pre-defined GitHub workflows associated with your
     project. Select **deploy-model-training-pipeline** from the list.
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image39.png)
 
 3.  Click on **Run workflow** -\> **Run workflow**.
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image40.png)
 
 4.  Click on the pipeline that has just started, to track the progress.
 
-![A picture containing text, software, web page, font Description
+    ![A picture containing text, software, web page, font Description
 automatically generated](./media/image41.png)
 
 5.  This pipeline takes around 15 to 45 minutes to complete.
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image42.png)
 
 6.  A screenshot of the successful pipeline execution is below.
 
-![](./media/image43.png)
+    ![](./media/image43.png)
 
 7.  This execution will register the model in the Machine Learning
     workspace.
@@ -403,23 +381,23 @@ medium confidence](./media/image42.png)
     **taxi-data** has been added there. This is done as part of the
     **register-dataset** job of the workflow.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image44.png)
 
 9.  Click on **Jobs** from the left pane and select
     **taxi-fare-training**. This is executed in the **run-pipeline** job
     of the workflow.
 
-![](./media/image45.png)
+    ![](./media/image45.png)
 
 10. Select the latest execution’s Display name.
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image46.png)
 
 11. Explore the stages and the details involved in the training.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image47.png)
 
 With the trained model registered in the Machine learning workspace, you
