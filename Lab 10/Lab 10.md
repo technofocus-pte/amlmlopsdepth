@@ -12,7 +12,7 @@ the Azure Responsible AI (RAI) dashboard. We will use the cohorts
 created from the Error Analysis lab to investigate why the model’s
 behavior is better in one cohort vs another cohort.
 
-Expected duration – 60 minutes
+Expected duration – 50 minutes
 
 ## **Exercise 1: Getting the resources ready**
 
