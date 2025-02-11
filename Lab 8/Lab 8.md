@@ -19,25 +19,25 @@ using the Azure OpenAI resource we created in the previous lab.
     from the left pane. Search for +++**gpt-35-turbo**+++ and select
     **gpt-35-turbo** from the models list.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image1.png)
 
 2.  Ensure that the AOAI resource **AOAI-PF@lab.LabInstanceId** is
     selected in the **Azure OpenAI resource** field. Select **Deploy**
     to deploy the model.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image2.png)
 
 3.  Accept the **Deployment name** and select **Deploy**.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image3.png)
 
 4.  Repeat the model deployment for **text-embedding-ada-002** with the
     deployment name as +++**text-embedding-ada-002-2**+++
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image4.png)
 
 ## Exercise 2: Set up the environment
@@ -45,54 +45,53 @@ generated](./media/image4.png)
 1.  From the left pane of the Studio, select **Notebooks**. Click on the
     three dots next to the user name and select **Upload files**.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image5.png)
 
 2.  Browse to **C:\LabFiles** and select the
     **qa_data_generation.ipynb** file. Select **I trust contents of this
     file** checkbox and click on **Upload**.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image6.png)
 
 3.  Open the notebook and select **Serverless Spark Compute** in the
     **Compute** option.
 
-![A screenshot of a computer program Description automatically
+    ![A screenshot of a computer program Description automatically
 generated](./media/image7.png)
 
 4.  Once the compute is attached, select **Configure session** to upload
     the conda.yml file and set up the environment for execution using
     it.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image8.png)
 
 5.  Select **Python packages** -\>**Upload Conda file** -\> click on
     **Browse**.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image9.png)
 
 6.  Select the **conda.yml** from **C:\LabFiles** and select **Apply**.
 
-> ![A screenshot of a computer program Description automatically
-> generated](./media/image10.png)
+    ![A screenshot of a computer program Description automatically generated](./media/image10.png)
 
 ## Exercise 3: Get client for AzureML Workspace
 
 1.  Execute the first cell of the notebook to install the dependencies
 
-![](./media/image11.png)
+    ![](./media/image11.png)
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image12.png)
 
-**Note:** This will take 10 to 15 minutes to complete
+    >[!Note] **Note:** This will take 10 to 15 minutes to complete
 
 2.  Execute the next cell with az login to **login** to **Azure** CLI.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image13.png)
 
 3.  The workspace is the top-level resource for Azure Machine Learning,
@@ -107,26 +106,26 @@ generated](./media/image13.png)
     +++**Azuremlws@lab.LabInstanceId+++** in the next cell to create the
     MClient.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image14.png)
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image15.png)
 
 5.  **Execute** the next cell which sets the **connection name**. If you
     have used any other name while creating the connection, give that
     value in this cell and then execute.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image16.png)
 
 6.  Replace the **key** value with **Azure openAI key** and the
     **target** value with the **Endpoint** value of Azure OpenAI
     resource that we saved earlier.
 
-**Execute** the cell after replacing the values.
+    **Execute** the cell after replacing the values.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image17.png)
 
 7.  Now that your Workspace has a connection to Azure OpenAI we will
@@ -137,14 +136,14 @@ generated](./media/image17.png)
     Replace the values of the model name and the deployment name if you
     have given different names while creating the model and deployment.
 
-![A screenshot of a computer code Description automatically
+    ![A screenshot of a computer code Description automatically
 generated](./media/image18.png)
 
 9.  Finally we will combine the deployment and model information into a
     uri form which the AzureML embeddings components expect as input.
     **Execute** the next cell to perform this.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image19.png)
 
 ## Exercise 4: Setup Pipeline
@@ -163,7 +162,7 @@ below cell we get the Component Definitions from the azureml registry.
 1.  Execute the next cell and ensure that it gets executed without any
     issue.
 
-![A screenshot of a computer code Description automatically
+    ![A screenshot of a computer code Description automatically
 generated](./media/image20.png)
 
 2.  Each Component has documentation which provides an overall
@@ -173,7 +172,7 @@ generated](./media/image20.png)
     definition. **Execute** the next cell for this and observe the
     output.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image21.png)
 
 3.  Below a Pipeline is built by defining a python function which chains
@@ -182,10 +181,10 @@ generated](./media/image21.png)
     dictionary defining the outputs of the Pipeline. Ensure that the
     **next cell** gets **executed** successfully.
 
-![A screenshot of a computer code Description automatically
+    ![A screenshot of a computer code Description automatically
 generated](./media/image22.png)
 
-![A screenshot of a computer program Description automatically
+    ![A screenshot of a computer program Description automatically
 generated](./media/image23.png)
 
 4.  The settings below show how the different git and data_source
@@ -197,9 +196,9 @@ generated](./media/image23.png)
 5.  Execute the next two cells and ensure that they get executed
     successfully.
 
-![](./media/image24.png)
+    ![](./media/image24.png)
 
-![A screenshot of a computer program Description automatically
+    ![A screenshot of a computer program Description automatically
 generated](./media/image25.png)
 
 ## Exercise 5: Submit Pipeline
@@ -211,16 +210,16 @@ generated](./media/image25.png)
 2.  Execute the next cell and click on the link in the output to view
     the flow status
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image26.png)
 
 3.  The execution gets opened in the prompt flow. Explore each stage of
     the flow.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image27.png)
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image28.png)
 
 6.  Once the flow is successful, move to the next step.
@@ -229,12 +228,11 @@ generated](./media/image28.png)
 
 1.  Execute the next 2 cells and review the output for the QA data.
 
-![A screenshot of a computer code Description automatically
+    ![A screenshot of a computer code Description automatically
 generated](./media/image29.png)
 
-> ![A screenshot of a computer code Description automatically
-> generated](./media/image30.png)
+    ![A screenshot of a computer code Description automatically generated](./media/image30.png)
 
-Summary:
+**Summary:**
 
 In this lab, we have learnt to create a QA dataset from your data.
