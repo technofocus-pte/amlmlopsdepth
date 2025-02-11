@@ -1,9 +1,4 @@
-
 # **Lab 05 - Forecasting demand with no-code Automated Machine Learning in the Azure Machine Learning studio**
-
-**Lab Type** – Instructor Led
-
-**Expected Duration** – 50 minutes
 
 **Objective**
 
@@ -12,8 +7,10 @@ model without writing a single line of code using automated machine
 learning in the Azure Machine Learning studio. This model will predict
 rental demand for a bike sharing service.
 
-You won't write any code in this tutorial, you'll use the studio
-interface to perform training.
+You won't write any code in this lab; you'll use the studio interface to
+perform training.
+
+Expected duration – 60 minutes
 
 ## **Exercise 1: Getting the environment ready**
 
@@ -24,163 +21,180 @@ interface to perform training.
 
 2.  From the Azure portal menu , select **All resources.**
 
-    ![A screenshot of a computer Description automatically
+![A screenshot of a computer Description automatically
 generated](./media/image1.png)
 
-3.  Select the Azure Machine Learning Workspace (**AzuemlwsXX**).
+3.  Select the Azure Machine Learning Workspace
+    (**Azuemlws@lab.LabInstanceId**).
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image2.png)
+![A screenshot of a computer AI-generated content may be
+incorrect.](./media/image2.png)
 
 4.  Click on **Launch studio**.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image3.png)
+![A screenshot of a computer AI-generated content may be
+incorrect.](./media/image3.png)
 
 ## **Exercise 2: Create an Automated ML job**
 
-1.  Once the Azure Machine Learning Studio is launched, click on
-    **Automated ML** under **Author** section from the left pane.
+1.  From the Azure Machine Learning Studio, click on **Automated ML**
+    under **Author** section from the left pane.
 
 2.  Select **+ New Automated ML job.**
 
-    ![](./media/image4.png)
+![](./media/image4.png)
 
 ### **Task 1: Create data asset**
 
 1.  Give the experiment name as +++**experiment_forecast**+++, accept
     the other defaults and select **Next**.
 
-    ![A screenshot of a computer Description automatically generated](./media/image5.png)
+> ![A screenshot of a computer Description automatically
+> generated](./media/image5.png)
 
 2.  Select **Select task type** as **Time series forecasting** and then
     click on **+ Create.**
 
-    ![A screenshot of a computer Description automatically generated](./media/image6.png)
+![A screenshot of a computer Description automatically
+generated](./media/image6.png)
 
 3.  On the Create data asset page, provide the following details.
 
-    -  Name – !!**bikedata**!!
+    1.  Name – +++**bikedata**+++
 
-    -  Type – Tabular
+    2.  Type – Tabular
 
-    Click on **Next**.
-
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image7.png)
+> Click on **Next**.
+>
+> ![A screenshot of a computer Description automatically generated with
+> medium confidence](./media/image7.png)
 
 4.  On the **Data source** pane, select **From local files** and click
     on **Next**.
 
-    ![A screenshot of a computer Description automatically generated](./media/image8.png)
+![A screenshot of a computer Description automatically
+generated](./media/image8.png)
 
 5.  On the **Destination storage type**, select the workspaceblob and
     select **Next**..
 
-    ![A screenshot of a computer Description automatically generated](./media/image9.png)
+![A screenshot of a computer Description automatically
+generated](./media/image9.png)
 
 6.  On the File or folder selection, select **Upload files** and select
     **bike-no.csv** from **C:\Labfiles** folder and click on **Next**.
 
-    ![A screenshot of a computer Description automatically generated](./media/image10.png)
+![A screenshot of a computer Description automatically
+generated](./media/image10.png)
 
 7.  Verify that the **Settings and preview** form is populated as
     follows and select **Next**.
 
-    | **Field** | **Value for tutorial** |
-    |:-----|:--------|
-    | File format | Delimited |
-    | Delimiter | Comma |
-    | Encoding | UTF-8 |
-    | Column headers | Only first file has headers |
-    | Skip rows | None |
+[TABLE]
 
-    ![A screenshot of a computer Description automatically generated](./media/image11.png)
+![A screenshot of a computer Description automatically
+generated](./media/image11.png)
 
-9.  The **Schema** form allows for further configuration of your data
+8.  The **Schema** form allows for further configuration of your data
     for this experiment. For this example, select the **toggle switch**
     to be in the off state for the 
 
-    -  **casual** and 
+    1.  **casual** and 
 
-    -  **registered** columns.
+    2.  **registered** columns.
 
-    Click **Next**.
+> Click **Next**.
 
-    These columns are a breakdown of the **cnt** column so, therefore we
+These columns are a breakdown of the **cnt** column so, therefore we
 don't include them.
 
-  ![A screenshot of a computer Description automatically generated](./media/image12.png)
+> ![A screenshot of a computer Description automatically
+> generated](./media/image12.png)
 
 9.  On the **Review** form, verify the information and click on
     **Create** to complete the creation of your data asset.
 
-    ![](./media/image13.png)
+> ![](./media/image13.png)
 
-11. Back in the **Create a new Automated ML job page**, a **success**
+10. Back in the **Create a new Automated ML job page**, a **success**
     message for the data asset creation gets displayed.
 
-12. Select the newly created **bikedata** and click on **Next**.
+11. Select the newly created **bikedata** and click on **Next**.
 
-    >[!Note] **Note:** **Refresh** the data asset pane if bikedata is not getting displayed.
-
-    ![](./media/image14.png)
+> **Note:** **Refresh** the data asset pane if bikedata is not getting
+> displayed.
+>
+> ![](./media/image14.png)
 
 ### **Task 2: Configure Job**
 
 1.  On the **Task settings** page, provide the below details and select
     **View additional configuration settings**.
 
-    Target column – **cnt(Integer)**
-
-    Time column **– date (Date)**
-
-    Deselect Autodetect forecast horizon and provide the value as **14**.
-
-    ![A screenshot of a computer Description automatically generated](./media/image15.png)
+> Target column – **cnt(Integer)**
+>
+> Time column **– date (Date)**
+>
+> **Deselect** **Autodetect forecast horizon** and provide the value as
+> +++**14**+++.
+>
+> ![A screenshot of a computer Description automatically
+> generated](./media/image15.png)
 
 2.  In the Additional configuration pane, provide the below details and
     click on **Save**.
 
-    - Primary metric - **Normalized root mean squared error**
-    
-    - Explain best model – **Enable**
-    
-    - Blocked algorithms - **Extreme Random Trees**
+- Primary metric - **Normalized root mean squared error**
 
-    Expand the Additional forecasting settings
+- Explain best model – **Enable**
 
-    - Autodetect Forecast target lags – **UnSelected**
-    
-    - Autodetect Target rolling window size – **UnSelected**
+- Blocked algorithms - **Extreme Random Trees**
 
-  ![A screenshot of a computer Description automatically generated](./media/image16.png)
+> Expand the Additional forecasting settings
 
-3.  Select the below values under **Validate and test** and then select
+- Autodetect Forecast target lags – **UnSelected**
+
+- Autodetect Target rolling window size – **UnSelected**
+
+> ![A screenshot of a computer Description automatically
+> generated](./media/image16.png)
+
+3.  Select **Limits** and enter +++**60**+++ for the **Experiment
+    timeout(minutes)** field.
+
+![A screenshot of a test AI-generated content may be
+incorrect.](./media/image17.png)
+
+4.  Select the below values under **Validate and test** and then select
     **Next**.
 
-    Validation type – **k-fold cross-validation**
+> Validation type – **k-fold cross-validation**
+>
+> Number of cross validations – **5**
+>
+> ![A screenshot of a computer Description automatically
+> generated](./media/image18.png)
 
-    Number of cross validations – **5**
-
-    ![A screenshot of a computer Description automatically generated](./media/image17.png)
-
-4.  Select **automl-compute** (The one we created in the previous lab).
+5.  Select **automl-compute** (The one we created in the previous lab).
     Click on **Next.**
 
-    ![A screenshot of a computer Description automatically generated](./media/image18.png)
+> ![A screenshot of a computer Description automatically
+> generated](./media/image19.png)
 
-5.  Review the details and select **Submit training job**.
+6.  Review the details and select **Submit training job**.
 
-    ![A screenshot of a computer Description automatically generated](./media/image19.png)
+> ![A screenshot of a computer Description automatically
+> generated](./media/image20.png)
 
-6.  The status page shows the initial status as **Running.** Keep
+7.  The status page shows the initial status as **Running.** Keep
     refreshing the page to know the status.
 
-    ![A screenshot of a computer Description automatically generated](./media/image20.png)
+> ![A screenshot of a computer Description automatically
+> generated](./media/image21.png)
 
-7.  Once the training completes, the status changes to **Completed**.
+8.  Once the training completes, the status changes to **Completed**.
 
-    >[!Note] **Note:** The training takes around 30to 45 minutes to complete.
+**Note:** The training takes around 30 to 45 minutes to complete.
 
 ## **Exercise 3: Explore models**
 
@@ -196,19 +210,25 @@ don't include them.
     the **Algorithm name** of a completed model to explore its
     performance details.
 
-    ![A screenshot of a computer Description automatically generated](./media/image21.png)
+> ![A screenshot of a computer Description automatically
+> generated](./media/image22.png)
 
 4.  Click on the **Overview** and view its details.
 
-    ![A screenshot of a computer Description automatically generated](./media/image22.png)
+> ![A screenshot of a computer Description automatically
+> generated](./media/image23.png)
 
 5.  Click on the **Metrics** tab and explore the details.
 
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image23.png)
-
-    >[!Alert] **Important:** Please continue to execute the next lab while this training completes. Resume to this lab from here, once the training is completed.
-    
-    ![A screenshot of a computer Description automatically generated](./media/image24.png)
+> ![A screenshot of a computer Description automatically generated with
+> medium confidence](./media/image24.png)
+>
+> **Important:** Please continue to execute the next lab while this
+> training completes. Resume to this lab from here, once the training is
+> completed.
+>
+> ![A screenshot of a computer Description automatically
+> generated](./media/image25.png)
 
 ## **Exercise 4: Identify the best model**
 
@@ -220,14 +240,14 @@ potential areas of opportunity.
 1.  Once the job is complete, navigate back to parent job page by
     selecting **the job name** at the top of your screen.
 
-    ![](./media/image25.png)
+![](./media/image26.png)
 
 2.  In the **Best model summary** section, the best model in the context
     of this experiment, is selected based on the **Normalized root mean
     squared error metric.**
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image26.png)
+![A screenshot of a computer Description automatically
+generated](./media/image27.png)
 
 3.  Click on the Algorithm name to open it and explore the details.
 
