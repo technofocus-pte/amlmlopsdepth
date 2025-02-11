@@ -11,7 +11,7 @@ taxi fares in NYC. The pipeline is made up of components, each serving
 different functions, which can be registered with the workspace,
 versioned, and reused with various inputs and outputs.
 
-Expected duration: 60 minutes
+Expected duration: 70 minutes
 
 We are at the MLOps phase of the Azure Machine Learning
 
