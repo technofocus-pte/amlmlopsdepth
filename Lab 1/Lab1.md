@@ -18,19 +18,15 @@ Expected duration - 45 minutes
 
 2.  Select **Adjust date and time.**
 
-&nbsp;
-
 3.  On the Settings screen that opens up, click on the **Sync now**
     under Additional settings.
 
-> ![A screenshot of a computer Description automatically
-> generated](./media/image1.png)
+    ![A screenshot of a computer Description automatically generated](./media/image1.png)
 
 4.  This takes care of synchronizing the time just in case the automatic
     synchronization does not work.
 
-> ![A screenshot of a computer Description automatically generated with
-> medium confidence](./media/image2.png)
+    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image2.png)
 
 ### Task 2: Getting the Azure resources ready
 
@@ -49,8 +45,7 @@ central hub for collaboration, experimentation, and deployment.
 3.  Search for +++Microsoft.StreamAnalytics+++ and select the three dots
     against the name and click **Register**.
 
-![A screenshot of a computer AI-generated content may be
-incorrect.](./media/image3.png)
+    ![A screenshot of a computer AI-generated content may be incorrect.](./media/image3.png)
 
 4.  Repeat the steps to register +++Microsoft.Cdn+++ and
     +++Microsoft.PolicyInsights+++
@@ -60,26 +55,22 @@ incorrect.](./media/image3.png)
 1.  Sign in to the Azure portal at +++https://portal.azure.com+++ using
     the **Username** and **Password** from the **Resources** tab.
 
-> ![A screenshot of a computer Description automatically
-> generated](./media/image4.png)
+    ![A screenshot of a computer Description automatically generated](./media/image4.png)
 
 2.  From the Azure portal home page, select **+ Create a resource**.
 
-![A screenshot of a computer Description automatically
-generated](./media/image5.png)
+    ![A screenshot of a computer Description automatically generated](./media/image5.png)
 
 3.  On the **Create a resource** page, use the search bar to find
     +++**Azure Machine Learning+++** and select **Azure** **Machine
     Learning**.
 
-> ![A screenshot of a computer Description automatically
-> generated](./media/image6.png)
+    ![A screenshot of a computer Description automatically generated](./media/image6.png)
 
 4.  Under **Marketplace**, click on **Create dropdown** and select
     **Azure Machine Learning**.
 
-> ![A screenshot of a computer Description automatically
-> generated](./media/image7.png)
+    ![A screenshot of a computer Description automatically generated](./media/image7.png)
 
 5.  Provide the following information to configure your new workspace
     and click on **Review + create**.
@@ -88,43 +79,40 @@ generated](./media/image5.png)
 
     - **Resource group**: Select the **Resource Group assigned** to you.
 
-> **Workspace Details:**
+    **Workspace Details:**
 
-- **Workspace name:** +++**Azuremlws@lab.LabInstance.Id**+++
+    - **Workspace name:** +++**Azuremlws@lab.LabInstance.Id**+++
+    
+    - **Region**: Select your nearest region **(North Central US** is
+      selected here)
 
-- **Region**: Select your nearest region **(North Central US** is
-  selected here)
+    - **Container registry: Select Create new. Enter +++azuremlcr@lab.LabInstance.Id+++**
 
-&nbsp;
-
-- **Container registry: Select Create new. Enter
-  +++azuremlcr@lab.LabInstance.Id+++**
-
-**Note:** The number that gets appended to the names of the resources is
+    >[!Note] **Note:** The number that gets appended to the names of the resources is
 your Labinstance id to ensure uniqueness. The screenshots will have a
 different number since they are unique.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image8.png)
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image9.png)
 
 6.  Once the Validation is passed, click on **Create**.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image10.png)
 
 7.  Click on **Go to resource**, to view the new workspace.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image11.png)
 
 8.  **On the Microsoft.MachineLEarningServices | Overview page**,
     select **Launch studio** under **Work with your model in Azure
     Machine Learning studio**.
 
-![A screenshot of a software update Description automatically
+    ![A screenshot of a software update Description automatically
 generated](./media/image12.png)
 
 #### Task 2.3: Create a compute
@@ -137,41 +125,41 @@ resources to execute machine learning workloads efficiently.
 1.  Once the **Azure Machine Learning Studio** opens, click on
     **Compute** under **Manage** from the left pane.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image13.png)
 
 2.  Click on **+ New** on the **Compute instances** screen.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image14.png)
 
 3.  On the Create compute instance screen, enter the below details.
 
-    1.  Compute name – +++**cpu-cluster-fs@lab.labInstance.Id**+++
+    -  Compute name – +++**cpu-cluster-fs@lab.labInstance.Id**+++
 
-    2.  Virtual machine type – **CPU**
+    -  Virtual machine type – **CPU**
 
-    3.  Virtual machine size – Select **Standard_E4ds_v4**
+    -  Virtual machine size – Select **Standard_E4ds_v4**
 
-> Click on **Review + Create**.
+    Click on **Review + Create**.
 
-**Note:** Make a note of this compute name for later use.
+    >[!Note] **Note:** Make a note of this compute name for later use.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image15.png)
 
 4.  Click on **Create** in the next screen.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image16.png)
 
-**Note:** The compute takes around 10 minutes to come up to the Running
+    >[!Note] **Note:** The compute takes around 10 minutes to come up to the Running
 state.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image17.png)
 
-**Important:** Once the Compute is up and running you can continue with
+    >[!Alert] **Important:** Once the Compute is up and running you can continue with
 the next tasks. But, if you are taking a break from the lab execution,
 please ensure to **stop** the compute instance and start it again when
 you start after the break.
@@ -232,54 +220,53 @@ after the break.
 
 2.  Close the **What’s new in Notebooks** dialog.
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image21.png)
 
 3.  The Notebook Files pane opens up with the structure, **Users -\> \<
     UserName \>**. Click on the three dots next to the username, and
     select **Create new folder**.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image22.png)
 
 4.  Enter the Folder name as +++**Azuremlnotebooks**+++ and click on
     **Create.**
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image23.png)
 
 5.  Once the folder is created, click on the **menu options**(the three
     dots next to the folder name) of the **Azuremlnotebooks** folder and
     click on **Upload files**.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image24.png)
 
 6.  Select **Click to browse and select file(s).** Browse to the
     **explore-data.ipynb** under **C:\Labfiles** and click **Open**.
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image25.png)
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image26.png)
 
 7.  Select the checkbox, **Open file after upload** and **I trust the
     contents of this file.** Then click on **Upload.**
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image27.png)
 
 8.  This opens the uploaded Notebook.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image28.png)
 
 9.  Click on **Authenticate** if the studio asks you to authenticate,
     since this is the first time you are logging into the studio.
 
-> ![A screenshot of a computer Description automatically generated with
-> medium confidence](./media/image29.png)
+    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image29.png)
 
 ### Task 2: Upload, access and explore your data 
 
@@ -289,33 +276,32 @@ generated](./media/image28.png)
     next to the folder name **Azuremlnotebooks** and click on **Create
     new folder.**
 
-![](./media/image30.png)
+    ![](./media/image30.png)
 
 2.  Type in the name of the folder as +++**data**+++ and click on
     **Create**.
 
-![](./media/image31.png)
+    ![](./media/image31.png)
 
 3.  Once the folder creation is successful, click on the menu options of
     the folder **data** and select **Upload files**.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image32.png)
 
 4.  Select **Click to browse and select file(s)** and navigate to
     **C:\Labfiles** to select the **default_of_credit_card_clients.csv**
     file and click **Open**.
 
-> ![A screenshot of a computer Description automatically generated with
-> medium confidence](./media/image33.png)
+    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image33.png)
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image34.png)
 
 5.  A message stating **File uploaded successfully** is displayed under
     the Notifications once the upload finishes.
 
-![A close-up of a computer screen Description automatically generated
+    ![A close-up of a computer screen Description automatically generated
 with low confidence](./media/image35.png)
 
 #### Task 2.2: Create handle to workspace
@@ -343,7 +329,7 @@ with low confidence](./media/image35.png)
     cell. Look for a tick mark at the bottom of the cell once the
     execution is successful.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image36.png)
 
 #### Task 2.3: Upload data to cloud storage
@@ -364,14 +350,14 @@ generated](./media/image36.png)
 4.  Execute the next cell by clicking on the Execute button to the top
     left of the cell.
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image37.png)
 
 5.  **“Data asset created. Name: credit-card, version:
     YYYY:MM:DD.xxxxxx”** is the output that gets displayed below the
     cell.
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image38.png)
 
 6.  Click on **Data** from the left pane and click on the
@@ -379,7 +365,7 @@ medium confidence](./media/image38.png)
     did in the above step. Explore the details and navigate back to the
     **Notebooks** pane.
 
-![](./media/image39.png)
+    ![](./media/image39.png)
 
 #### Task 2.4: Access your data in a notebook
 
@@ -387,7 +373,7 @@ medium confidence](./media/image38.png)
     install the **azureml-fsspec **Python library in your **Jupyter**
     kernel.
 
-![A screenshot of a computer program Description automatically generated
+    ![A screenshot of a computer program Description automatically generated
 with low confidence](./media/image40.png)
 
 2.  Execute the next cell to access the CSV file in **Pandas**.
@@ -395,7 +381,7 @@ with low confidence](./media/image40.png)
 3.  You will get the **Data asset URI** printed at the bottom of the
     cell and the data is also displayed.
 
-![A screenshot of a computer code Description automatically generated
+    ![A screenshot of a computer code Description automatically generated
 with low confidence](./media/image41.png)
 
 #### Task 2.5: Create a new version of the data asset
@@ -403,12 +389,12 @@ with low confidence](./media/image41.png)
 1.  You might have noticed that the data needs a little light cleaning,
     to make it fit to train a machine learning model. It has:
 
-    1.  two headers
+    -  two headers
 
-    2.  a client ID column; we wouldn't use this feature in Machine
+    -  a client ID column; we wouldn't use this feature in Machine
         Learning
 
-    3.  spaces in the response variable name
+    -  spaces in the response variable name
 
 2.  Also, compared to the CSV format, the **Parquet** file format
     becomes a better way to store this data. Parquet offers compression,
@@ -418,14 +404,24 @@ with low confidence](./media/image41.png)
 3.  Ensure that the execution is successful by the tick mark at the
     bottom of the cell.
 
-![](./media/image42.png)
+    ![](./media/image42.png)
 
 4.  This table shows the structure of the data in the
     original **default_of_credit_card_clients.csv** file .CSV file
     downloaded in an earlier step. The uploaded data contains 23
     explanatory variables and 1 response variable, as shown here:
 
-[TABLE]
+    |  **Column Name(s)**  |  **Variable Type**  |    **Description**|
+    |:--------|:--------|:--------|
+    |   X1 |  Explanatory  | Amount of the given credit (NT dollar): it includes both the individual consumer credit and their family (supplementary) credit.   |
+    |  X2  |  Explanatory  |  Gender (1 = male; 2 = female). 
+    |   X3 |  Explanatory  |   Education (1 = graduate school; 2 = university; 3 = high school; 4 = others).  | 
+    |   X4 |  Explanatory  |Marital status (1 = married; 2 = single; 3 = others).  |
+    |  X5  |  Explanatory  |  Age (years).  |
+    |  X6-X11  |   Explanatory |  History of past payment. We tracked the past monthly payment records (from April to September 2005). -1 = pay duly; 1 = payment delay for one month; 2 = payment delay for two months; . . .; 8 = payment delay for eight months; 9 = payment delay for nine months and above. |
+    | X12-17   |  Explanatory  | Amount of bill statement (NT dollar) from April to September 2005.   |
+    |  X18-23  |  Explanatory  |  Amount of previous payment (NT dollar) from April to September 2005.  |
+    |  Y  | Response   |  Default payment (Yes = 1, No = 0)  |
 
 5.  Execute the next cell to create a new *version* of the data asset
     (the data automatically uploads to cloud storage).
@@ -434,15 +430,13 @@ with low confidence](./media/image41.png)
     Name: credit_card, version: YYYY.MM.DD.xxxxxx_cleaned** appears
     after the cell.
 
-![A screenshot of a computer code Description automatically generated
+    ![A screenshot of a computer code Description automatically generated
 with low confidence](./media/image43.png)
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 low confidence](./media/image44.png)
 
-**Important:**
-
-This Python code cell sets **name** and **version** values for the data
+    >[!Alert] **Important:** This Python code cell sets **name** and **version** values for the data
 asset it creates. As a result, the code in this cell will fail if
 executed more than once, without a change to these values.
 Fixed **name** and **version** values offer a way to pass values that
@@ -455,28 +449,27 @@ randomly-generated values.
 
 8.  Execute the next cell and check for the result below.
 
-![A screenshot of a computer code Description automatically generated
+    ![A screenshot of a computer code Description automatically generated
 with low confidence](./media/image45.png)
 
-> ![A screenshot of a computer Description automatically generated with
-> medium confidence](./media/image46.png)
+    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image46.png)
 
-![A screenshot of a computer screen Description automatically generated
+    ![A screenshot of a computer screen Description automatically generated
 with low confidence](./media/image47.png)
 
-![A picture containing text, screenshot, number, display Description
+    ![A picture containing text, screenshot, number, display Description
 automatically generated](./media/image48.png)
 
 9.  Look for the cleaned data under the **Data**.
 
-> ![](./media/image49.png)
+    ![](./media/image49.png)
 
-**Important:** You can continue with the next exercise from here. But,
+    >[!Alert] **Important:** You can continue with the next exercise from here. But,
 if you are taking a break from the lab execution, please ensure to
 **stop** the compute instance and start it again when you resume from
 the break.
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image50.png)
 
 **Exercise summary**
@@ -506,37 +499,34 @@ In this exercise, you will learn to
 We are in the **Train & validate model** stage of the **Machine Learning
 project workflow.**
 
-### ![A picture containing text, font, number, screenshot Description automatically generated](./media/image51.png)Task 1: Upload Notebook
+### ![A picture containing text, font, number, screenshot Description automatically generated](./media/image51.png)
+
+### Task 1: Upload Notebook
 
 1.  From the Azure Machine Learning Studio, **Notebooks** page, click on
     the menu options for the folder **AzureMLnotebooks** and click on
     **Upload files**.
 
-> ![A screenshot of a computer Description automatically
-> generated](./media/image52.png)
+    ![A screenshot of a computer Description automatically generated](./media/image52.png)
 
 2.  Select, **Click to browse and select file(s)**, browse to
     **C:\Labfiles** and select the file,
     **azureml-getting-started-studio** (a Jupyter Source File).
 
-> ![A screenshot of a computer screen Description automatically
-> generated with medium confidence](./media/image53.png)
->
-> ![A screenshot of a computer Description automatically generated with
-> medium confidence](./media/image54.png)
+    ![A screenshot of a computer screen Description automatically generated with medium confidence](./media/image53.png)
+
+    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image54.png)
 
 3.  Select the checkbox **Open file after upload** and then click on
     **Upload**.
 
-> ![A screenshot of a computer Description automatically generated with
-> medium confidence](./media/image55.png)
+    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image55.png)
 
 4.  Once the file upload is successful, it gets opened in the studio,
     connected automatically to the Compute(cpu-cluster-fs) that is in
     Running state.
 
-> ![A screenshot of a computer Description automatically generated with
-> medium confidence](./media/image56.png)
+    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image56.png)
 
 ### Task 2: Connect to Azure Machine Learning workspace
 
@@ -549,31 +539,24 @@ We are using **DefaultAzureCredential** to get access to
 workspace. **DefaultAzureCredential** should be capable of handling most
 scenarios.
 
-*\# Handle to the workspace*
+```nocopy
+# Handle to the workspace
+from azure.ai.ml import MLClient
 
-**from** azure.ai.ml **import** MLClient
+# Authentication package
+from azure.identity import DefaultAzureCredential
 
-*\# Authentication package*
+credential = DefaultAzureCredential()
 
-**from** azure.identity **import** DefaultAzureCredential
-
-credential **=** DefaultAzureCredential()
-
-*\# Get a handle to the workspace. You can find the info on the
-workspace tab on ml.azure.com*
-
-ml_client **=** MLClient(
-
-credential**=**credential,
-
-subscription_id**=**"\<SUBSCRIPTION_ID\>", *\# this will look like
-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx*
-
-resource_group_name**=**"\<RESOURCE_GROUP\>",
-
-workspace_name**=**"\<AML_WORKSPACE_NAME\>",
-
+# Get a handle to the workspace. You can find the info on the workspace tab on ml.azure.com
+ml_client = MLClient(
+    credential=credential,
+    subscription_id="<SUBSCRIPTION_ID>",  # this will look like xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    resource_group_name="<RESOURCE_GROUP>",
+    workspace_name="<AML_WORKSPACE_NAME>",
 )
+
+```
 
 1.  In the above code(First cell of the notebook), replace
     **SUBSCRIPTION_ID, RESOURCE_GROUP name** and the
@@ -583,16 +566,14 @@ workspace_name**=**"\<AML_WORKSPACE_NAME\>",
 2.  Your first cell in the Notebook should now look like this. Click on
     the **Run** button near the top left of the first cell.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image57.png)
 
 3.  Ensure that the cell executed successfully by seeing its status at
     the bottom of the cell.
 
-![A screenshot of a computer program Description automatically generated
+    ![A screenshot of a computer program Description automatically generated
 with medium confidence](./media/image58.png)
-
-In \[ \]:
 
 ### Task 3: Upload data
 
@@ -608,7 +589,7 @@ required libraries (python, MLflow, numpy, pip, etc).
 2.  Ensure that a message stating **Data asset created** gets displayed
     as output of the cell.
 
-![A screenshot of a computer program Description automatically generated
+    ![A screenshot of a computer program Description automatically generated
 with medium confidence](./media/image59.png)
 
 ###  Task 4: Build the command job to train
@@ -629,7 +610,7 @@ code. the command job contains information to execute a single command.
 
 2.  Execute the next cell and ensure that it is executed successfully.
 
-![A picture containing text, font, line, screenshot Description
+    ![A picture containing text, font, line, screenshot Description
 automatically generated](./media/image60.png)
 
 3.  The script in the next cell handles the preprocessing of the data,
@@ -643,11 +624,9 @@ automatically generated](./media/image60.png)
 
 **Writing ./src/main.py**
 
-> ![A screenshot of a computer program Description automatically
-> generated with low confidence](./media/image61.png)
->
-> ![A screenshot of a computer program Description automatically
-> generated with medium confidence](./media/image62.png)
+![A screenshot of a computer program Description automatically generated with low confidence](./media/image61.png)
+
+![A screenshot of a computer program Description automatically generated with medium confidence](./media/image62.png)
 
 5.  As you can see in this script, once the model is trained, the model
     file is saved and registered to the workspace. Now you can use the
@@ -666,27 +645,27 @@ script.
 2.  From the left pane, select **Data** and select the
     **credit-card-data** .
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image63.png)
 
 3.  Under **Data sources** section, look for the **Datastore URI** value
     and copy it. Save it for use in the next step.
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image64.png)
 
 4.  In the next cell, replace the
 
-    1.  Value of **path** with the **Datastore URI** saved in the
+    -  Value of **path** with the **Datastore URI** saved in the
         previous step.
 
-    2.  Value of **compute** with
+    -  Value of **compute** with
         +++**cpu-cluster-fs@lab.LabInstance.Id**+++ (the name of the
         cluster we saved in Lab 1)
 
 5.  Click on **Run**. Ensure that the cell gets executed successfully.
 
-![A screenshot of a computer program Description automatically
+    ![A screenshot of a computer program Description automatically
 generated](./media/image65.png)
 
 ### Task 6: Submit the job
@@ -698,16 +677,17 @@ environment is still building.
 
 1.  Execute the cell with the below command to submit the job.
 
-> ***\# submit the command job***
->
-> **ml_client.create_or_update(job)**
+    ```nocopy
+    # submit the command job
+    ml_client.create_or_update(job)
+    ```
 
 2.  Click on **Run**. Ensure that the execution is successful and there
     is a link to the result under the **Details Page** column.
 
-**Note**: This will take around 2 minutes to complete.
+    >[!note] **Note**: This will take around 2 minutes to complete.
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image66.png)
 
 3.  Open the link available under the **Details Page** column of the
@@ -718,14 +698,13 @@ medium confidence](./media/image66.png)
 1.  You can view the result of a training job by **clicking the URL
     generated after submitting a job**.
 
-> ![A screenshot of a computer Description automatically
-> generated](./media/image67.png)
+    ![A screenshot of a computer Description automatically generated](./media/image67.png)
 
 2.  Alternatively, you can also click **Jobs** on the left navigation
     menu. A job is a grouping of many runs from a specified script or
     piece of code. Information for the run is stored under that job.
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image68.png)
 
 3.  The **Overview** page first shows the **Status** under
@@ -733,21 +712,21 @@ medium confidence](./media/image68.png)
 
 4.  The status changes to **Completed** once it is ready.
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image69.png)
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image70.png)
 
 5.  Select the **Metrics** pane to view the metrics.
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image71.png)
 
 6.  Select the **Images** tab to view the training_confusion matrix,
     precision recall curve and the roc curve.
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image72.png)
 
 1)  **Overview** is where you can see the status of the job.
@@ -800,33 +779,32 @@ that does the actual inferencing.
 
 2.  Select **Endpoints** from the left pane.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image73.png)
 
 3.  Select **Create** for Real-time endpoints
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image74.png)
 
 4.  Select **credit_defaults_model** and then click on **Select.**
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image75.png)
 
 5.  Select **Standard_E4s_v3** under the Virtual machine. Provide the
     Instance count as **1**
 
-> Accept the other defaults of a unique **Endpoint name** and the
-> **Deployment name** and then select **Deploy**.
+    Accept the other defaults of a unique **Endpoint name** and the **Deployment name** and then select **Deploy**.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image76.png)
 
-**Note:** The endpoint creation takes around 20 minutes to complete.
+    >[!Note] **Note:** The endpoint creation takes around 20 minutes to complete.
 
 6.  Once complete, the Provisioning state changes to **Succeeded**.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image77.png)
 
 #### Task 8.2: Test with a sample query
@@ -837,49 +815,40 @@ generated](./media/image77.png)
     to test real-time endpoint** field replacing the code already
     present in there.
 
-> **{**
->
-> **"input_data": {**
->
-> **"columns":
-> \[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22\],**
->
-> **"index": \[0, 1\],**
->
-> **"data": \[**
->
-> **\[20000,2,2,1,24,2,2,-1,-1,-2,-2,3913,3102,689,0,0,0,0,689,0,0,0,0\],**
->
-> **\[10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 10,
-> 9, 8\]**
->
-> **\]**
->
-> **}**
->
-> **}**
+    ```
+    {
+      "input_data": {
+        "columns": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22],
+        "index": [0, 1],
+        "data": [
+                [20000,2,2,1,24,2,2,-1,-1,-2,-2,3913,3102,689,0,0,0,0,689,0,0,0,0],
+                [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 10, 9, 8]
+            ]
+      }
+    }
+    
+    ```
 
 3.  Select **Test** and view the result under **Test result**.
 
-> ![A screenshot of a computer Description automatically
-> generated](./media/image78.png)
+    ![A screenshot of a computer Description automatically generated](./media/image78.png)
 
 ### Task 9: Delete the Endpoint
 
 1.  From the left pane, select the **Endpoints**. Select the endpoint
     that we created, and click on **Delete**.
 
-![A screenshot of a computer Description automatically
+    ![A screenshot of a computer Description automatically
 generated](./media/image79.png)
 
 2.  Click on **Delete** on the confirmation dialog box.
 
-![A screenshot of a computer error Description automatically generated
+    ![A screenshot of a computer error Description automatically generated
 with low confidence](./media/image80.png)
 
 3.  Look for a notification on the successful deletion.
 
-![A picture containing text, screenshot, font, line Description
+    ![A picture containing text, screenshot, font, line Description
 automatically generated](./media/image81.png)
 
 **Summary**
