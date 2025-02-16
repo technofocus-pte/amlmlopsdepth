@@ -231,7 +231,7 @@ generated](./media/image26.png)
 
 3.  Click on the Algorithm name to open it and explore the details.
 
-4.  The model can also be deployed as a web service**.**
+4.  The model can also be deployed as a web service.
 
 **Summary**
 
