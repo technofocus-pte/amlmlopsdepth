@@ -233,8 +233,7 @@ medium confidence](./media/image20.png)
 
 12. Review the details and click on **Create**.
 
-> ![A screenshot of a computer Description automatically
-> generated](./media/image30.png)
+    ![A screenshot of a computer Description automatically generated](./media/image30.png)
 
 13. Back in the **Select or create data** pane, select **sodaObjects.**
     Click on **Next**.
