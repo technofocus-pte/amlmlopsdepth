@@ -54,20 +54,17 @@ generated](./media/image4.png)
 This tutorial is the first part of the managed feature store tutorial
 series. Here, you learn how to:
 
-    - Create a new, minimal feature store resource.
+- Create a new, minimal feature store resource.
     
-    - Develop and locally test a feature set with feature transformation
-      capability.
+- Develop and locally test a feature set with feature transformation capability.
     
-    - Register a feature store entity with the feature store.
+- Register a feature store entity with the feature store.
     
-    - Register the feature set that you developed with the feature store.
+- Register the feature set that you developed with the feature store.
     
-    - Generate a sample training DataFrame by using the features that you
-      created.
+- Generate a sample training DataFrame by using the features that you created.
     
-    - Enable offline materialization on the feature sets, and backfill the
-      feature data.
+- Enable offline materialization on the feature sets, and backfill the feature data.
 
 ### Task 1: Get the environment ready
 
@@ -292,10 +289,10 @@ backfill or schedule recurrent materialization jobs.
     parquet files (per day), and adjust the value of this parameter
     accordingly.
 
-**Note:** The sample data used in this notebook is small. So this
+   >[!Note] **Note:** The sample data used in this notebook is small. So this
 parameter is set to 1 in the featureset_asset_offline_enabled.yaml file.
 
-    ![A screenshot of a computer Description automatically generated](./media/image38.png)
+   ![A screenshot of a computer Description automatically generated](./media/image38.png)
 
 3.  Materialization is the process of computing the feature values for a
     given feature window and storing this in an materialization store.
