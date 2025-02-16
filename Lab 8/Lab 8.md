@@ -232,17 +232,17 @@ generated](./media/image28.png)
     select **Delete resource group**.
 
     ![A screenshot of a computer Description automatically
-generated](./media/image49.png)
+generated](./media/image30.png)
 
 2.  Enter +++RGForMLOps+++ in the text box and click **Enter**.
 
     ![A screenshot of a computer Description automatically
-generated](./media/image50.png)
+generated](./media/image31.png)
 
 3.  Click on **Delete** in the confirmation dialog box.
 
     ![A screenshot of a computer Description automatically
-generated](./media/image51.png)
+generated](./media/image32.png)
 
 4.  Ensure that the Resource group is deleted by the success message.
 
