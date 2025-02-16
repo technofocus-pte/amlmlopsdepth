@@ -64,7 +64,7 @@ generated](./media/image6.png)
     ![A screenshot of a computer Description automatically
 generated](./media/image7.png)
 
-5.  Select **Python packages** -\>**Upload Conda file** -\> click on
+5.  Select **Python packages** -> **Upload Conda file** -\> click on
     **Browse**.
 
     ![A screenshot of a computer Description automatically
@@ -83,7 +83,7 @@ generated](./media/image8.png)
     ![A screenshot of a computer Description automatically
 generated](./media/image11.png)
 
-**Note:** This will take 10 to 15 minutes to complete
+    >[!Note] **Note:** This will take 10 to 15 minutes to complete
 
 2.  Execute the next cell with az login to **login** to **Azure** CLI.
 
