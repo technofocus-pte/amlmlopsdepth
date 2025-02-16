@@ -371,11 +371,11 @@ generated](./media/image39.png)
 You can also set flow outputs to check outputs of multiple nodes in one
 place. Flow outputs help you:
 
-    - Check bulk test results in a single table.
+- Check bulk test results in a single table.
     
-    - Define evaluation interface mapping.
+- Define evaluation interface mapping.
     
-    - Set deployment response schema.
+- Set deployment response schema.
 
 1.  Select **View outputs** in the top banner or the top menu bar to
     view detailed input, output, flow execution, and orchestration
