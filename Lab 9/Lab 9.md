@@ -227,10 +227,10 @@ medium confidence](./media/image20.png)
     
     ```
     {
-      "clientId": "< **appId** >",
-      "clientSecret": "< **password** >",
-      "subscriptionId": "< **Your Subscription ID** >",
-      "tenantId": "< **tenant** >",
+      "clientId": "< appId >",
+      "clientSecret": "< password >",
+      "subscriptionId": "< Your Subscription ID >",
+      "tenantId": "< tenant >",
       "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
       "resourceManagerEndpointUrl": "https://management.azure.com/",
       "activeDirectoryGraphResourceId": "https://graph.windows.net/",
