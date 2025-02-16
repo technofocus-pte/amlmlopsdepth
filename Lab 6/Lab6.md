@@ -257,7 +257,7 @@ medium confidence](./media/image29.png)
 low confidence](./media/image32.png)
 
 4.  Check for the notification stating **Endpoint
-    "regression-\<Currentdate&time\>" update completed.**
+    "regression- < Currentdate&time >" update completed.**
 
     ![A picture containing text, screenshot, font, line Description automatically generated](./media/image33.png)
 
