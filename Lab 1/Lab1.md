@@ -318,7 +318,7 @@ a *Python* interactive console. This lab describes these ideas.
 We are in the **Data: Explore & prepare** stage of the **Machine
 Learning project workflow.**
 
-    ![](./media/image39.png)
+![](./media/image39.png)
 
 ### Task 1: Getting the Azure resources ready
 
@@ -335,7 +335,7 @@ after the break.
 
 2.  Close the **What’s new in Notebooks** dialog.
 
-![A screenshot of a computer Description automatically generated with
+    ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image41.png)
 
     >[!Note] **Note:** Click on **Authenticate** if the studio asks you to authenticate, since this is the first time you are logging into the studio.
@@ -427,16 +427,16 @@ with low confidence](./media/image55.png)
     You'll then use ml_client to manage resources and jobs.
 
 3.  In the first cell under, **Create handle to workspace**, replace the
-    place holders of **\<SUBSCRIPTION_ID\>**, **\<RESOURCE_GROUP\>** and
-    the **\<AML_WORKSPACE_NAME\>.**
+    place holders of **< SUBSCRIPTION_ID >**, **< RESOURCE_GROUP >** and
+    the **< AML_WORKSPACE_NAME >.**
 
-4.  Replace \< RESOURCE_GROUP\> with the name of your assigned Resource
+4.  Replace < RESOURCE_GROUP > with the name of your assigned Resource
     group.
 
-5.  Replace \<AML_WORKSPACE_NAME\> with +++**AzuremlwsXX+++(XX being the
+5.  Replace < AML_WORKSPACE_NAME > with +++**AzuremlwsXX+++(XX being the
     random number that you had used while creating the workspace).**
 
-6.  From the Azure portal, <https://portal.azure.com> , type
+6.  From the Azure portal, https://portal.azure.com , type
     +++**subscription**+++ in the Search bar and select
     **Subscriptions**.
 
@@ -447,7 +447,7 @@ with low confidence](./media/image55.png)
     ![A screenshot of a computer Description automatically generated with low confidence](./media/image57.png)
 
 8.  Select the **copy** icon next to the value of Subscription ID and
-    replace the \<**SUBSCRIPTION_ID**\> in the code.
+    replace the < **SUBSCRIPTION_ID** > in the code.
 
     ![A screenshot of a computer Description automatically generated with medium confidence](./media/image58.png)
 
@@ -498,7 +498,7 @@ medium confidence](./media/image61.png)
 #### Task 2.4: Access your data in a notebook
 
 1.  Back in the notebook, execute the cell with the **%pip** command to
-    install the **azureml-fsspec **Python library in your **Jupyter**
+    install the **azureml-fsspec** Python library in your **Jupyter**
     kernel.
 
     ![A screenshot of a computer program Description automatically generated
