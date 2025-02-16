@@ -24,7 +24,7 @@ We are at the MLOps phase of the Azure Machine Learning
 
 ### **Task 1: Create an Azure Machine Learning workspace**
 
-1.  Sign in to the Azure portal at +++<https://portal.azure.com>+++ if
+1.  Sign in to the Azure portal at +++https://portal.azure.com+++ if
     not already logged in.
 
 2.  From the Azure portal home page, select **+ Create a resource**.
@@ -109,8 +109,8 @@ generated](./media/image10.png)
 
     -  Virtual machine type – **CPU**
 
-    -  Virtual machine size –Select **Standard_E4s_v3 (** Check Select
-        from all options to find the VM Size**)**
+    -  Virtual machine size –Select **Standard_E4s_v3** (Check Select
+        from all options to find the VM Size)
 
     Click on **Next**.
 
@@ -133,7 +133,7 @@ state.
 
     ![A screenshot of a computer Description automatically generated](./media/image14.png)
 
-## **Exercise 2: Retrieve the Azure resources**
+## **Exercise 2: Retrieve the Azure resources and Create a Service Principal**
 
 1.  From the Azure portal (<https://portal.azure.com>), open the
     Resourcegroup **RGForMLOps** and make a note of the names of the
@@ -154,15 +154,45 @@ state.
     ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image15.png)
 
+2.	In the Azure portal, click on the **[>_] (Cloud Shell)** button at the top of the page to the right of the search box. A Cloud Shell pane will open at the bottom of the portal. The first time you open the Cloud Shell, you may be prompted to choose the type of shell you want to use (**Bash** or **PowerShell**). Select **Bash**. If you don't see this option, then skip this step.
+   
+	![](./media/Pict1.png)
+
+	![](./media/Pict2.png)
+
+3.	In the **Getting Started** dialog, select **Mount storage account**, select your **subscription** and then click on **Apply**.
+   
+	![](./media/Pict3.png)
+
+4.	In the **Mount storage account** dialog, select **we will create a storage account for you** and click on **Next**.
+
+	![](./media/Pict4.png)
+
+	![](./media/Pict5.png)
+
+5.	Ensure the type of shell indicated on the top left of the Cloud Shell pane is switched to **Bash**. If it's **PowerShell**, switch to **Bash** by using the drop-down menu.
+
+	![](./media/Pict6.png)
+
+6.	**Execute** the below command to create a **Service Principal**.
+
+    ```
+    az ad sp create-for-rbac --name mlOpsSP --role contributor  --scopes /subscriptions/< Subscription ID >
+    ```
+    
+    **Save** the output completely to a notepad.
+
+	![](./media/Pict7.png)
+
 ## **Exercise 3: Getting the GitHub account and resources ready**
 
-    >[!Note] **Note:** If you do not have an account with GitHub already, create one
-from here +++**https://github.com/**+++ -\> **Signup**.
+>[!Note] **Note:** If you do not have an account with GitHub already, create one
+from here +++**https://github.com/**+++ -> **Signup**.
 
 ### **Task 2: Fork the repo mlops demo into your GitHub account**
 
 1.  Open a browser and enter this link -
-    <https://github.com/getazureready/mlops-v2-gha-demo>
+    +++https://github.com/getazureready/mlops-v2-gha-demo+++
 
 2.  Click on **Fork** on the top right.
 
@@ -193,35 +223,50 @@ medium confidence](./media/image20.png)
     **Service Principal** output as the content of the secret. This
     Service Principal is pre-created for you. Select **Add secret**.
 
+    Replace the place holders with the output values obtained from the **Service Principal** creation.
+    
+    ```
+    {
+      "clientId": "< **appId** >",
+      "clientSecret": "< **password** >",
+      "subscriptionId": "< **Your Subscription ID** >",
+      "tenantId": "< **tenant** >",
+      "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+      "resourceManagerEndpointUrl": "https://management.azure.com/",
+      "activeDirectoryGraphResourceId": "https://graph.windows.net/",
+      "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+      "galleryEndpointUrl": "https://gallery.azure.com/",
+      "managementEndpointUrl": "https://management.core.windows.net/"
+    }
+    ```
 
     ![A screen shot of a computer Description automatically generated with low confidence](./media/image21.png)
 
-8.  The secret **AZURE_CREDENTIALS** that is added, gets displayed under
+9.  The secret **AZURE_CREDENTIALS** that is added, gets displayed under
     **Repository secrets**.
 
     ![A screenshot of a computer Description automatically generated with medium confidence](./media/image22.png)
 
-9.  Click on **New repository secret**.
+10.  Click on **New repository secret**.
 
     ![](./media/image23.png)
 
-10. Provide the below details.
+11. Provide the below details.
 
-    -  Name – **!!ARM_CLIENT_ID!!**
+    -  Name – **+++ARM_CLIENT_ID+++**
 
-    -  Secret – ****
+    -  Secret – **< App ID >**
 
     ![A screenshot of a computer secret Description automatically generated with low confidence](./media/image24.png)
 
-11. Repeat steps 9 and 10 for the following values, creating additional
+12. Repeat steps 9 and 10 for the following values, creating additional
     GitHub secrets.
 
-    - **ARM_CLIENT_SECRET -
-      **
+    - **+++ARM_CLIENT_SECRET+++** - **< Password>**
 
-    - **ARM_SUBSCRIPTION_ID - \<Your Azure subscription id\>**
+    - **+++ARM_SUBSCRIPTION_ID+++** - **< Your Azure subscription id >**
 
-    - **ARM_TENANT_ID - **
+    - **+++ARM_TENANT_ID+++** - **< Tenant >**
 
 ## **Exercise 4: Configure Machine Learning environment parameters**
 
@@ -262,7 +307,7 @@ medium confidence](./media/image28.png)
 medium confidence](./media/image29.png)
 
 6.  In the contents of the file, replace the value of **Size** with
-    **!!Standard_E4s_v3!!**
+    **+++Standard_E4s_v3+++**
 
     Select **Commit changes**.
 
