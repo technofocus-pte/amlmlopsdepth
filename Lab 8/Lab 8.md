@@ -226,6 +226,26 @@ generated](./media/image28.png)
 
   ![A screenshot of a computer code Description automatically generated](./media/image29.png)
 
+## Exercise 8: Clean up the resources
+
+1.  From the Azure portal, select the Resource group **RGForMLOps** and
+    select **Delete resource group**.
+
+    ![A screenshot of a computer Description automatically
+generated](./media/image49.png)
+
+2.  Enter +++RGForMLOps+++ in the text box and click **Enter**.
+
+    ![A screenshot of a computer Description automatically
+generated](./media/image50.png)
+
+3.  Click on **Delete** in the confirmation dialog box.
+
+    ![A screenshot of a computer Description automatically
+generated](./media/image51.png)
+
+4.  Ensure that the Resource group is deleted by the success message.
+
 **Summary:**
 
 In this lab, we have learnt to create a QA dataset from your data.
