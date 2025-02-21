@@ -46,8 +46,7 @@ generated](./media/image4.png)
 5.  Added role assignment message is obtained once the assignment is
     done.
 
-6.  Repeat the same set of steps to add the roles +++**Storage Blob Data
-    Reader**+++ and +++**Storage Blob Data Contributor**+++.
+6.  Repeat the same set of steps to add the roles +++**Storage Blob Data Reader**+++ and +++**Storage Blob Data Contributor**+++.
 
 ## Exercise 2: Develop a feature set and register with managed feature store
 
