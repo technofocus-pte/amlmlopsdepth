@@ -749,7 +749,7 @@ automatically generated](./media/image83.png)
 4.  Execute the cell and ensure that it gets executed successfully with
     the output,
 
-**Writing ./src/main.py**
+    **Writing ./src/main.py**
 
     ![A screenshot of a computer program Description automatically generated with low confidence](./media/image84.png)
 
