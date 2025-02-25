@@ -127,8 +127,7 @@ Start Jupyter kernel.
     
     ![A screenshot of a computer Description automatically generated](./media/image16.png)
 
-11. In the next cell and follow the steps in the **output** to login to
-    **Azure**.
+11. Execute the next cell and follow the steps in the **output** to login to **Azure**.
 
     ![A screenshot of a computer Description automatically generated](./media/image17.png)
 
@@ -359,7 +358,24 @@ In this notebook, you learn how to:
 
     ![A screenshot of a computer program Description automatically generated](./media/image42.png)
 
-5.  **Execute** the next **3** cells to **setup CLI**.
+9.  **Execute** the next **3** cells to setup the Azure CLI.
+
+    An error stating **Error loading command module 'mysql': cannot import name 'mysql_flexibleservers' from 'azure.mgmt.rdbms'** can be safely ignored in the next 2 cells.
+    
+    ![A screenshot of a computer Description automatically generated](./media/image16.png)
+
+11. Execute the next cell and follow the steps in the **output** to login to
+    **Azure**.
+
+    ![A screenshot of a computer Description automatically generated](./media/image17.png)
+
+    ![A screenshot of a computer program Description automatically generated](./media/image18.png)
+
+12. Click on **+ Code** to add a cell. Add this content !!pip install
+    azure-ai-ml==1.23.1!! and execute the cell to install the ai-ml
+    1.23.1 version.
+
+      ![A screenshot of a computer AI-generated content may be incorrect.](./media/image73.png)
 
 6.  The next cell initializes the project workspace variables.
     **Execute** it to **initialize the variables**.
