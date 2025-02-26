@@ -37,7 +37,9 @@ central hub for collaboration, experimentation, and deployment.
 
 #### Task 2.1: Register required Resource Providers 
 
-1.  Navigate to your assigned **subscription** from the Azure portal
+1.   Sign in to the Azure portal at +++https://portal.azure.com+++ using the Azure credentials from the **Resources** tab of the VM.
+
+2.    Navigate to your assigned **subscription** from the Azure portal
     Home page.
 
 2.  Select Resource Providers under **Settings** from the left pane.
