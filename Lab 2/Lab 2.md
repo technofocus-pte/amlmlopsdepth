@@ -43,7 +43,7 @@ medium confidence](./media/image2.png)
       unique number)
     
     - Region – Select the Region in which you had created your AML Workspace
-      (**East US/East US2/North Central US**)
+      (Here it is **North Central US**)
     
     - Performance – Select **Standard**
     
