@@ -39,17 +39,20 @@ central hub for collaboration, experimentation, and deployment.
 
 1.   Sign in to the Azure portal at +++https://portal.azure.com+++ using the Azure credentials from the **Resources** tab of the VM.
 
-2.    Navigate to your assigned **subscription** from the Azure portal
-    Home page.
+2.	Select **Subscriptions** and select your **assigned subscription**. 
 
-2.  Select Resource Providers under **Settings** from the left pane.
+   ![](./media/image85.png)
 
-3.  Search for +++Microsoft.StreamAnalytics+++ and select the three dots
+   ![](./media/image86.png)
+   
+3.  Select Resource Providers under **Settings** from the left pane.
+
+4.  Search for +++Microsoft.StreamAnalytics+++ and select the three dots
     against the name and click **Register**.
 
     ![A screenshot of a computer AI-generated content may be incorrect.](./media/image3.png)
 
-4.  Repeat the steps to register +++Microsoft.Cdn+++ and
+5.  Repeat the steps to register +++Microsoft.Cdn+++ and
     +++Microsoft.PolicyInsights+++
 
 #### Task 2.2: Create an Azure Machine Learning workspace
