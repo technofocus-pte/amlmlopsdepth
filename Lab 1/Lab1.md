@@ -430,27 +430,26 @@ with low confidence](./media/image55.png)
     place holders of **< SUBSCRIPTION_ID >**, **< RESOURCE_GROUP >** and
     the **< AML_WORKSPACE_NAME >.**
 
-4.  Replace < RESOURCE_GROUP > with the name of your assigned Resource
-    group.
-
-5.  Replace < AML_WORKSPACE_NAME > with +++**AzuremlwsXX+++(XX being the
-    random number that you had used while creating the workspace).**
-
-6.  From the Azure portal, https://portal.azure.com , type
+4.  From the Azure portal, https://portal.azure.com , type
     +++**subscription**+++ in the Search bar and select
     **Subscriptions**.
 
     ![](./media/image56.png)
 
-7.  Click on your subscription name.
+5.  Click on your subscription name.
 
     ![A screenshot of a computer Description automatically generated with low confidence](./media/image57.png)
 
-8.  Select the **copy** icon next to the value of Subscription ID and
+6.  Select the **copy** icon next to the value of Subscription ID and
     replace the < **SUBSCRIPTION_ID** > in the code.
 
     ![A screenshot of a computer Description automatically generated with medium confidence](./media/image58.png)
 
+7.  Replace < RESOURCE_GROUP > with the name of the Resource group you created(+++**RGForMLOps**+++).
+
+8.  Replace < AML_WORKSPACE_NAME > with +++**AzuremlwsXX+++(XX being the
+    random number that you had used while creating the workspace).**
+    
     >[!Alert] **Important:** Save the **Subscription ID**, **Resource group name** and
 the **Workspace name** for usage throughout the labs.
 
