@@ -19,7 +19,7 @@ would be detected by the trained object detection model.
     already logged in.
 
 2.  Type in +++**storage account**+++ in the search bar and select the
-    **Storage account**.
+    **Storage accounts**.
 
     ![](./media/image1.png)
 
