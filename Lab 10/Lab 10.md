@@ -48,7 +48,7 @@ generated](./media/image1.png)
 
 1.  From the cloud shell, execute the below command.
 
-    **az login**
+    **+++az login+++**
 
     ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image3.png)
@@ -81,7 +81,7 @@ medium confidence](./media/image3.png)
 
     **Example:**
     
-    **az configure --defaults group="RGForRAI" workspace="azureraiml98"**
+    **+++az configure --defaults group="RGForRAI" workspace="azureraiml98"+++**
 
     ![](./media/image9.png)
 
@@ -111,8 +111,7 @@ medium confidence](./media/image10.png)
 
     - Execute the below command to **create** the **compute**.
 
-    **az ml compute create --name compute9889 --type computeinstance --size
-Standard_E4ds_v4**
+    **+++az ml compute create --name compute9889 --type computeinstance --size Standard_E4ds_v4+++**
 
     ![A screen shot of a computer Description automatically generated with
 medium confidence](./media/image12.png)
@@ -157,7 +156,7 @@ with medium confidence](./media/image17.png)
     ![A screenshot of a computer program Description automatically generated
 with medium confidence](./media/image19.png)
 
-11. Back at the Cloud Shell command prompt, submit the job to train the
+11. Back in the Cloud Shell command prompt, submit the job to train the
     model. Wait for the job to update its run status to **Completed**
     during the training. Copy the below code block to do that.
 
