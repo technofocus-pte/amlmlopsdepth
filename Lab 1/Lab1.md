@@ -155,7 +155,26 @@ generated](./media/image7.png)
 
 ### Task 3: Getting the Azure resources ready
 
-#### Task 3.1: Create an Azure Machine Learning workspace
+#### Task 3.1: Register required Resource Providers 
+
+1.	Sign in to the Azure portal at +++https://portal.azure.com+++ using the Azure credentials from the **Home** tab of the VM.
+   
+2.	Select **Subscriptions** and select your assigned **subscription**. 
+ 
+    ![](./media/img40.png)
+
+    ![](./media/img41.png)
+  	
+3.	Select Resource Providers under **Settings** from the left pane.
+	
+4.	Search for +++Microsoft.StreamAnalytics+++ and select the three dots against the name and click **Register**.
+
+    ![](./media/img42.png)
+  	
+6.	Repeat the steps to register +++Microsoft.Cdn+++ and +++Microsoft.PolicyInsights+++
+
+
+#### Task 3.2: Create an Azure Machine Learning workspace
 
 This task focuses on creating an Azure Machine Learning workspace. You
 will discover how to set up a dedicated workspace to organize and manage
@@ -231,7 +250,7 @@ medium confidence](./media/image31.png)
     ![A screenshot of a computer Description automatically
 generated](./media/image32.png)
 
-#### Task 3.2: Create a compute
+#### Task 3.3: Create a compute
 
 This task demonstrates the creation of a compute resource in Azure. You
 will explore different compute options, such as virtual machines or
@@ -492,7 +511,7 @@ medium confidence](./media/image61.png)
     did in the above step. Explore the details and navigate back to the
     **Notebooks** pane.
 
-    ![](./media/image62.png)
+    ![](./media/img1.png)
 
 #### Task 2.4: Access your data in a notebook
 
@@ -590,7 +609,7 @@ automatically generated](./media/image71.png)
 
 9.  Look for the cleaned data under the **Data**.
 
-    ![](./media/image72.png)
+    ![](./media/img2.png)
 
     >[!Alert] **Important:** You can continue with the next exercise from here. But,
 if you are taking a break from the lab execution, please ensure to
@@ -771,14 +790,12 @@ script.
 2.  From the left pane, select **Data** and select the
     **credit-card-data** .
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image86.png)
+    ![](./media/img3.png)
 
 3.  Under **Data sources** section, look for the **Datastore URI** value
     and copy it. Save it for use in the next step.
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image87.png)
+    ![](./media/img4.png)
 
 4.  In the next cell, replace the
 
@@ -793,7 +810,7 @@ medium confidence](./media/image87.png)
     ![A screenshot of a computer program Description automatically
 generated](./media/image88.png)
 
-### Task 6: Submit the job
+### Task 5: Submit the job
 
 It's now time to submit the job to run in AzureML. **The job will take 2
 to 3 minutes to run**. It could take longer (up to 10 minutes) if the
@@ -818,7 +835,7 @@ medium confidence](./media/image89.png)
 3.  Open the link available under the **Details Page** column of the
     result, in a new tab.
 
-### Task 7: View the result of a training job
+### Task 6: View the result of a training job
 
 1.  You can view the result of a training job by **clicking the URL
     generated after submitting a job**.
@@ -829,19 +846,14 @@ medium confidence](./media/image89.png)
     menu. A job is a grouping of many runs from a specified script or
     piece of code. Information for the run is stored under that job.
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image91.png)
+    ![](./media/img5.png)
 
 3.  The **Overview** page first shows the **Status** under
     **Properties** pane to be **Running**.
 
 4.  The status changes to **Completed** once it is ready.
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image92.png)
-
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image93.png)
+    ![](./media/img6.png)
 
 5.  Select the **Metrics** pane to view the metrics.
 
@@ -876,7 +888,7 @@ medium confidence](./media/image95.png)
 8)  **Monitoring** is where you can view metrics for the performance of
     compute resources.
 
-### Task 8: Deploy the model as an online endpoint
+### Task 7: Deploy the model as an online endpoint
 
 After you train a machine learning model, you need to deploy it so that
 others can use it for inferencing. For this purpose, Azure Machine
@@ -897,7 +909,7 @@ endpoint provides:
 A **deployment** is a set of resources required for hosting the model
 that does the actual inferencing.
 
-#### Task 8.1: Create an online endpoint
+#### Task 7.1: Create an online endpoint
 
 1.  Now deploy your machine learning model as a web service in Azure
     cloud, an online endpoint.
@@ -932,7 +944,7 @@ generated](./media/image99.png)
     ![A screenshot of a computer Description automatically
 generated](./media/image100.png)
 
-#### Task 8.2: Test with a sample query
+#### Task 7.2: Test with a sample query
 
 1.  From the endpoint page, select the **Test** tab.
 
@@ -958,13 +970,12 @@ generated](./media/image100.png)
 
     ![A screenshot of a computer Description automatically generated](./media/image101.png)
 
-### Task 9: Delete the Endpoint
+### Task 8: Delete the Endpoint
 
 1.  From the left pane, select the **Endpoints**. Select the endpoint
     that we created, and click on **Delete**.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image102.png)
+    ![](./media/img7.png)
 
 2.  Click on **Delete** on the confirmation dialog box.
 
@@ -973,8 +984,10 @@ with low confidence](./media/image103.png)
 
 3.  Look for a notification on the successful deletion.
 
-    ![A picture containing text, screenshot, font, line Description
-automatically generated](./media/image104.png)
+4.  You need to **stop** the running **compute** since we will not be using it now.
+
+    ![A screenshot of a computer Description automatically
+generated](./media/image38.png)
 
 **Summary**
 
