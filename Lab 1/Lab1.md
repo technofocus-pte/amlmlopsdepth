@@ -157,7 +157,7 @@ generated](./media/image7.png)
 
 #### Task 3.1: Register required Resource Providers 
 
-1.	Sign in to the Azure portal at +++https://portal.azure.com+++ using the Azure credentials from the **Home** tab of the VM.
+1.	Sign in to the Azure portal at +++https://portal.azure.com+++ using the Azure credentials from the **Resources** tab of the VM.
    
 2.	Select **Subscriptions** and select your assigned **subscription**. 
  
@@ -211,16 +211,16 @@ generated](./media/image24.png)
 
     **Workspace Details:**
 
-    - **Workspace name:** +++**AzuremlwsXX**+++ **(Substitute XX with a
+    - **Workspace name:** +++**AzuremlwsXXXX**+++ **(Substitute XXXX with a
       random number to ensure uniqueness)**
     
     - **Region**: Select your nearest region **(North Central US** is
       selected here)
 
-    - **Container registry: Select Create new. Enter +++azuremlcrXX+++**
-  (Replace **XX** with a unique number)
+    - **Container registry: Select Create new. Enter +++azuremlcrXXXX+++**
+  (Replace **XXXX** with a unique number)
 
-    >[!Note] **Note:** The screenshots will not have the **XX**(Random number) since
+    >[!Note] **Note:** The screenshots will not have the **XXXX**(Random number) since
 they were not used while testing. Please ensure to add a unique number
 at the end wherever the guide says so.
 
@@ -339,14 +339,12 @@ Learning project workflow.**
 
 ![](./media/image39.png)
 
-### Task 1: Getting the Azure resources ready
+### Task 1: Upload Notebook
 
 **Important:** Ensure that the compute that we created in the last
 exercise is up and running. If you are taking a break from the lab
 execution, please ensure to **stop** and start it again when you start
 after the break.
-
-#### Task 1.1: Upload Notebook 
 
 1.  From the Azure Machine Learning studio, once the compute is up and
     running, select **Notebooks** option from the left pane.
@@ -396,7 +394,7 @@ medium confidence](./media/image47.png)
     ![A screenshot of a computer Description automatically
 generated](./media/image48.png)
 
-8.  This opens the uploaded Notebook.
+8.	Once the file upload is successful, it gets opened in the studio, connected automatically to the Compute(cpu-cluster-fs) that is in Running state.
 
     ![A screenshot of a computer Description automatically
 generated](./media/image49.png)
@@ -466,7 +464,7 @@ with low confidence](./media/image55.png)
 
 7.  Replace < RESOURCE_GROUP > with the name of the Resource group you created(+++**RGForMLOps**+++).
 
-8.  Replace < AML_WORKSPACE_NAME > with +++**AzuremlwsXX+++(XX being the
+8.  Replace < AML_WORKSPACE_NAME > with +++**AzuremlwsXXXX+++(XXXX being the
     random number that you had used while creating the workspace).**
     
     >[!Alert] **Important:** Save the **Subscription ID**, **Resource group name** and
@@ -646,7 +644,9 @@ In this exercise, you will learn to
 We are in the **Train & validate model** stage of the **Machine Learning
 project workflow.**
 
-### ![A picture containing text, font, number, screenshot Description automatically generated](./media/image74.png)Task 1: Upload Notebook
+### ![A picture containing text, font, number, screenshot Description automatically generated](./media/image74.png)
+
+### Task 1: Upload Notebook
 
 1.  From the Azure Machine Learning Studio, **Notebooks** page, click on
     the menu options for the folder **AzureMLnotebooks** and click on
