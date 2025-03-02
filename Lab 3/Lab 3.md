@@ -33,7 +33,7 @@ generated](./media/image1.png)
 generated](./media/image2.png)
 
 3.  In the Members tab, click on **+ Select members**, search for your
-    **user name** and **Select** it.
+    **user name(your Azure login id)** and **Select** it.
 
     ![A screenshot of a computer Description automatically
 generated](./media/image3.png)
@@ -50,8 +50,7 @@ generated](./media/image4.png)
 
 ## Exercise 2: Develop a feature set and register with managed feature store
 
-This tutorial is the first part of the managed feature store tutorial
-series. Here, you learn how to:
+In this exercise, you learn how to:
 
 - Create a new, minimal feature store resource.
     
@@ -86,15 +85,18 @@ generated](./media/image6.png)
     ![A screenshot of a computer Description automatically
 generated](./media/image7.png)
 
-    >[!Note] **Note:** If you get an error stating Jupyter kernel not found, select
-Start Jupyter kernel.
+    >[!Note] **Note:** If you get an error stating Jupyter kernel not found, ignore and proceed with the next step.
 
-    ![A screenshot of a computer Description automatically generated](./media/image8.png)
+    ![](./media/img12.png)
 
 4.  Select **Serverless Spark Compute** under **Compute**.
 
     ![A screenshot of a computer Description automatically generated](./media/image9.png)
 
+    Click on **Confirm** if prompted.
+
+    ![](./media/img13.png)
+    
 5.  Select **Configure session** to configure the session with the
     pre-requisites.
 
@@ -112,28 +114,34 @@ Start Jupyter kernel.
 
     ![A screenshot of a computer Description automatically generated](./media/image12.png)
 
+    >[!Note] **Note:** If the session does not come to **Ready** state after 10 minutes, Refresh the page and then execute the first cell.
+    
     ![A screenshot of a computer Description automatically generated](./media/image13.png)
 
-8.  Once the spark session starts, replace the **User name** with your
-    user name and execute the next cell
+8.  Once the spark session starts, in the next cell, replace the **<your_user_alias>** with your
+    **user name** and execute it.
 
+    >[!Note] **Note:** You can get the name from the folder structure -> Users -> <UserName>
+    >
+    >![](./media/img38.png)
+    
     ![A screenshot of a computer Description automatically generated](./media/image14.png)
 
-    ![A screenshot of a computer error Description automatically generated](./media/image15.png)
+    ![](./media/img14.png)
 
-9.  Execute the next 3 cells to setup the Azure CLI.
+8.  Execute the next 3 cells to setup the Azure CLI.
 
     An error stating **Error loading command module 'mysql': cannot import name 'mysql_flexibleservers' from 'azure.mgmt.rdbms'** can be safely ignored in the next 2 cells.
     
     ![A screenshot of a computer Description automatically generated](./media/image16.png)
 
-11. Execute the next cell and follow the steps in the **output** to login to **Azure**.
+9. Execute the next cell and follow the steps in the **output** to login to **Azure**.
 
     ![A screenshot of a computer Description automatically generated](./media/image17.png)
 
     ![A screenshot of a computer program Description automatically generated](./media/image18.png)
 
-12. Click on **+ Code** to add a cell. Add this content !!pip install
+10. Click on **+ Code** to add a cell. Add this content !!pip install
     azure-ai-ml==1.23.1!! and execute the cell to install the ai-ml
     1.23.1 version.
 
@@ -198,7 +206,7 @@ Start Jupyter kernel.
 
     ![A screenshot of a computer Description automatically generated](./media/image27.png)
 
-2.  From the left pane, select Access Control(IAM). Select **Add** -\>
+2.  From the left pane, select **Access Control(IAM)**. Select **Add** -\>
     **Add role assignment**.
 
     ![A screenshot of a computer Description automatically generated](./media/image28.png)
