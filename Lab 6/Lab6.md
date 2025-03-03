@@ -86,9 +86,9 @@ medium confidence](./media/image10.png)
 
 5.  Open the Notebook(the .ipynb file),
     **automl-regression-task-hardware-performance**. The Notebook is
-    automatically connected to the compute that we created earlier.
+    automatically connected to the compute that we created earlier. Ensure that the compute is in the **Running** state
 
-    ![](./media/image11.png)
+    ![](./media/img30.png)
 
 ## **Exercise 1: Connect to Azure Machine Learning Workspace**
 
@@ -172,18 +172,15 @@ medium confidence](./media/image18.png)
 
     >[!Note] **Note:** This takes around 10 to 15 minutes to complete.
 
-4.  The next cell in the Notebook waits until the AutoMLjob is finished.
+4.	Ensure that the job gets completed successfully.
 
-5.  Execute it and wait till the execution is completed to move to the
-    next cell.
+    ![](./media/img31.png)
 
-    ![](./media/image19.png)
+5.	Execute the next cell to get the **Execution Summary**.
 
-6.  Proceed to the next step only once the execution is completed.
-
-    ![](./media/image20.png)
-
-7.  Execute the next 2 cells one by one which retrieves the url and the
+    ![](./media/img32.png)
+  	
+6.  Execute the next 2 cells one by one which retrieves the url and the
     job name.
 
     ![A screenshot of a computer Description automatically
@@ -244,24 +241,17 @@ medium confidence](./media/image29.png)
 
     ![](./media/image30.png)
 
-2.  This creates an online endpoint named
-    **regression-\<Currentdate&time\>.**
-
-    ![](./media/image31.png)
-
-3.  Execute the next cell with the code,
+2.  Execute the next cell with the code, 
 
     **ml_client.begin_create_or_update(endpoint).result()**
 
-    ![A screenshot of a computer Description automatically generated with
-low confidence](./media/image32.png)
+    This creates an online endpoint named **regression-\<Currentdate&time\>.**
 
-4.  Check for the notification stating **Endpoint
-    "regression- < Currentdate&time >" update completed.**
+    ![](./media/img33.png)
 
-    ![A picture containing text, screenshot, font, line Description automatically generated](./media/image33.png)
+5.  Check for the notification stating **Endpoint "regression- < Currentdate&time >" update completed** or check the status under **Endpoints**.
 
-    ![A screenshot of a computer Description automatically generated](./media/image34.png)
+    ![](./media/img34.png)
 
 ### **Task 2: Register best model and deploy**
 
@@ -284,14 +274,6 @@ low confidence](./media/image32.png)
     ![A screenshot of a computer program Description automatically
 generated](./media/image36.png)
 
-3.  A few minutes after the above cell is executed, a notification
-    appears with the message, **Endpoint deployment in progress**. This
-    will take around 10 minutes to complete. Check the status using the
-    **job details** link in the notification.
-
-    ![A picture containing text, screenshot, font Description automatically
-generated](./media/image37.png)
-
 4.  Execute the next cell to create the deployment.
 
     ![A picture containing text, screenshot, line, font Description
@@ -302,8 +284,7 @@ automatically generated](./media/image38.png)
     from the left pane and then click on the **regression-XXXXXXX**
     endpoint that you deployed earlier).
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image39.png)
+    ![](./media/img35.png)
 
 6.  Once the execution is completed and the deployment is successful,
     the cell outputs the deployment details.
@@ -313,8 +294,7 @@ generated](./media/image39.png)
 7.  Also, in the Endpoints details page, the deployment status becomes
     **Succeeded**.
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image41.png)
+    ![](./media/img36.png)
 
 8.  Execute the next cell in the notebook for the deployment to take
     100% traffic.
@@ -325,8 +305,7 @@ low confidence](./media/image42.png)
 9.  Check the Live traffic allocation to be 100% in the Endpoints
     details page.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image43.png)
+    ![](./media/img37.png)
 
 ## **Exercise 6: Test the deployment**
 
@@ -347,8 +326,6 @@ medium confidence](./media/image46.png)
 
     ![A screenshot of a computer Description automatically
 generated](./media/image47.png)
-
-    ![](./media/image48.png)
 
 ## Exercise 7: Load the best model and try predictions
 
