@@ -48,10 +48,9 @@ generated](./media/image3.png)
 
 ### **Task 1: Create data asset**
 
-1.  Give the experiment name as +++**experiment_forecast**+++, accept
-    the other defaults and select **Next**.
+1.	Select **Create New** under **Experiment name** and enter +++**experiment_forecast**+++ the **New experiment name**, accept the other defaults and select **Next**. 
 
-    ![A screenshot of a computer Description automatically generated](./media/image5.png)
+    ![](./media/img25.png)
 
 2.  Select **Select task type** as **Time series forecasting** and then
     click on **+ Create.**
@@ -96,9 +95,9 @@ generated](./media/image3.png)
 
     ![A screenshot of a computer Description automatically generated](./media/image11.png)
 
-9.  The **Schema** form allows for further configuration of your data
+8.  The **Schema** form allows for further configuration of your data
     for this experiment. For this example, select the **toggle switch**
-    to be in the off state for the 
+    to be in the **off** state for the 
 
     -  **casual** and 
 
@@ -116,7 +115,7 @@ don't include them.
 
     ![](./media/image13.png)
 
-11. Back in the **Create a new Automated ML job page**, a **success**
+10. Back in the **Submit an Automated ML job page**, a **success**
     message for the data asset creation gets displayed.
 
 12. Select the newly created **bikedata** and click on **Next**.
@@ -134,7 +133,7 @@ don't include them.
 
     Time column **– date (Date)**
 
-    Deselect Autodetect forecast horizon and provide the value as **14**.
+    **Deselect Autodetect forecast horizon** and provide the value as +++**14**+++.
 
     ![A screenshot of a computer Description automatically generated](./media/image15.png)
 
@@ -145,7 +144,7 @@ don't include them.
     
     - Explain best model – **Enable**
     
-    - Blocked algorithms - **Extreme Random Trees**
+    - Blocked models - **Extreme Random Trees**
 
     Expand the Additional forecasting settings
 
@@ -155,7 +154,11 @@ don't include them.
 
   ![A screenshot of a computer Description automatically generated](./media/image16.png)
 
-3.  Select the below values under **Validate and test** and then select
+3.	Select **Limits** and enter +++**60**+++ for the **Experiment timeout(minutes)** field.
+   
+    ![](./media/img26.png)
+   
+4.  Select the below values under **Validate and test** and then select
     **Next**.
 
     Validation type – **k-fold cross-validation**
@@ -164,10 +167,13 @@ don't include them.
 
     ![A screenshot of a computer Description automatically generated](./media/image17.png)
 
-4.  Select **automl-compute** (The one we created in the previous lab).
-    Click on **Next.**
+5.	Select the below details and click on Next.
 
-    ![A screenshot of a computer Description automatically generated](./media/image18.png)
+    -    Select compute type – Select **Compute cluster**
+  	
+    -    Select Azure ML Compute cluster - Select **automl-compute** (The one we created in the previous lab)
+
+    ![](./media/img27.png)
 
 5.  Review the details and select **Submit training job**.
 
@@ -184,7 +190,7 @@ don't include them.
 
 ## **Exercise 3: Explore models**
 
-1.  Navigate to the **Models** tab to see the algorithms (models)
+1.  Navigate to the **Models + child jobs** tab to see the algorithms (models)
     tested. By default, the models are ordered by metric score as they
     complete.
 
@@ -200,15 +206,17 @@ don't include them.
 
 4.  Click on the **Overview** and view its details.
 
-    ![A screenshot of a computer Description automatically generated](./media/image22.png)
+    ![](./media/img28.png)
 
 5.  Click on the **Metrics** tab and explore the details.
 
     ![A screenshot of a computer Description automatically generated with medium confidence](./media/image23.png)
 
     >[!Alert] **Important:** Please continue to execute the next lab while this training completes. Resume to this lab from here, once the training is completed.
+
+    Check if the training is completed, by selecing **Jobs -> experiment forecast -> experiment**.
     
-    ![A screenshot of a computer Description automatically generated](./media/image24.png)
+    ![](./media/img29.png)
 
 ## **Exercise 4: Identify the best model**
 
@@ -217,21 +225,16 @@ to deploy the best model as a web service in a few steps. Deployment is
 the integration of the model so it can predict on new data and identify
 potential areas of opportunity.
 
-1.  Once the job is complete, navigate back to parent job page by
-    selecting **the job name** at the top of your screen.
-
-    ![](./media/image25.png)
-
-2.  In the **Best model summary** section, the best model in the context
+1.  In the **Best model summary** section, the best model in the context
     of this experiment, is selected based on the **Normalized root mean
     squared error metric.**
 
     ![A screenshot of a computer Description automatically
 generated](./media/image26.png)
 
-3.  Click on the Algorithm name to open it and explore the details.
+2.  Click on the Algorithm name to open it and explore the details.
 
-4.  The model can also be deployed as a web service.
+3.  The model can also be deployed as a web service.
 
 **Summary**
 
