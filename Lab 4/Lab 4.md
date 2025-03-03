@@ -83,7 +83,7 @@ generated](./media/image2.png)
 ### **Task 2: Retrieve the Storage account key**
 
 1.  From the Azure portal, (+++<https://portal.azure.com>+++) home page,
-    pen the Resource group and click on the **Storage account
+    open the Resource group and click on the **Storage account
     (azuermlwsXXXXXX).**
 
   ![A screenshot of a computer Description automatically generated](./media/image10.png)
@@ -175,7 +175,7 @@ generated](./media/image2.png)
 
     ![A screenshot of a computer Description automatically generated](./media/image22.png)
 
-11. Back in the **Create a new Automated ML job** page, a **success**
+11. Back in the **Submit an Automated ML job** page, a **success**
     message for the data asset creation gets displayed. Select the
     created **marketingdata** data asset and click on **Next**.
 
@@ -190,20 +190,25 @@ generated](./media/image23.png)
     column, which is what you want to predict. This column indicates
     whether the client subscribed to a term deposit or not.
 
-2.  Select **View additional configuration settings** and populate the
-    fields as follows. These settings are to better control the training
-    job. Otherwise, defaults are applied based on experiment selection
-    and data.
+2.	Select **View additional configuration settings** and populate the fields as follows and select **Save**. These settings are to better control the training job. Otherwise, defaults are applied based on experiment selection and data.
 
     - Primary metric – AUCWeighted
     
     - Explain best model – Enable
+  
+    - Use all supported models - Enable
     
     - Blocked models – None
 
-    ![Screens screenshot of a computer Description automatically generated](./media/image24.png)
+    ![](./media/img17.png)
 
-3.  Under **Validate and test**, provide the below values and click on
+3.	Select **Limits** and enter +++**60**+++ for the **Experiment timeout(minutes)** field.
+
+    ![](./media/img18.png)
+
+    ![](./media/img39.png)
+  	
+4.  Under **Validate and test**, provide the below values and click on
     **Next**.
 
     - Validation type - Select **k-fold cross-validation**
@@ -212,23 +217,22 @@ generated](./media/image23.png)
 
     ![A screenshot of a computer Description automatically generated](./media/image25.png)
 
-4.  In the Compute page, select the Select compute type as **Compute
+5.  In the Compute page, select the Select compute type as **Compute
     cluster** and click on **+ New**.
 
     ![A screenshot of a computer Description automatically generated](./media/image26.png)
 
-5.  In the **Create compute cluster** pane, select the below details and
-    click **Next**.
+6.  In the **Create compute cluster** pane, select the below details and click **Next**.
 
-    - Location - **West US 2**
+    - Location - **Same as your Azure ML Workspace region**(It is **NorthCentral US** here)
     
     - Virtual machine tier – **Dedicated**
     
     - Virtual machine type - **CPU**
     
-    - Virtual machine size -Select **Standard_DS12_v2**
+    - Virtual machine size -Select **Standard_DS12_v2** (Click on **Select from all options**, search for !!**DS12**!! to find the option easier)
 
-    ![A screenshot of a computer Description automatically generated](./media/image27.png)
+    ![](./media/img19.png)
 
 6.  In the Advanced settings, provide the below details and select
     **Create**.
@@ -313,12 +317,17 @@ summarizes these explanations.
 
     ![A screenshot of a computer Description automatically generated with medium confidence](./media/image38.png)
 
-5.  On the left, expand the pane. Under **Features**, select the row
-    that says **raw**. Select the **Aggregate feature importance** tab.
+5.	On the left, **expand** the list of explanations to select and  then select the entry whose **Features** is **raw**.
+
+    ![](./media/img20.png)
+
+    ![](./media/img21.png)
+  	
+6.  Select the **Aggregate feature importance** tab.
     This chart shows which data features influenced the predictions of
     the selected model.
 
-    ![A screenshot of a computer Description automatically generated](./media/image39.png)
+    ![](./media/img22.png)
 
 In this example, the **duration** appears to have the most influence on
 the predictions of this model.
@@ -337,16 +346,15 @@ with a **Best model summary** section. In this experiment
 context, **VotingEnsemble** is considered the best model, based on
 the **AUCWeighted** metric.
 
-1.  Select **Jobs** from the left pane and select the experiment that
-    you created.
+1.	Select **Jobs** from the left pane and select the **default experiment**.
 
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image40.png)
+    ![](./media/img23.png)
 
 2.  Click on the display name of the experiment.
 
     ![](./media/image41.png)
 
-3.  Check if the status is **Completed**.
+3.  Now the status is **Completed**.
 
     ![A screenshot of a computer Description automatically generated](./media/image42.png)
 
@@ -364,7 +372,7 @@ the web service.
 
 5.  Select **VotingEnsemble** to open the model-specific page.
 
-    ![A screenshot of a computer Description automatically generated](./media/image44.png)
+    ![](./media/img24.png)
 
 6.  Select the **Deploy** menu in the top-left and select **Deploy to
     web service**.
