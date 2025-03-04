@@ -174,7 +174,7 @@ medium confidence](./media/image15.png)
 
 	![](./media/Pict6.png)
 
-6.	**Execute** the below command to create a **Service Principal**.
+6.	**Execute** the below command to create a **Service Principal**, replacing **< Subscription ID >** with your **Subscription ID**.
 
     ```
     az ad sp create-for-rbac --name mlOpsSP --role contributor  --scopes /subscriptions/< Subscription ID >
@@ -219,10 +219,7 @@ generated](./media/image19.png)
     ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image20.png)
 
-7.  Name this secret as **+++AZURE_CREDENTIALS+++**. Paste the 
-    **Service Principal** output as below, replacing the place holders of **appId**, **password**, **subscription id** and **tenant** from the ouput of the Service Principal creation, you saved earlier in the notepad. Select **Add secret**.
-
-    Replace the place holders with the output values obtained from the **Service Principal** creation.
+7.  Name this secret as **+++AZURE_CREDENTIALS+++**. Paste the below block of details in the **Secret** field, replacing the place holders of **appId**, **password**, **subscription id** and **tenant** with the values from the output obtained, when the Service Principal was created. You saved it earlier in the notepad. Select **Add secret**.
     
     ```
     {
