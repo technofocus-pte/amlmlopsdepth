@@ -76,8 +76,7 @@ medium confidence](./media/image3.png)
 7.  Set your environment default to the **assigned Resource group** and
     **Azure ML workspace**.
 
-    **+++az configure --defaults group="\<resource-group-name\>"
-    workspace="\<workspace-name\>"+++**
+    **+++az configure --defaults group="< Resource-group-name >" workspace="< Workspace-name >"+++**
 
     **Example:**
     
