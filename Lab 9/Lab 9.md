@@ -219,9 +219,8 @@ generated](./media/image19.png)
     ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image20.png)
 
-7.  Name this secret as **+++AZURE_CREDENTIALS+++** and paste the below
-    **Service Principal** output as the content of the secret. This
-    Service Principal is pre-created for you. Select **Add secret**.
+7.  Name this secret as **+++AZURE_CREDENTIALS+++**. Paste the 
+    **Service Principal** output as below, replacing the place holders of **appId**, **password**, **subscription id** and **tenant** from the ouput of the Service Principal creation, you saved earlier in the notepad. Select **Add secret**.
 
     Replace the place holders with the output values obtained from the **Service Principal** creation.
     
