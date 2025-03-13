@@ -93,6 +93,10 @@ generated](./media/image7.png)
 
     ![](./media/image8.png)
 
+    >[!Note] **Note:** If you get an error stating Jupyter kernel not found, ignore and proceed with the next step.
+    >
+    >![](./media/img12.png)
+    
 4.  Select **Serverless Spark Compute** under **Compute**.
 
     ![A screenshot of a computer Description automatically
@@ -117,24 +121,34 @@ generated](./media/image11.png)
 
     ![A screenshot of a computer Description automatically generated](./media/image12.png)
 
+    >[!Note] **Note:** If the session does not come to **Ready** state after 10 minutes, Refresh the page and then execute the first cell.
+    
     ![A screenshot of a computer Description automatically
 generated](./media/image13.png)
 
-8.  Once the spark session starts, replace the **User name** with your
+9.  Once the spark session starts, replace the **<your_user_alias>** with your
     user name and execute the next cell
 
+    >[!Note] **Note:** You can get the name from the folder structure -> Users -> <UserName>
+    >
+    >![](./media/img38.png)
+   
     ![A screenshot of a computer Description automatically
 generated](./media/image14.png)
 
     ![A screenshot of a computer error Description automatically
 generated](./media/image15.png)
 
-9.  Execute the next 3 cells to setup the Azure CLI.
+10.  Execute the next 3 cells to setup the Azure CLI.
+
+     An error stating **Error loading command module 'mysql': cannot import
+name 'mysql_flexibleservers' from 'azure.mgmt.rdbms'** can be safely
+ignored in the next 2 cells.
 
     ![A screenshot of a computer Description automatically
 generated](./media/image16.png)
 
-10. In the next cell and follow the steps in the **output** to login to
+11. In the next cell and follow the steps in the **output** to login to
     **Azure**.
 
     ![A screenshot of a computer Description automatically
@@ -142,6 +156,10 @@ generated](./media/image17.png)
 
     ![A screenshot of a computer program Description automatically
 generated](./media/image18.png)
+
+11. Click on **+ Code** to add a cell. Add this content !!pip install azure-ai-ml==1.23.1!! and execute the cell to install the ai-ml 1.23.1 version.
+
+    ![A screenshot of a computer AI-generated content may be incorrect.](./media/image19.png)
 
 ### Task 2: Create a minimal feature store
 
