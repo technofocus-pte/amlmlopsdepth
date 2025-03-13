@@ -434,8 +434,7 @@ generated](./media/image44.png)
 10.  Execute the next cell to **Initialize the feature store consumption
     client.**
 
-    ![A screenshot of a computer screen Description automatically
-generated](./media/image45.png)
+     ![A screenshot of a computer screen Description automatically generated](./media/image45.png)
 
 ### Task 2: Create accounts featureset locally from precomputed data
 
