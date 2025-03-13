@@ -853,8 +853,10 @@ with low confidence](./media/image80.png)
 
 3.  Look for a notification on the successful deletion.
 
-    ![A picture containing text, screenshot, font, line Description
-automatically generated](./media/image81.png)
+4.  You need to stop the running compute since we will not be using it now.
+
+    ![A screenshot of a computer error Description automatically generated
+with low confidence](./media/image18.png)
 
 **Summary**
 
