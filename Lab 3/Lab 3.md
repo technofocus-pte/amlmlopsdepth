@@ -156,7 +156,7 @@ generated](./media/image17.png)
     ![A screenshot of a computer program Description automatically
 generated](./media/image18.png)
 
-11. Click on **+ Code** to add a cell. Add this content !!pip install azure-ai-ml==1.23.1!! and execute the cell to install the ai-ml 1.23.1 version.
+11. Click on **+ Code** to add a cell. Add this content +++pip install azure-ai-ml==1.23.1+++ and execute the cell to install the ai-ml 1.23.1 version.
 
     ![A screenshot of a computer AI-generated content may be incorrect.](./media/img19.png)
 
@@ -414,7 +414,7 @@ generated](./media/image17.png)
     ![A screenshot of a computer program Description automatically
 generated](./media/image18.png)
 
-7.  Click on **+ Code** to add a cell. Add this content !!pip install azure-ai-ml==1.23.1!! and execute the cell to install the ai-ml
+7.  Click on **+ Code** to add a cell. Add this content +++pip install azure-ai-ml==1.23.1+++ and execute the cell to install the ai-ml
     1.23.1 version.
 
     ![A screenshot of a computer AI-generated content may be
