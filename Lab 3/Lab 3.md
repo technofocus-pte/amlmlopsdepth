@@ -145,8 +145,7 @@ generated](./media/image15.png)
 name 'mysql_flexibleservers' from 'azure.mgmt.rdbms'** can be safely
 ignored in the next 2 cells.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image16.png)
+     ![A screenshot of a computer Description automatically generated](./media/image16.png)
 
 11. In the next cell and follow the steps in the **output** to login to
     **Azure**.
