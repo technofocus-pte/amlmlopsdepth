@@ -159,7 +159,7 @@ generated](./media/image18.png)
 
 11. Click on **+ Code** to add a cell. Add this content !!pip install azure-ai-ml==1.23.1!! and execute the cell to install the ai-ml 1.23.1 version.
 
-    ![A screenshot of a computer AI-generated content may be incorrect.](./media/image19.png)
+    ![A screenshot of a computer AI-generated content may be incorrect.](./media/img19.png)
 
 ### Task 2: Create a minimal feature store
 
