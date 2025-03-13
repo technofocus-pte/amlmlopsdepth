@@ -129,7 +129,7 @@ generated](./media/image13.png)
 9.  Once the spark session starts, replace the **<your_user_alias>** with your
     user name and execute the next cell
 
-    >[!Note] **Note:** You can get the name from the folder structure -> Users -> <UserName>
+    >[!Note] **Note:** You can get the name from the folder structure -> Users -> < UserName >
     >
     >![](./media/img38.png)
    
