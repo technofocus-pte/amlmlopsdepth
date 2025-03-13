@@ -597,14 +597,14 @@ generated](./media/image66.png)
 10.  Select **Feature sets** from the left pane and then select any one
     of the **feature sets**.
 
-    ![A screenshot of a computer Description automatically
+     ![A screenshot of a computer Description automatically
 generated](./media/image67.png)
 
 11.  Click on **Models** tab. You can see the list of models that are
     using the feature sets (determined from the feature retrieval spec
     when the model was registered).
 
-    ![A screenshot of a computer Description automatically
+     ![A screenshot of a computer Description automatically
 generated](./media/image68.png)
 
 **Summary:**
