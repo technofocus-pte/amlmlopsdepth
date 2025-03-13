@@ -398,18 +398,40 @@ generated](./media/image42.png)
 
 5.  **Execute** the next **3** cells to **setup CLI**.
 
-6.  The next cell initializes the project workspace variables.
+    An error stating **Error loading command module 'mysql': cannot import
+name 'mysql_flexibleservers' from 'azure.mgmt.rdbms'** can be safely
+ignored in the next 2 cells.
+
+    ![A screenshot of a computer Description automatically
+generated](./media/image16.png)
+
+6. In the next cell and follow the steps in the **output** to login to
+    **Azure**.
+
+    ![A screenshot of a computer Description automatically
+generated](./media/image17.png)
+
+    ![A screenshot of a computer program Description automatically
+generated](./media/image18.png)
+
+7.  Click on **+ Code** to add a cell. Add this content !!pip install azure-ai-ml==1.23.1!! and execute the cell to install the ai-ml
+    1.23.1 version.
+
+    ![A screenshot of a computer AI-generated content may be
+incorrect.](./media/image19.png)
+
+8.  The next cell initializes the project workspace variables.
     **Execute** it to **initialize the variables**.
 
     ![A screenshot of a computer Description automatically
 generated](./media/image43.png)
 
-7.  The next cell initializes the feature store variables. Execute it.
+9.  The next cell initializes the feature store variables. Execute it.
 
     ![A screenshot of a computer Description automatically
 generated](./media/image44.png)
 
-8.  Execute the next cell to **Initialize the feature store consumption
+10.  Execute the next cell to **Initialize the feature store consumption
     client.**
 
     ![A screenshot of a computer screen Description automatically
