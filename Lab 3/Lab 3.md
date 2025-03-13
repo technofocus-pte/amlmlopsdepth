@@ -272,7 +272,9 @@ search/browse the feature store.
 
 ### Task 7: Generate a training data dataframe using the registered features
 
-1.  We start by exploring the observation data. Observation data is
+1.  Navigate back to the Azure Machine Learning Studio.
+
+2.  We start by exploring the observation data. Observation data is
     typically the core data used in training and inference data. This is
     then joined with feature data to create the full training data.
     Observation data is the data captured during the time of the event:
@@ -280,29 +282,29 @@ search/browse the feature store.
     account ID, transaction amount. In this case, since it is for
     training, it also has the target variable appended (is_fraud).
 
-2.  **Execute** the cel land observe the output data.
+3.  **Execute** the cel land observe the output data.
 
     ![A screenshot of a computer Description automatically generated](./media/image33.png)
 
-3.  **Execute** the next cell to get the **registered feature set** and
+4.  **Execute** the next cell to get the **registered feature set** and
     **list its features**.
 
     ![A screenshot of a computer program Description automatically
 generated](./media/image34.png)
 
-4.  **Execute** the next cell to **print** the **sample values**.
+5.  **Execute** the next cell to **print** the **sample values**.
 
     ![A screenshot of a computer Description automatically
 generated](./media/image35.png)
 
-5.  **Execute** the next cell. In this step we will **select features**
+6.  **Execute** the next cell. In this step we will **select features**
     that we would like to be part of **training data** and use the
     feature store SDK to generate the training data.
 
     ![A screenshot of a computer program Description automatically
 generated](./media/image36.png)
 
-6.  Execute the next cell to generate training dataframe by using
+7.  Execute the next cell to generate training dataframe by using
     feature data and observation data.
 
     ![A screenshot of a computer program Description automatically
