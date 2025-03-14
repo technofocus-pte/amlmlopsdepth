@@ -250,14 +250,14 @@ generated](./media/image31.png)
 
 2.  Select **Clone** under the **WebClassification** category.
 
-In the **Explore gallery**, you can browse the built-in samples and
+    In the **Explore gallery**, you can browse the built-in samples and
 select **View detail** on any tile to preview whether it's suitable for
 your scenario.
 
-This lab uses the **Web Classification** sample to walk through the main
+    This lab uses the **Web Classification** sample to walk through the main
 user journey.
 
-Web Classification is a flow demonstrating multiclass classification
+    Web Classification is a flow demonstrating multiclass classification
 with a LLM. Given a URL, the flow classifies the URL into a web category
 with just a few shots, simple summarization, and classification prompts.
 For example, given a URL https://www.imdb.com, it classifies the URL
@@ -321,7 +321,7 @@ You can edit files inline in the **Flow** or flatten view, or you can
 turn on the **Raw file mode** toggle and select a file from **Files** to
 open the file in a tab for editing.
 
-    ![A screenshot of a computer Description automatically
+![A screenshot of a computer Description automatically
 generated](./media/image36.png)
 
 ## Task 5: Set up LLM nodes
