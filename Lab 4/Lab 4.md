@@ -21,24 +21,40 @@ We are at the **Deploy Model** phase of the Azure Machine Learning.
 1.  Sign in to Azure portal – +++**https://portal.azure.com**+++ using
     the credentials from the **Resources** tab.
 
-2.  From the Azure portal home page, select **+ Create a resource**.
+2.	Select **Subscriptions** and select your **assigned subscription**. 
+
+   ![](./media/image50.png)
+
+   ![](./media/image51.png)
+   
+3.  Select Resource Providers under **Settings** from the left pane.
+
+4.  Search for +++Microsoft.StreamAnalytics+++ and select the three dots
+    against the name and click **Register**.
+
+    ![A screenshot of a computer AI-generated content may be incorrect.](./media/image52.png)
+
+5.  Repeat the steps to register +++Microsoft.Cdn+++ and
+    +++Microsoft.PolicyInsights+++
+    
+6.  From the Azure portal home page, select **+ Create a resource**.
 
     ![A screenshot of a computer Description automatically
 generated](./media/image2.png)
 
-3.  On **Create a resource**, use the search bar to find +++**Azure
+7.  On **Create a resource**, use the search bar to find +++**Azure
     Machine Learning**+++. Select **Azure Machine Learning** under
     **Marketplace**.
 
     ![A screenshot of a computer Description automatically generated](./media/image3.png)
 
-4.  Under **Marketplace**, click on **Create** dropdown and select
+8.  Under **Marketplace**, click on **Create** dropdown and select
     **Azure Machine Learning**.
 
     ![A screenshot of a software Description automatically
 generated](./media/image4.png)
 
-5.  Provide the following information to configure your new workspace:
+9.  Provide the following information to configure your new workspace:
 
     - **Subscription**: Select your **assigned Azure subscription**
 
@@ -60,23 +76,23 @@ generated](./media/image6.png)
 
     ![A screenshot of a computer Description automatically generated](./media/image7.png)
 
-6.  Once you are done configuring the workspace, select **Review +
+10.  Once you are done configuring the workspace, select **Review +
     Create**.
 
     ![A screenshot of a computer Description automatically
 generated](./media/image8.png)
 
-7.  Once the Validation is passed, click on **Create**.
+11.  Once the Validation is passed, click on **Create**.
 
     ![A screenshot of a computer Description automatically
 generated](./media/image9.png)
 
-8.  Click on **Go to resource**, to view the new workspace.
+12.  Click on **Go to resource**, to view the new workspace.
 
     ![A screenshot of a computer Description automatically
 generated](./media/image10.png)
 
-9.  **On the Microsoft.MachineLEarningServices | Overview page**,
+13.  **On the Microsoft.MachineLEarningServices | Overview page**,
     select **Launch studio** under **Work with your model in Azure
     Machine Learning studio**.
 
