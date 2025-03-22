@@ -21,7 +21,7 @@ We are at the MLOps phase of the Azure Machine Learning
 
 ### **Task 1: Create an Azure Machine Learning workspace**
 
-1.  Sign in to the Azure portal at +++<https://portal.azure.com>+++ if
+1.  Sign in to the Azure portal at +++https://portal.azure.com+++ if
     not already logged in.
 
 2.  From the Azure portal home page, select **+ Create a resource**.
@@ -54,7 +54,7 @@ generated](./media/image2.png)
     - **Region**: Select your nearest region **(North Central US** is
       selected here)
 
-    - **Container registry: Select Create new. Enter
+    - **Container registry**: Select **Create new**. Enter
   +++azuremlcr@lab.LabInstance.Id+++**
 
     ![A screenshot of a computer Description automatically
@@ -101,8 +101,7 @@ generated](./media/image10.png)
 
     -  Virtual machine type – **CPU**
 
-    -  Virtual machine size –Select **Standard_E4s_v3 (** Check Select
-        from all options to find the VM Size**)**
+    -  Virtual machine size –Select **Standard_E4s_v3** (Check **Select from all options** to find the VM Size)
 
     Click on **Next**.
 
@@ -129,7 +128,7 @@ generated](./media/image14.png)
 
 ## **Exercise 2: Retrieve the Azure resources**
 
-1.  From the Azure portal (<https://portal.azure.com>), open your
+1.  From the Azure portal (+++https://portal.azure.com+++), open your
     Resource group and make a note of the names of the following
     resources,
 
@@ -150,13 +149,13 @@ generated](./media/image15.png)
 
 ## **Exercise 3: Getting the GitHub account and resources ready**
 
-    >[!Note] **Note:** If you do not have an account with GitHub already, create one
-from here +++**https://github.com/**+++ -\> **Signup**.
+>[!Note] **Note:** If you do not have an account with GitHub already, create one
+from here +++**https://github.com/**+++ -> **Signup**.
 
 ### **Task 2: Fork the repo mlops demo into your GitHub account**
 
 1.  Open a browser and enter this link -
-    +++<https://github.com/getazureready/mlops-v2-gha-demo>+++
+    +++https://github.com/getazureready/mlops-v2-gha-demo+++
 
 2.  Click on **Fork** on the top right.
 
