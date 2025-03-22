@@ -188,10 +188,10 @@ medium confidence](./media/image20.png)
     
     ```
     {
-      "clientId": "+++@lab .Variable(spAppId)+++",
-      "clientSecret": "+++@lab .Variable(spClientSecret)+++",
-      "subscriptionId": "+++@lab.CloudSubscription.Id+++",
-      "tenantId": "+++@lab.CloudSubscription.TenantId+++",
+      "clientId": "@lab .Variable(spAppId)",
+      "clientSecret": "@lab .Variable(spClientSecret)",
+      "subscriptionId": "@lab.CloudSubscription.Id",
+      "tenantId": "@lab.CloudSubscription.TenantId",
       "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
       "resourceManagerEndpointUrl": "https://management.azure.com/",
       "activeDirectoryGraphResourceId": "https://graph.windows.net/",
