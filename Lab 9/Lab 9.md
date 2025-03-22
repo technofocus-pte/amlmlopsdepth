@@ -245,7 +245,7 @@ generated](./media/image26.png)
 
 3.  Change the values,
 
-    -  **Namespace** – **mlopsliteXX**(Replace XX with a random number)
+    -  **Namespace** – **ml@lab.LabInstance.Id**
 
     -  **Postfix** – **c**
 
@@ -255,7 +255,7 @@ generated](./media/image26.png)
 
     Under the **For pipeline reference section**, replace the **values** of the Azure Resources with the values that we fetched and saved in Exercise 2.
 
-    ![A screenshot of a computer Description automatically generated](./media/image27.png)
+    ![A screenshot of a computer Description automatically generated](./media/img51.png)
 
 4.  Click on **Commit changes** in the commit changes pane.
 
