@@ -245,7 +245,7 @@ generated](./media/image26.png)
 
 3.  Change the values,
 
-    -  **Namespace** – **ml@lab.LabInstance.Id**
+    -  **Namespace** – +++**ml@lab.LabInstance.Id**+++
 
     -  **Postfix** – **c**
 
