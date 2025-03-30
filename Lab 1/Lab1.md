@@ -228,8 +228,7 @@ after the break.
     ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image21.png)
 
-3.  The Notebook Files pane opens up with the structure, **Users -\> \<
-    UserName \>**. Click on the three dots next to the username, and
+3.  The Notebook Files pane opens up with the structure, **Users -> < UserName >**. Click on the three dots next to the username, and
     select **Create new folder**.
 
     ![A screenshot of a computer Description automatically
