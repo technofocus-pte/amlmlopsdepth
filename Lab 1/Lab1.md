@@ -781,35 +781,28 @@ that does the actual inferencing.
 1.  Now deploy your machine learning model as a web service in Azure
     cloud, an online endpoint.
 
-2.  Select **Endpoints** from the left pane.
+2.  Select **Models** from the left pane, select the **credit_defaults_model**. Select **Deploy** -> **Real-time endpoint**.
 
     ![A screenshot of a computer Description automatically
-generated](./media/image73.png)
+generated](./media/image89.png)
 
-3.  Select **Create** for Real-time endpoints
+3.  Provide the below details and select **Create**.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image74.png)
-
-4.  Select **credit_defaults_model** and then click on **Select.**
-
-    ![A screenshot of a computer Description automatically
-generated](./media/image75.png)
-
-5.  Select **Standard_E4s_v3** under the Virtual machine. Provide the
-    Instance count as **1**
-
-    Accept the other defaults of a unique **Endpoint name** and the **Deployment name** and then select **Deploy**.
+    -    Instance count - 1
+    -    Virtual machine - Standard_E4s_v3
+    -    Endpoint - New
+    -    Endpoint name - +++ep-azuremlws@lab.LabInstance.Id+++
+    -    Deployment name - +++credit-defaults-model-@lab.LabInstance.Id+++
 
     ![A screenshot of a computer Description automatically
-generated](./media/image76.png)
+generated](./media/image90.png)
 
     >[!Note] **Note:** The endpoint creation takes around 20 minutes to complete.
 
-6.  Once complete, the Provisioning state changes to **Succeeded**.
+7.  Once complete, the Provisioning state changes to **Succeeded**.
 
     ![A screenshot of a computer Description automatically
-generated](./media/image77.png)
+generated](./media/image91.png)
 
 #### Task 8.2: Test with a sample query
 
