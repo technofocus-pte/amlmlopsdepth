@@ -717,10 +717,10 @@ medium confidence](./media/image68.png)
 4.  The status changes to **Completed** once it is ready.
 
     ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image69.png)
+medium confidence](./media/image87.png)
 
     ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image70.png)
+medium confidence](./media/image88.png)
 
 5.  Select the **Metrics** pane to view the metrics.
 
