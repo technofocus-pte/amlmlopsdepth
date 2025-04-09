@@ -57,27 +57,22 @@ central hub for collaboration, experimentation, and deployment.
 
 #### Task 2.2: Create an Azure Machine Learning workspace
 
-1.  Sign in to the Azure portal at +++https://portal.azure.com+++ using
-    the **Username** and **Password** from the **Resources** tab.
-
-    ![A screenshot of a computer Description automatically generated](./media/image4.png)
-
-2.  From the Azure portal home page, select **+ Create a resource**.
+1.  From the Azure portal home page, select **+ Create a resource**.
 
     ![A screenshot of a computer Description automatically generated](./media/image5.png)
 
-3.  On the **Create a resource** page, use the search bar to find
+2.  On the **Create a resource** page, use the search bar to find
     +++**Azure Machine Learning+++** and select **Azure** **Machine
     Learning**.
 
     ![A screenshot of a computer Description automatically generated](./media/image6.png)
 
-4.  Under **Marketplace**, click on **Create dropdown** and select
+3.  Under **Marketplace**, click on **Create dropdown** and select
     **Azure Machine Learning**.
 
     ![A screenshot of a computer Description automatically generated](./media/image7.png)
 
-5.  Provide the following information to configure your new workspace
+4.  Provide the following information to configure your new workspace
     and click on **Review + create**.
 
     - **Subscription**: Select your **assigned Azure subscription**
