@@ -42,9 +42,7 @@ We are at the **Deploy Model** phase of the Azure Machine Learning.
     ![A screenshot of a computer Description automatically
 generated](./media/image2.png)
 
-7.  On **Create a resource**, use the search bar to find +++**Azure
-    Machine Learning**+++. Select **Azure Machine Learning** under
-    **Marketplace**.
+7.  On **Create a resource**, use the search bar to find +++**Azure Machine Learning**+++. Select **Azure Machine Learning** under **Marketplace**.
 
     ![A screenshot of a computer Description automatically generated](./media/image3.png)
 
