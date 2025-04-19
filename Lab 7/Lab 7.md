@@ -360,9 +360,8 @@ generated](./media/image39.png)
 
     The **Graph** view also shows the single run node status.
 
-6.  Under **Inputs** section, provide the value for the **Value** field
-    as
-    +++https://play.google.com/store/apps/details?id=com.spotify.music+++
+6.  At the top of the Promptflow page, under **Inputs** section, provide the value for the **Value** field
+    as +++https://play.google.com/store/apps/details?id=com.spotify.music+++
 
     Select **Run** from the top right, to test and debug the whole flow.
 
