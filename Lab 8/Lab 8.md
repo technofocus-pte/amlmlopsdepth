@@ -16,8 +16,8 @@ In this exercise, we will create the gpt-35-turbo models deployments
 using the Azure OpenAI resource we created in the previous lab.
 
 1.  From the Azure Machine Learning Studio, select **Model Catalog**
-    from the left pane. Search for +++**gpt-35-turbo**+++ and select
-    **gpt-35-turbo** from the models list.
+    from the left pane. Search for +++**gpt-4**+++ and select
+    **gpt-4** from the models list.
 
     ![A screenshot of a computer Description automatically
 generated](./media/image1.png)
@@ -129,7 +129,7 @@ generated](./media/image16.png)
 generated](./media/image17.png)
 
 7.  Now that your Workspace has a connection to Azure OpenAI we will
-    make sure the gpt-35-turbo model has been deployed ready for
+    make sure the gpt-4 model has been deployed ready for
     inference.
 
 8.  **Execute** the next cell to set the model and **deployment** names.
