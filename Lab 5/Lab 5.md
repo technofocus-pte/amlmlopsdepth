@@ -192,25 +192,21 @@ incorrect.](./media/image17.png)
 
 ## **Exercise 3: Explore models**
 
-1.  Navigate to the **Models** tab to see the algorithms (models)
+1.  Navigate to the **Models + child Jobs** tab to see the algorithms (models)
     tested. By default, the models are ordered by metric score as they
     complete.
 
-2.  For this tutorial, the model that scores the highest based on the
-    chosen **Normalized root mean squared error** metric is at the top
-    of the list.
-
-3.  While you wait for all of the experiment models to finish, select
+2.  While you wait for all of the experiment models to finish, select
     the **Algorithm name** of a completed model to explore its
     performance details.
 
     ![A screenshot of a computer Description automatically generated](./media/image22.png)
 
-4.  Click on the **Overview** and view its details.
+3.  Click on the **Overview** and view its details.
 
     ![A screenshot of a computer Description automatically generated](./media/image23.png)
 
-5.  Click on the **Metrics** tab and explore the details.
+4.  Click on the **Metrics** tab and explore the details.
 
     ![A screenshot of a computer Description automatically generated with medium confidence](./media/image24.png)
     
