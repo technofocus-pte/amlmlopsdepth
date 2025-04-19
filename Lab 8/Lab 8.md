@@ -222,7 +222,7 @@ generated](./media/image27.png)
     ![A screenshot of a computer Description automatically
 generated](./media/image28.png)
 
-6.  Once the flow is successful, move to the next step.
+6.  Once the flow is successful, move to the next cell in the Notebook.
 
 ## Exercise 6: Review generated QA data
 
