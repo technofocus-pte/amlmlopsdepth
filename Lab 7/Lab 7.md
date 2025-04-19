@@ -102,7 +102,7 @@ generated](./media/image12.png)
 
 3.  On the Create compute instance screen, enter the below details.
 
-    -  Compute name – +++**pfcompute**+++
+    -  Compute name – +++**pfcompute@lab.LabInstanceId**+++
 
     -  Virtual machine type – **CPU**
 
