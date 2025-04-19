@@ -49,8 +49,7 @@ generated](./media/image1.png)
 
     - **Workspace name:** +++**Azuremlws@lab.LabInstanceId**+++
     
-    - **Region**: Select your nearest region **(North Central US** is
-      selected here)
+    - **Region** – Select @lab.CloudResourceGroup(ResourceGroup1).Location
     
     - **Container registry: Select Create new. Enter
       +++azuremlcr@lab.LabInstanceId+++**
@@ -149,7 +148,7 @@ generated](./media/image17.png)
 
     - Resource group - Select your assigned Resource group
     
-    - Region – Select a region (North Central US is being used here)
+    - Region – Select @lab.CloudResourceGroup(ResourceGroup1).Location
     
     - Name - +++**AOAI-PF@lab.LabInstanceId**+++
     
