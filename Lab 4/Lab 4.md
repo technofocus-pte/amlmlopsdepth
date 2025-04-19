@@ -202,13 +202,13 @@ generated](./media/image22.png)
     job. Otherwise, defaults are applied based on experiment selection
     and data.
 
-- Primary metric – AUCWeighted
-
-- Explain best model – Enable
-
-- Use all supported models - Enable
-
-- Blocked models – None
+    - Primary metric – AUCWeighted
+    
+    - Explain best model – Enable
+    
+    - Use all supported models - Enable
+    
+    - Blocked models – None
 
     ![A screenshot of a computer AI-generated content may be
 incorrect.](./media/image23.png)
