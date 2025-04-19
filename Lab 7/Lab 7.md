@@ -196,9 +196,6 @@ generated](./media/image24.png)
     ![A screenshot of a computer Description automatically
 generated](./media/image25.png)
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image26.png)
-
 ## Task 2: Set up a Prompt flow connection
 
 1.  From the left navigation pane of the Azure Machine Learning Studio,
