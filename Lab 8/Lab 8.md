@@ -20,19 +20,19 @@ using the Azure OpenAI resource we created in the previous lab.
     **gpt-4** from the models list.
 
     ![A screenshot of a computer Description automatically
-generated](./media/image1.png)
+generated](./media/image31.png)
 
 2.  Ensure that the AOAI resource **AOAI-PF@lab.LabInstanceId** is
     selected in the **Azure OpenAI resource** field. Select **Deploy**
     to deploy the model.
 
     ![A screenshot of a computer Description automatically
-generated](./media/image2.png)
+generated](./media/image32.png)
 
 3.  Accept the **Deployment name** and select **Deploy**.
 
     ![A screenshot of a computer Description automatically
-generated](./media/image3.png)
+generated](./media/image33.png)
 
 4.  Repeat the model deployment for **text-embedding-ada-002** with the
     deployment name as +++**text-embedding-ada-002-2**+++
@@ -137,7 +137,7 @@ generated](./media/image17.png)
     have given different names while creating the model and deployment.
 
     ![A screenshot of a computer code Description automatically
-generated](./media/image18.png)
+generated](./media/image34.png)
 
 9.  Finally we will combine the deployment and model information into a
     uri form which the AzureML embeddings components expect as input.
