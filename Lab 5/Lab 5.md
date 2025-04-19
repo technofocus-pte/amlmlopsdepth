@@ -141,7 +141,7 @@ don't include them.
     
     ![A screenshot of a computer Description automatically generated](./media/image15.png)
 
-2.  In the Additional configuration pane, provide the below details and
+2.  In the **Additional configuration** pane, provide the below details and
     click on **Save**.
 
     - Primary metric - **Normalized root mean squared error**
@@ -173,8 +173,7 @@ incorrect.](./media/image17.png)
 
     ![A screenshot of a computer Description automatically generated](./media/image18.png)
 
-5.  Select **automl-compute** (The one we created in the previous lab).
-    Click on **Next.**
+5.  Select the **compute type** as **Compute cluster** and then select **automl-compute** under **Select Azure ML compute cluster**. Click on **Next.**
 
     ![A screenshot of a computer Description automatically generated](./media/image19.png)
 
