@@ -364,11 +364,8 @@ with a **Best model summary** section. In this experiment
 context, **VotingEnsemble** is considered the best model, based on
 the **AUCWeighted** metric.
 
-1.  Select **Jobs** from the left pane and select the experiment that
+1.  Select **Jobs** from the left pane and select the **Marketing experiment** that
     you created.
-
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image40.png)
 
 2.  Click on the display name of the experiment.
 
