@@ -25,22 +25,22 @@ Expected duration – 50 minutes
     Cloud Shell dialog.
 
     ![A screenshot of a computer AI-generated content may be
-incorrect.](./media/image15.png)
+incorrect.](./media/image69.png)
 
 3.  Select **Mount storage account** option and select your assigned
     subscription from the drop-down menu.
 
     ![A screenshot of a computer AI-generated content may be
-incorrect.](./media/image16.png)
+incorrect.](./media/image70.png)
 
 4.  Select **We will create a storage account for you** option and click
     on **Next**.
 
     ![A screenshot of a computer account AI-generated content may be
-incorrect.](./media/image17.png)
+incorrect.](./media/image71.png)
 
     ![A screenshot of a computer program AI-generated content may be
-incorrect.](./media/image18.png)
+incorrect.](./media/image72.png)
 
 5.  Once the creation is done and the Cloud Shell pane opens. Click on
     **Editor** and select **Confirm** in the **Switch to Cloud Shell**
@@ -48,10 +48,10 @@ incorrect.](./media/image18.png)
     for the deployment.
 
     ![A screenshot of a computer AI-generated content may be
-incorrect.](./media/image19.png)
+incorrect.](./media/image73.png)
 
     ![A screen shot of a computer error AI-generated content may be
-incorrect.](./media/image20.png)
+incorrect.](./media/image74.png)
 
 6.  In Azure Cloud Shell command prompt, clone the **Diabetes Hospital
     Readmission** project github repository by executing the below
