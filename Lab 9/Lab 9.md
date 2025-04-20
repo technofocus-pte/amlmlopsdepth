@@ -249,42 +249,40 @@ generated](./media/image26.png)
 
     -  **location** – Select @lab.CloudResourceGroup(ResourceGroup1).Location
 
-    Click on **Commit changes**.
-
-    Under the **For pipeline reference section**, replace the **values** of the Azure Resources with the values that we fetched and saved in Exercise 2.
+4.  Under the **For pipeline reference section**, replace the **values** of the Azure Resources with the values that we fetched and saved in Exercise 2.
 
     ![A screenshot of a computer Description automatically generated](./media/img51.png)
 
-4.  Click on **Commit changes** in the commit changes pane.
+5.  Click on **Commit changes** in the commit changes pane.
 
     ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image28.png)
 
-5.  Open **deploy-model-training-pipeline-classical.yml** from
+6.  Open **deploy-model-training-pipeline-classical.yml** from
     **.github/workflows**. Click on **Edit**(The pencil icon).
 
     ![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image29.png)
 
-6.  In the contents of the file, replace the value of **Size** with
+7.  In the contents of the file, replace the value of **Size** with
     **+++Standard_E4s_v3+++**
 
     Select **Commit changes**.
 
     ![A screenshot of a computer Description automatically generated with medium confidence](./media/image30.png)
 
-7.  Open the file **online-deployment.yml** from
+8.  Open the file **online-deployment.yml** from
     **mlops/azureml/deploy/online.** Click on **Edit**(the pencil icon).
 
     ![](./media/image31.png)
 
-8.  Replace the value of **instance_type** as **+++Standard_E4s_v3+++**.
+9.  Replace the value of **instance_type** as **+++Standard_E4s_v3+++**.
     Click on **Commit changes**.
 
     ![A screenshot of a computer Description automatically generated with
 low confidence](./media/image32.png)
 
-9.  Open **tf-gha-deploy-infra.yml** file under **.github/workflows**.
+10.  Open **tf-gha-deploy-infra.yml** file under **.github/workflows**.
     Click on **Edit** and replace Azure with +++CoursesTF+++ in lines 9
     and 14.
 
@@ -293,13 +291,13 @@ low confidence](./media/image32.png)
     ![A screenshot of a computer Description automatically
 generated](./media/image33.png)
 
-10. From the top menu bar, select **Actions**. Click on **I understand
+11. From the top menu bar, select **Actions**. Click on **I understand
     my workflows, go ahead and enable them**.
 
     ![A screenshot of a computer Description automatically
 generated](./media/image34.png)
 
-11. This displays the pre-defined GitHub workflows associated with your
+12. This displays the pre-defined GitHub workflows associated with your
     project.
 
     ![A screenshot of a computer Description automatically generated with
