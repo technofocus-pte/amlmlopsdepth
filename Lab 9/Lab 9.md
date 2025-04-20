@@ -51,8 +51,7 @@ generated](./media/image2.png)
 
     - **Workspace name:** +++**Azuremlws@lab.LabInstance.Id**+++
     
-    - **Region**: Select your nearest region **(North Central US** is
-      selected here)
+    - **Region**: Select @lab.CloudResourceGroup(ResourceGroup1).Location
 
     - **Container registry**: Select **Create new**. Enter
   +++azuremlcr@lab.LabInstance.Id+++**
@@ -94,8 +93,7 @@ generated](./media/image10.png)
 
 3.  On the **Create compute cluster** screen, enter the below details.
 
-    -  Location – Select the **Region** in which you had created your
-        Azure Machine Learning Workspace
+    -  Location – Select @lab.CloudResourceGroup(ResourceGroup1).Location
 
     -  Virtual machine tier – **Dedicated**
 
@@ -249,7 +247,7 @@ generated](./media/image26.png)
 
     -  **Postfix** – **c**
 
-    -  **location** – **Same as your workspace region**
+    -  **location** – Select @lab.CloudResourceGroup(ResourceGroup1).Location
 
     Click on **Commit changes**.
 
