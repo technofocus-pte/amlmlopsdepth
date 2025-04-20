@@ -20,13 +20,40 @@ Expected duration – 50 minutes
 
 1.  From a browser, login to the Azure portal at +++https://portal.azure.com+++
 
-2.  Open the **cloud shell** by clicking on the cloud shell icon on the
-    Azure portal.
+2.  From the Azure portal Home page, click on the **Cloud Shell** icon
+    to open the Cloud Shell and select **Bash** in the Welcome to Azure
+    Cloud Shell dialog.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image1.png)
+    ![A screenshot of a computer AI-generated content may be
+incorrect.](./media/image15.png)
 
-3.  In Azure Cloud Shell command prompt, clone the **Diabetes Hospital
+3.  Select **Mount storage account** option and select your assigned
+    subscription from the drop-down menu.
+
+    ![A screenshot of a computer AI-generated content may be
+incorrect.](./media/image16.png)
+
+4.  Select **We will create a storage account for you** option and click
+    on **Next**.
+
+    ![A screenshot of a computer account AI-generated content may be
+incorrect.](./media/image17.png)
+
+    ![A screenshot of a computer program AI-generated content may be
+incorrect.](./media/image18.png)
+
+5.  Once the creation is done and the Cloud Shell pane opens. Click on
+    **Editor** and select **Confirm** in the **Switch to Cloud Shell**
+    confirmation dialog. We will need the Editor mode to edit the files
+    for the deployment.
+
+    ![A screenshot of a computer AI-generated content may be
+incorrect.](./media/image19.png)
+
+    ![A screen shot of a computer error AI-generated content may be
+incorrect.](./media/image20.png)
+
+6.  In Azure Cloud Shell command prompt, clone the **Diabetes Hospital
     Readmission** project github repository by executing the below
     command.
 
@@ -36,7 +63,7 @@ generated](./media/image1.png)
 
     ![](./media/image2.png)
 
-4.  Change to the project directory by executing the below command.
+7.  Change to the project directory by executing the below command.
 
     **+++cd RAI-Diabetes-Hospital-Readmission-classification+++**
 
