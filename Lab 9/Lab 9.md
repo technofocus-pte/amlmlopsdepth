@@ -222,11 +222,17 @@ medium confidence](./media/image22.png)
 11. Repeat steps 9 and 10 for the following values, creating additional
     GitHub secrets.
 
-    - +++ARM_CLIENT_SECRET+++ - +++@lab .Variable(spClientSecret)+++
+    -  Name – +++ARM_CLIENT_SECRET+++
 
-    - +++ARM_SUBSCRIPTION_ID+++ - +++@lab.CloudSubscription.Id+++
+    -  Secret - +++@lab .Variable(spClientSecret)+++
 
-    - +++ARM_TENANT_ID+++ - +++@lab.CloudSubscription.TenantId+++
+    -  Name –  +++ARM_SUBSCRIPTION_ID+++
+
+    -  Secret - +++@lab.CloudSubscription.Id+++
+
+    -  Name –  +++ARM_TENANT_ID+++
+
+    -  Secret - +++@lab.CloudSubscription.TenantId+++
 
 ## **Exercise 4: Configure Machine Learning environment parameters**
 
