@@ -253,7 +253,7 @@ generated](./media/image26.png)
 
     -  **Postfix** – **c**
 
-    -  **location** – Select @lab.CloudResourceGroup(ResourceGroup1).Location
+    -  **location** – +++@lab.CloudResourceGroup(ResourceGroup1).Location+++
 
 4.  Under the **For pipeline reference section**, replace the **values** of the Azure Resources with the values that we fetched and saved in Exercise 2.
 
