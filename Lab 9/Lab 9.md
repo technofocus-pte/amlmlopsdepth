@@ -288,9 +288,7 @@ medium confidence](./media/image29.png)
     ![A screenshot of a computer Description automatically generated with
 low confidence](./media/image32.png)
 
-10.  Open **tf-gha-deploy-infra.yml** file under **.github/workflows**.
-    Click on **Edit** and replace Azure with +++CoursesTF+++ in lines 9
-    and 14.
+10. Open **tf-gha-deploy-infra.yml** file under **.github/workflows**. Click on **Edit** and replace Azure with +++CoursesTF+++ in lines 9 and 14.
 
     Select **Commit changes**.
 
