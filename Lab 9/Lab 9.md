@@ -294,6 +294,10 @@ low confidence](./media/image32.png)
 
     Select **Commit changes**.
 
+    Similarly, open **deploy-model-training-pipeline-classical.yml** replace Azure with +++CoursesTF+++ in lines 7, 12, 23, 34 and 48.
+
+    Select **Commit changes**.
+    
     ![A screenshot of a computer Description automatically
 generated](./media/image33.png)
 
