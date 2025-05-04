@@ -170,10 +170,7 @@ generated](./media/image18.png)
 **Exercise summary:**
 
 The exercise familiarizes participants with the essential steps involved
-in setting up an Azure Machine Learning environment. Through the series
-of tasks, participants have learnt how to create a Storage account,
-install the Machine Learning SDK, log in using Azure CLI, create an
-Azure Machine Learning workspace, and set up a compute resource. By
+in setting up an Azure Machine Learning environment. By
 completing this exercise, you have acquired the fundamental knowledge
 and practical skills required to establish a functional Azure Machine
 Learning environment, enabling you to embark on your machine learning
