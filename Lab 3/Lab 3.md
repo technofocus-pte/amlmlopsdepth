@@ -1,572 +1,452 @@
+# ラボ03 - マネージド フィーチャ ストアを使用してフィーチャ セットを開発および登録し、フィーチャを使用してモデルをトレーニングします。
 
-# Lab 03 - Develop and register a feature set with managed feature store and train models by using features
+このラボでは、カスタム変換を用いた特徴セット仕様の作成方法について説明します。次に、その特徴セットを使用してトレーニングデータを生成し、マテリアライゼーションを有効にし、バックフィルを実行します。マテリアライゼーションは、特徴ウィンドウの特徴値を計算し、それらの値をマテリアライゼーションストアに保存します。その後、すべての特徴クエリは、マテリアライゼーションストアからそれらの値を使用できます。
 
-**Lab duration** – 50 minutes
+マテリアライゼーションを使用しない場合、特徴セットクエリは、値を返す前に、ソースに変換をオンザフライで適用して特徴を計算します。このプロセスはプロトタイピングフェーズではうまく機能します。ただし、本番環境でのトレーニングおよび推論操作では、信頼性と可用性を高めるために、特徴をマテリアライズすることをお勧めします。
 
-This lab describes how to create a feature set specification with custom
-transformations. It then uses that feature set to generate training
-data, enable materialization, and perform a backfill. Materialization
-computes the feature values for a feature window, and then stores those
-values in a materialization store. All feature queries can then use
-those values from the materialization store.
+想定所要時間：50分
 
-Without materialization, a feature set query applies the transformations
-to the source on the fly, to compute the features before it returns the
-values. This process works well for the prototyping phase. However, for
-training and inference operations in a production environment, we
-recommend that you materialize the features, for greater reliability and
-availability.
+## エクササイズ1: 必要な役割を割り当てます。
 
-## Exercise 1: Assign required roles:
+1\.
+Azureポータルのホームページで、「Resources」タブから割り当て済みのリソースグループを選択します。左側のペインで「Access
+control
+(IAM)」を選択します。「Add」の横にあるドロップダウンをクリックし、「Add
+role assignment」を選択します。![A screenshot of a computer Description
+automatically generated](./media/image1.png)
 
-1.  From the Azure portal Home page, select the Resource group
-    **RGForMLOps**. From the left pane, select **Access control(IAM)**.
-    Click the drop down next to Add and select **Add role assignment**.
-
-    ![A screenshot of a computer Description automatically
-generated](./media/image1.png)
-
-2.  Search for +++**AzureML Data Scientist**+++ and select it and click
-    on **Next**.
-
-    ![A screenshot of a computer Description automatically
+![A screenshot of a computer Description automatically
 generated](./media/image2.png)
 
-3.  In the Members tab, click on **+ Select members**, search for your
-    **user name(your Azure login id)** and **Select** it.
+> 2\. \[Members\] タブで \[+Select members\] をクリックし、ユーザー名
+> +++@lab.CloudPortalCredential(User1).Username+++ を検索します。
 
-    ![A screenshot of a computer Description automatically
+![A screenshot of a computer Description automatically
 generated](./media/image3.png)
 
-4.  Click on **Review + assign** in the next 2 screens.
+3\. ユーザー名を選択し、「Select」ボタンをクリックします。![A screenshot
+of a computer Description automatically generated](./media/image4.png)
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image4.png)
-
-5.  Added role assignment message is obtained once the assignment is
-    done.
-
-6.  Repeat the same set of steps to add the roles +++**Storage Blob Data Reader**+++ and +++**Storage Blob Data Contributor**+++.
-
-## Exercise 2: Develop a feature set and register with managed feature store
-
-In this exercise, you learn how to:
-
-- Create a new, minimal feature store resource.
-    
-- Develop and locally test a feature set with feature transformation capability.
-    
-- Register a feature store entity with the feature store.
-    
-- Register the feature set that you developed with the feature store.
-    
-- Generate a sample training DataFrame by using the features that you created.
-    
-- Enable offline materialization on the feature sets, and backfill the feature data.
-
-### Task 1: Get the environment ready
-
-1.  From the left pane of the Azure Machine Learning Studio, select
-    **Notebooks** under **Authoring**. Click on the three dots next to
-    the user name and select **Upload folder**.
-
-    ![A screenshot of a computer Description automatically
+4\. 次の 2 つの画面で \[Review + assign\] をクリックします。![A
+screenshot of a computer Description automatically
 generated](./media/image5.png)
 
-2.  Browse and select **featurestore** folder from **C:\Labfiles** and
-    click on **Upload**.
+5\.
+割り当てが完了すると、追加されたロールの割り当てメッセージが表示されます。
 
-    ![A screenshot of a computer Description automatically
+6\. 同じ手順を繰り返して、ロール +++Storage Blob データ閲覧者+++ と
++++Storage Blob データ共同作成者+++ を追加します。
+
+## エクササイズ2: 機能セットを開発し、マネージド機能ストアに登録する
+
+このチュートリアルは、マネージド特徴量ストア チュートリアル
+シリーズの最初の部分です。ここでは、以下の方法を学習します。
+
+• 新しい最小限の特徴量ストア リソースを作成する。
+
+• 特徴量変換機能を備えた特徴量セットを開発し、ローカルでテストする。
+
+• 特徴量ストア エンティティを特徴量ストアに登録する。
+
+• 開発した特徴量セットを特徴量ストアに登録する。
+
+• 作成した特徴量を使用して、サンプルのトレーニング DataFrame
+を生成する。
+
+• 特徴量セットのオフライン
+マテリアライゼーションを有効にし、特徴量データをバックフィルする。
+
+### タスク 1: 環境を準備しましょう
+
+1\. Azure Machine Learning Studio
+の左側のペインで、「Authoring」の下にある「Notebooks」を選択します。ユーザー名の横にある
+3 つの点をクリックし、「Upload folder」を選択します。
+
+![A screenshot of a computer Description automatically
 generated](./media/image6.png)
 
-3.  Navigate to **featurestore-\> notebooks-\>sdk_and_cli** and open the
-    notebook 1.Develop-feature-set-and-register.ipynb
+2\. C:\Labfiles から featurestore
+フォルダーを参照して選択し、「Upload」をクリックします。
 
-    ![A screenshot of a computer Description automatically
+![A screenshot of a computer Description automatically
 generated](./media/image7.png)
 
-    >[!Note] **Note:** If you get an error stating Jupyter kernel not found, ignore and proceed with the next step.
+3\. featurestore-\> notebooks-\>sdk_and_cli に移動し、ノートブック
+1.Develop-feature-set-and-register.ipynb を開きます。
 
-    ![](./media/img12.png)
+![](./media/image8.png)
 
-4.  Select **Serverless Spark Compute** under **Compute**.
+4\. 「Compute」で「Serverless Spark Compute」を選択します。
 
-    ![A screenshot of a computer Description automatically generated](./media/image9.png)
+![A screenshot of a computer Description automatically
+generated](./media/image9.png)
 
-    Click on **Confirm** if prompted.
+5\. 「Configure
+session」を選択して、前提条件を使用してセッションを構成します。
 
-    ![](./media/img13.png)
-    
-5.  Select **Configure session** to configure the session with the
-    pre-requisites.
+![A screenshot of a computer Description automatically
+generated](./media/image10.png)
 
-    ![A screenshot of a computer Description automatically generated](./media/image10.png)
+6\. Pythonパッケージを選択 -\>
+Condaファイルをアップロードします。「Browse」をクリックし、C:\Labfilesからconda.ymlを選択して「Apply」を選択します。
 
-6.  Select **Python packages -\> Upload Conda file**. Click on
-    **Browse** and select **conda.yml** from **C:\Labfiles** and then
-    select **Apply**.
+7\.
+ノートブックの最初のセルを実行します。これにより、すべての依存関係がインストールされ、実行が完了します。完了まで約10分かかります。![A
+screenshot of a computer Description automatically
+generated](./media/image11.png)
 
-    ![A screenshot of a computer Description automatically generated](./media/image11.png)
+> ![A screenshot of a computer Description automatically
+> generated](./media/image12.png)
 
-7.  **Execute** the first cell of the notebook. This will install all
-    the **dependencies** and complete its execution. This will take
-    around **10 minutes** to complete.
+![A screenshot of a computer Description automatically
+generated](./media/image13.png)
 
-    ![A screenshot of a computer Description automatically generated](./media/image12.png)
+8\.
+Sparkセッションが開始したら、ユーザー名を自分のユーザー名に置き換えて次のセルを実行します。![A
+screenshot of a computer Description automatically
+generated](./media/image14.png)
 
-    >[!Note] **Note:** If the session does not come to **Ready** state after 10 minutes, Refresh the page and then execute the first cell.
-    
-    ![A screenshot of a computer Description automatically generated](./media/image13.png)
+![A screenshot of a computer error Description automatically
+generated](./media/image15.png)
 
-8.  Once the spark session starts, in the next cell, replace the **<your_user_alias>** with your
-    **user name** and execute it.
+9\. 次の 3 つのセルを実行して、Azure CLI をセットアップします。
 
-    >[!Note] **Note:** You can get the name from the folder structure -> Users -> <UserName>
-    >
-    >![](./media/img38.png)
-    
-    ![A screenshot of a computer Description automatically generated](./media/image14.png)
+![A screenshot of a computer Description automatically
+generated](./media/image16.png)
 
-    ![](./media/img14.png)
+10\. 次のセルで、出力の手順に従って Azure にログインします。![A
+screenshot of a computer Description automatically
+generated](./media/image17.png)
 
-8.  Execute the next 3 cells to setup the Azure CLI.
+![A screenshot of a computer program Description automatically
+generated](./media/image18.png)
 
-    An error stating **Error loading command module 'mysql': cannot import name 'mysql_flexibleservers' from 'azure.mgmt.rdbms'** can be safely ignored in the next 2 cells.
-    
-    ![A screenshot of a computer Description automatically generated](./media/image16.png)
+### タスク 2: 最小限の機能ストアを作成する
 
-9. Execute the next cell and follow the steps in the **output** to login to **Azure**.
+1\. フィーチャー
+ストアの名前、場所、その他の値を設定するには、最初のセルを実行します。![A
+screenshot of a computer program Description automatically
+generated](./media/image19.png)
 
-    ![A screenshot of a computer Description automatically generated](./media/image17.png)
+2\. 機能ストアを作成する次のセルを実行します。
 
-    ![A screenshot of a computer program Description automatically generated](./media/image18.png)
+![A screenshot of a computer Description automatically
+generated](./media/image20.png)
 
-10. Click on **+ Code** to add a cell. Add this content !!pip install
-    azure-ai-ml==1.23.1!! and execute the cell to install the ai-ml
-    1.23.1 version.
+> 3\.
+> 次のセルはAzureML機能ストアコアSDKクライアントを初期化します。実行してください。![A
+> screenshot of a computer Description automatically
+> generated](./media/image21.png)
 
-      ![A screenshot of a computer AI-generated content may be incorrect.](./media/image73.png)
+### タスク 3: このノートブックでトランザクションローリング集約機能セットのプロトタイプを作成して開発します
 
-### Task 2: Create a minimal feature store
+1\. このセクションの最初のセルを実行して、トランザクション ソース
+データを調査します。![A screenshot of a computer Description
+automatically generated](./media/image22.png)
 
-1.  **Execute** the **first** cell in order to set the name, location
-    and other values for the feature store.
+2\. 2
+番目のセルを実行して、トランザクション機能セットをローカルで開発します。![A
+screenshot of a computer code Description automatically
+generated](./media/image23.png)
 
-    ![A screenshot of a computer program Description automatically generated](./media/image19.png)
+3\. 次のセルを実行して、機能セット仕様から Spark
+データフレームを生成します。![A screenshot of a computer Description
+automatically generated](./media/image24.png)
 
-2.  **Execute** the next cell that **creates the feature store**.
+4\.
+機能セット仕様を機能ストアに登録するには、特定の形式で保存する必要があります。生成されたトランザクションFeaturesetSpecを確認してください。仕様を確認するには、ファイルツリーからこのファイルを開いてください：featurestore/featuresets/accounts/spec/FeaturesetSpec.yaml
 
-    ![A screenshot of a computer Description automatically generated](./media/image20.png)
+次のセルを実行して、機能セット仕様としてエクスポートしてください。![A
+screenshot of a computer program Description automatically
+generated](./media/image25.png)
 
-3.  The next cell **initializes AzureML feature store core SDK client**.
-    **Execute** it.
+### タスク 4: フィーチャストアエンティティを登録する
+
+> 1\.
+> エンティティは、同じ論理エンティティを使用する機能セット全体で同じ結合キー定義を使用するというベストプラクティスを強制するのに役立ちます。セルを実行して、機能ストアエンティティを登録します。![A
+> screen shot of a computer Description automatically
+> generated](./media/image26.png)
 
-    ![A screenshot of a computer Description automatically generated](./media/image21.png)
-
-### Task 3: Prototype and develop a transaction rolling aggregation feature set in this notebook
-
-1.  **Execute** the first cell under this section to explore the
-    **transactions** source data.
-
-    ![A screenshot of a computer Description automatically generated](./media/image22.png)
-
-2.  Execute the second cell to **Develop a transactions feature set**
-    locally.
-
-    ![A screenshot of a computer code Description automatically generated](./media/image23.png)
-
-3.  Execute the next cell to **generate a spark dataframe** from the
-    feature set specification.
-
-    ![A screenshot of a computer Description automatically generated](./media/image24.png)
-
-4.  In order to register the feature set specification with the feature
-    store, it needs to be saved in a specific format. Please inspect the
-    generated transactions FeaturesetSpec: Open this file from the file
-    tree to see the specification:
-    featurestore/featuresets/accounts/spec/FeaturesetSpec.yaml.
-
-    Execute the next cell to export as feature set specification.
-
-    ![A screenshot of a computer program Description automatically generated](./media/image25.png)
-
-### Task 4: Register a feature store entity
-
-1.  Entity helps enforce best practice that same join key definitions
-    are used across feature sets which uses the same logical entities.
-    Execute the cell to register a feature store entity.
-
-    ![A screen shot of a computer Description automatically generated](./media/image26.png)
-
-### Task 5: Register the transaction feature set with the feature store
-
-1.  From the Azure portal(+++https://portal.azure.com+++), navigate to
-    the **Storage account** that starts with **featureset** under the
-    Resource group **RGForMLOps**.
-
-    ![A screenshot of a computer Description automatically generated](./media/image27.png)
-
-2.  From the left pane, select **Access Control(IAM)**. Select **Add** -\>
-    **Add role assignment**.
-
-    ![A screenshot of a computer Description automatically generated](./media/image28.png)
-
-3.  Search for and select +++**Storage Blob Data Reader**+++.
-
-    ![A screenshot of a computer Description automatically generated](./media/image29.png)
-
-4.  Complete the role assignment similar to the ones we did in Exercise
-    1.
-
-5.  Similarly add the +++**Storage Blob Data Contributor**+++ role.
-
-6.  Navigate back to the Azure Machine Learning Studio.
-
-7.  You register a feature set asset with the feature store so that you
-    can share and reuse with others. You also get managed capabilities
-    like versioning and materialization. The feature set asset has
-    reference to the feature set spec that you created earlier and
-    additional properties like version and materialization settings.
-
-8.  **Execute** the next cell to **register the transaction feature
-    set** with the feature store.
-
-    ![A screenshot of a computer Description automatically generated](./media/image30.png)
-
-### Task 6: Explore the feature store UI
-
-1.  Open a new tab in the browser and navigate to the Azure ML global
-    landing page at +++https://ml.azure.com/home+++.
-
-2.  Click on **Feature stores** in the left navigation.
-
-    ![A screenshot of a computer Description automatically generated](./media/image31.png)
-
-3.  Click on the **featurestore**.
-
-    >[!Note] **Note:** Creating and updating feature store assets (feature sets and
-entities) is possible only through SDK and CLI. You can use the UI to
-search/browse the feature store.
-
-    ![A screenshot of a computer Description automatically generated](./media/image32.png)
-
-### Task 7: Generate a training data dataframe using the registered features
-
-1.  We start by exploring the observation data. Observation data is
-    typically the core data used in training and inference data. This is
-    then joined with feature data to create the full training data.
-    Observation data is the data captured during the time of the event:
-    in this case it has core transaction data including transaction ID,
-    account ID, transaction amount. In this case, since it is for
-    training, it also has the target variable appended (is_fraud).
-
-2.  **Execute** the cel land observe the output data.
-
-    ![A screenshot of a computer Description automatically generated](./media/image33.png)
-
-3.  **Execute** the next cell to get the **registered feature set** and
-    **list its features**.
-
-    ![A screenshot of a computer program Description automatically generated](./media/image34.png)
-
-4.  **Execute** the next cell to **print** the **sample values**.
-
-    ![A screenshot of a computer Description automatically generated](./media/image35.png)
-
-5.  **Execute** the next cell. In this step we will **select features**
-    that we would like to be part of **training data** and use the
-    feature store SDK to generate the training data.
-
-    ![A screenshot of a computer program Description automatically generated](./media/image36.png)
-
-6.  Execute the next cell to generate training dataframe by using
-    feature data and observation data.
-
-    ![A screenshot of a computer program Description automatically generated](./media/image37.png)
-
-### Task 8: Enable offline materialization on transactions feature set
-
-Once materialization is enabled on a feature set, you can perform
-backfill or schedule recurrent materialization jobs.
-
-1.  Execute the next cell to set spark.sql.shuffle.partitions in the
-    yaml file according to the feature data size
-
-2.  The spark configuration spark.sql.shuffle.partitions is an OPTIONAL
-    parameter that can affect the number of parquet files generated (per
-    day) when the feature set is materialized into the offline store.
-    The default value of this parameter is 200. The best practice is to
-    avoid generating many small parquet files. If offline feature
-    retrieval turns out to become slow after the feature set is
-    materialized, please go to the corresponding folder in the offline
-    store to check whether it is the issue of having too many small
-    parquet files (per day), and adjust the value of this parameter
-    accordingly.
-
-   >[!Note] **Note:** The sample data used in this notebook is small. So this
-parameter is set to 1 in the featureset_asset_offline_enabled.yaml file.
-
-   ![A screenshot of a computer Description automatically generated](./media/image38.png)
-
-3.  Materialization is the process of computing the feature values for a
-    given feature window and storing this in an materialization store.
-    Materializing the features will increase its reliability and
-    availability. All feature queries will use the materialized values
-    from the materialization store. In this step you perform a one-time
-    backfill for a feature window of 18 months.
-
-4.  The following code cell will **materialize data** by current status
-    None or Incomplete for the defined feature window. **Execute** it.
-
-    ![A screenshot of a computer Description automatically generated](./media/image39.png)
-
-5.  Let's **print sample data** from the feature set in he next cell.
-    **Execute** it. You can notice from the output information that the
-    data was retrieved from the materilization store.
-    get_offline_features() method that is used to retrieve
-    training/inference data will also use the materialization store by
-    default.
-
-    ![A screenshot of a computer Description automatically generated](./media/image40.png)
-
-## Exercise 3: Experiment and train models using features
-
-In this notebook, you learn how to:
-
-- Prototype a new accounts feature set specification, through use of
-  existing precomputed values as features. Then, register the local
-  feature set specification as a feature set in the feature store. This
-  process differs from the first tutorial, where you created a feature
-  set that had custom transformations.
-
-- Select features for the model from
-  the transactions and accounts feature sets, and save them as a feature
-  retrieval specification.
-
-- Run a training pipeline that uses the feature retrieval specification
-  to train a new model. This pipeline uses the built-in feature
-  retrieval component to generate the training data.
-
-### Task 1: Setup the environment
-
-1.  From the Notebooks pane, open the notebook **Experiment and train
-    models using features**.
-
-2.  Click on **Configure session** and upload the **conda.yaml** similar
-    to the way we did for the earlier notebook.
-
-3.  **Execute** the **first cell** to start the session. This will take
-    around 10 minutes.
-
-    ![A white rectangular object with green text Description automatically generated](./media/image41.png)
-
-4.  In the next cell, replace the place holder for **\< your_user_alias
-    \>** with your **user name** in the folder structure and **execute**
-    the cell.
-
-    ![A screenshot of a computer program Description automatically generated](./media/image42.png)
-
-9.  **Execute** the next **3** cells to setup the Azure CLI.
-
-    An error stating **Error loading command module 'mysql': cannot import name 'mysql_flexibleservers' from 'azure.mgmt.rdbms'** can be safely ignored in the next 2 cells.
-    
-    ![A screenshot of a computer Description automatically generated](./media/image16.png)
-
-11. Execute the next cell and follow the steps in the **output** to login to
-    **Azure**.
-
-    ![A screenshot of a computer Description automatically generated](./media/image17.png)
-
-    ![A screenshot of a computer program Description automatically generated](./media/image18.png)
-
-12. Click on **+ Code** to add a cell. Add this content !!pip install
-    azure-ai-ml==1.23.1!! and execute the cell to install the ai-ml
-    1.23.1 version.
-
-      ![A screenshot of a computer AI-generated content may be incorrect.](./media/image73.png)
-
-6.  The next cell initializes the project workspace variables.
-    **Execute** it to **initialize the variables**.
-
-    ![A screenshot of a computer Description automatically generated](./media/image43.png)
-
-7.  The next cell initializes the feature store variables. Execute it.
-
-    ![A screenshot of a computer Description automatically generated](./media/image44.png)
-
-8.  Execute the next cell to **Initialize the feature store consumption
-    client.**
-
-    ![A screenshot of a computer screen Description automatically generated](./media/image45.png)
-
-### Task 2: Create accounts featureset locally from precomputed data
-
-For onboarding precomputed features, you can create a featureset spec
-without writing any transformation code. Featureset spec is a
-specification to develop and test a featureset in a fully local/dev
-environment without connecting to any featurestore. In this step you
-will create the feature set spec locally and sample the values from it.
-
-1.  Execute the below cell to **explore the source data for accounts.**
-
-    ![A screenshot of a computer Description automatically generated](./media/image46.png)
-
-2.  Execute the next cell to **create accounts feature set spec** in
-    local from these precomputed features.
-
-    ![A screen shot of a computer code Description automatically generated](./media/image47.png)
-
-    ![A screenshot of a computer Description automatically generated](./media/image48.png)
-
-3.  **Execute** the next cell to **generate a spark dataframe** from the
-    feature set specification.
-
-    ![A screenshot of a computer Description automatically generated](./media/image49.png)
-
-4.  In order to register the feature set spec with the feature store, it
-    needs to be saved in a specific format. Action: After running the
-    below cell, please inspect the generated accounts FeatureSetSpec:
-    Open this file from the file tree to see the spec:
-    featurestore/featuresets/accounts/spec/FeatureSetSpec. **Execute**
-    the next cell.
-
-    ![A screenshot of a computer program Description automatically generated](./media/image50.png)
-
-### Task 3: Experiment with unregistered features locally and register with feature store when ready
-
-When you are developing features, you might want to test/validate
-locally before registering with the feature store or running training
-pipelines in the cloud. In this step you will generate training data for
-the ML model from combination of features from a local unregistered
-feature set (accounts) and feature set registered in the feature store
-(transactions).
-
-1.  **Execute** the next cell to **select features** for **model.**
-
-    ![A screenshot of a computer program Description automatically generated](./media/image51.png)
-
-2.  **Execute** the next 2 cells to **generate training data** locally.
-
-    ![A close-up of a computer code Description automatically generated](./media/image52.png)
-
-    ![A screenshot of a computer Description automatically generated](./media/image53.png)
-
-3.  **Execute** the next cell to **register the accounts featureset**
-    with the featurestore. Once you have experimented with different
-    feature definitions locally and sanity tested it, you can register
-    it with the feature store. For this you will register a featureset
-    asset definition with the feature store.
-
-    ![A screenshot of a computer Description automatically generated](./media/image54.png)
-
-4.  **Execute** the next 2 cells to get registered featureset and sanity
-    test.
-
-    ![A screenshot of a computer Description automatically generated](./media/image55.png)
-
-### Task 4: Run training experiment
-
-1.  Execute the next cell to discover features from SDK.
-
-    ![A screenshot of a computer Description automatically generated](./media/image56.png)
-
-2.  In the previous steps, you selected features from a combination
-    unregistered and registered feature sets for local experimentation
-    and testing. Now you are ready to experiment in the cloud. Saving
-    the selected features as a feature-retrieval spec and using it in
-    the mlops/cicd flow for training/inference increases your agility in
-    shipping models.
-
-3.  **Execute** the next cell to **select features for the model**.
-
-    ![A screenshot of a computer program Description automatically generated](./media/image57.png)
-
-4.  **Execute** the next cell to and export the selected features as a
-    **feature-retrieval spec**.
-
-    ![A screenshot of a computer program Description automatically generated](./media/image58.png)
-
-### Task 5: Train in the cloud using pipelines and register model if satisfactory
-
-In this step you will manually trigger the training pipeline. In a
-production scenario, this could be triggered by a ci/cd pipeline based
-on changes to the feature-retrieval spec in the source repository.
-
-1.	Navigate to the **training_pipeline.yaml** file in the path **featurestore -> project -> fraud_model -> pipelines**.
-   
-2.	Replace the **compute name** in the lines **44, 66 and 83** with the name of your **cluster**, **cpu-cluster-fsXXXX**.
-
-   ![](./media/img15.png)
-
-3.	In **line 20** of the same file, update the **feature retrieval version to 1.1.0**.
-
-   ![](./media/img16.png)
-
-4.	**Save** and **close** the file and navigate back to the Notebook.
-
-5.  **Execute** the next cell to **run the training pipeline.**
-
-    ![A screenshot of a computer Description automatically generated](./media/image59.png)
-
-    ![A screenshot of a computer program Description automatically generated](./media/image60.png)
-
-6.  From the left pane of the studio, right click on **Jobs** and open
-    in a new tab. Select the experiment, **training_on_fraud_model**.
-
-    ![A screenshot of a computer Description automatically generated](./media/image61.png)
-
-7.  Click on the **training job** and explore the details. The
-    experiment should take around 5 to 15 minutes to get completed.
-
-    ![A screenshot of a computer Description automatically generated](./media/image62.png)
-
-    ![A screenshot of a computer Description automatically generated](./media/image63.png)
-
-8.  Wait for it to complete. Once completed, select **Models** from the
-    left pane. Select **fraud_model** from the list. This is the model
-    that has been created now.
-
-    ![A screenshot of a computer Description automatically generated](./media/image64.png)
-
-9.  Select **Feature sets** tab. Here you can see both **transactions**
-    and **accounts** featuresets that this model depends on.
-
-    ![A screenshot of a computer Description automatically generated](./media/image65.png)
-
-10.  Open the **feature store UI** at +++https://ml.azure.com/home+++.
-    Select **Feature stores** -\> **featurestore**.
-
-    ![A screenshot of a computer Description automatically generated](./media/image66.png)
-
-11.  Select **Feature sets** from the left pane and then select any one
-    of the **feature sets**.
-
-    ![A screenshot of a computer Description automatically generated](./media/image67.png)
-
-12.  Click on **Models** tab. You can see the list of models that are
-    using the feature sets (determined from the feature retrieval spec
-    when the model was registered).
-
-    ![A screenshot of a computer Description automatically generated](./media/image68.png)
-
-## Exercise 4: Clean up the resources
-
-1.  From the Azure portal, select the Resource group **RGForMLOps** and
-    select **Delete resource group**.
-
-    ![A screenshot of a computer Description automatically generated](./media/image69.png)
-
-2.  Enter +++RGForMLOps+++ in the text box and click **Enter**.
-
-    ![A screenshot of a computer Description automatically generated](./media/image70.png)
-
-3.  Click on **Delete** in the confirmation dialog box.
-
-    ![A screenshot of a computer Description automatically generated](./media/image71.png)
-
-4.  Ensure that the Resource group is deleted by the success message.
-
-**Summary:**
-
-In this lab, we have learnt to develop and register a feature set with
-managed feature store and train models by using features.
+### タスク 5: トランザクション機能セットを機能ストアに登録する
+
+> 1\. Azure ポータル (+++https://portal.azure.com+++)
+> から、割り当てられたリソース グループの featureset で始まるストレージ
+> アカウントに移動します。![A screenshot of a computer AI-generated
+> content may be incorrect.](./media/image27.png)
+>
+> 2\. 左側のペインから「Access Control (IAM)」を選択します。「Add -\>
+> Add role assignment」を選択します。![A screenshot of a computer
+> Description automatically generated](./media/image28.png)
+>
+> 3\. +++Storage Blob Data Reader+++ を検索して選択します。![A
+> screenshot of a computer Description automatically
+> generated](./media/image29.png)
+>
+> 4.演習 1 で行ったのと同様のロールの割り当てを完了します。
+>
+> 5\. 同様に、+++Storage BLOB データ共同作成者+++ ロールを追加します。
+>
+> 6\. Azure Machine Learning Studio に戻ります。
+>
+> 7\.
+> 機能セットアセットを機能ストアに登録して、他のユーザーと共有および再利用できるようにします。また、バージョン管理や具体化などのマネージド機能も利用できます。機能セットアセットには、先ほど作成した機能セット仕様への参照と、バージョンや具体化設定などの追加プロパティが含まれます。
+
+8.  次のセルを実行して、トランザクション機能セットを機能ストアに登録します。.
+
+> ![A screenshot of a computer Description automatically
+> generated](./media/image30.png)
+
+### タスク 6: フィーチャーストアのUIを探索する
+
+1\. ブラウザーで新しいタブを開き、Azure ML グローバル ランディング
+ページ (+++https://ml.azure.com/home+++) に移動します。
+
+2\. 左側のナビゲーションで \[Feature stores\] をクリックします。![A
+screenshot of a computer Description automatically
+generated](./media/image31.png)
+
+> 3\. featurestore をクリックします。
+>
+> 注: feature store
+> アセット（機能セットとエンティティ）の作成と更新は、SDK と CLI
+> を通じてのみ可能です。UI を使用して feature store
+> を検索/参照できます。 ![A screenshot of a computer Description
+> automatically generated](./media/image32.png)
+
+### タスク 7: 登録された特徴量を使用してトレーニングデータのデータフレームを生成する
+
+1.  まず、観測データの調査から始めます。観測データは通常、学習データと推論データで使用されるコアデータです。これを特徴データと結合して、完全な学習データを作成します。観測データは、イベント発生時に取得されたデータです。このケースでは、取引ID、アカウントID、取引金額などのコアとなる取引データが含まれています。また、学習用であるため、ターゲット変数（is_fraud）も追加されています。
+
+2.  セルを実行し、出力データを観察します。
+
+> ![A screenshot of a computer Description automatically
+> generated](./media/image33.png)
+
+3\.
+次のセルを実行して、登録されている機能セットを取得し、その機能を一覧表示します。![A
+screenshot of a computer program Description automatically
+generated](./media/image34.png)
+
+4\. 次のセルを実行してサンプル値を出力します。![A screenshot of a
+computer Description automatically generated](./media/image35.png)
+
+5\.
+次のセルを実行します。このステップでは、トレーニングデータに含める特徴量を選択し、Feature
+Store SDKを使用してトレーニングデータを生成します。![A screenshot of a
+computer program Description automatically
+generated](./media/image36.png)
+
+6 . 次のセルを実行して、特徴データと観測データを使用してトレーニング
+データフレームを生成します。![A screenshot of a computer program
+Description automatically generated](./media/image37.png)
+
+### タスク 8: トランザクション機能セットでオフラインマテリアライゼーションを有効にする
+
+機能セットでマテリアライゼーションを有効にすると、バックフィルを実行したり、定期的なマテリアライゼーション
+ジョブをスケジュールしたりできるようになります。
+
+> 1\. 次のセルを実行し、yaml ファイルの spark.sql.shuffle.partitions
+> を特徴データのサイズに応じて設定します。
+>
+> 2\. Spark 構成の spark.sql.shuffle.partitions
+> は、特徴セットがオフラインストアにマテリアライズされる際に生成される
+> parquet ファイルの数（1 日あたり）に影響を与える可能性のあるオプション
+> パラメーターです。このパラメーターのデフォルト値は 200
+> です。ベストプラクティスとしては、小さな parquet
+> ファイルを多数生成しないようにすることです。特徴セットがマテリアライズされた後にオフライン特徴の取得が遅くなる場合は、オフラインストアの対応するフォルダーに移動し、小さな
+> parquet ファイル（1
+> 日あたり）が多すぎることが原因かどうかを確認し、このパラメーターの値を調整してください。
+>
+> 注:
+> このノートブックで使用されているサンプルデータは小さいため、featureset_asset_offline_enabled.yaml
+> ファイルではこのパラメーターは 1 に設定されています。 ![A screenshot
+> of a computer Description automatically
+> generated](./media/image38.png)
+
+3\.
+マテリアライゼーションとは、特定の特徴ウィンドウの特徴値を計算し、それをマテリアライゼーションストアに保存するプロセスです。特徴をマテリアライゼーションすることで、信頼性と可用性が向上します。すべての特徴クエリは、マテリアライゼーションストアからマテリアライゼーションされた値を使用します。このステップでは、18か月の特徴ウィンドウに対して1回限りのバックフィルを実行します。
+
+4\.
+次のコードセルは、定義された特徴ウィンドウの現在のステータス（なしまたは不完全）に基づいてデータをマテリアライゼーションします。実行してください。![A
+screenshot of a computer Description automatically
+generated](./media/image39.png)
+
+5\.
+次のセルに特徴セットのサンプルデータを出力してみましょう。実行してみましょう。出力情報から、データがマテリアライゼーションストアから取得されたことがわかります。トレーニング/推論データの取得に使用される
+get_offline_features()
+メソッドも、デフォルトでマテリアライゼーションストアを使用します。![A
+screenshot of a computer Description automatically
+generated](./media/image40.png)
+
+## エクササイズ3: 特徴量を使用してモデルを実験およびトレーニングする
+
+> このノートブックでは、以下の方法を学習します。
+>
+> •
+> 既存の事前計算済み値を特徴量として使用し、新しいアカウント特徴量セット仕様のプロトタイプを作成します。次に、ローカルの特徴量セット仕様を特徴量ストアに特徴量セットとして登録します。このプロセスは、カスタム変換を含む特徴量セットを作成した最初のチュートリアルとは異なります。
+>
+> •
+> 取引とアカウントの特徴量セットからモデルの特徴量を選択し、特徴量取得仕様として保存します。
+>
+> • 特徴量取得仕様を使用して新しいモデルをトレーニングするトレーニング
+> パイプラインを実行します。このパイプラインは、組み込みの特徴量取得コンポーネントを使用してトレーニング
+> データを生成します。
+
+### タスク 1: 環境をセットアップする
+
+1.  「Notebooks」ペインから、「Experiment and train models using
+    features」ノートブックを開きます。
+
+2.  「Configure
+    session」をクリックし、以前のノートブックと同様にconda.yamlをアップロードします。
+
+3.  最初のセルを実行してセッションを開始します。これには約10分かかります。
+
+![A white rectangular object with green text Description automatically
+generated](./media/image41.png)
+
+4\. 次のセルで、\< your_user_alias \>
+のプレースホルダーをフォルダー構造内のユーザー名に置き換えて、セルを実行します。![A
+screenshot of a computer program Description automatically
+generated](./media/image42.png)
+
+5\. 次の3つのセルを実行してCLIをセットアップします。
+
+6\.
+次のセルはプロジェクトワークスペース変数を初期化します。これを実行して変数を初期化します。![A
+screenshot of a computer Description automatically
+generated](./media/image43.png)
+
+7\.
+次のセルはフィーチャストアの変数を初期化します。実行してください。![A
+screenshot of a computer Description automatically
+generated](./media/image44.png)
+
+> 8.次のセルを実行して、フィーチャー
+> ストア消費クライアントを初期化します。
+
+![A screenshot of a computer screen Description automatically
+generated](./media/image45.png)
+
+### タスク 2: 事前計算されたデータからローカルでアカウント機能セットを作成する
+
+事前計算済み特徴量をオンボーディングする場合、変換コードを記述することなく、特徴セット仕様を作成できます。特徴セット仕様とは、featurestore
+に接続することなく、完全にローカル/開発環境で特徴セットを開発およびテストするための仕様です。このステップでは、特徴セット仕様をローカルで作成し、そこから値をサンプリングします。
+
+1\. 以下のセルを実行して、アカウントのソースデータを探索します。
+
+![A screenshot of a computer Description automatically
+generated](./media/image46.png)
+
+2\.
+次のセルを実行して、これらの事前計算された機能からローカルにアカウント機能セット仕様を作成します。![A
+screen shot of a computer code Description automatically
+generated](./media/image47.png)
+
+![A screenshot of a computer Description automatically
+generated](./media/image48.png)
+
+3\. 次のセルを実行して、機能セット仕様から Spark
+データフレームを生成します。![A screenshot of a computer Description
+automatically generated](./media/image49.png)
+
+> 4.機能セット仕様を機能ストアに登録するには、特定の形式で保存する必要があります。アクション：以下のセルを実行した後、生成されたアカウントのFeatureSetSpecを確認してください。仕様を確認するには、ファイルツリーからこのファイルを開いてください：featurestore/featuresets/accounts/spec/FeatureSetSpec。次のセルを実行してください。![A
+> screenshot of a computer program Description automatically
+> generated](./media/image50.png)
+
+### タスク 3: 未登録の機能をローカルで試し、準備ができたら機能ストアに登録する
+
+![A screenshot of a computer program Description automatically
+generated](./media/image51.png)
+
+1\. 次の 2 つのセルを実行して、ローカルでトレーニング
+データを生成します。![A close-up of a computer code Description
+automatically generated](./media/image52.png)
+
+![A screenshot of a computer Description automatically
+generated](./media/image53.png)
+
+> 2.次のセルを実行して、アカウントのフィーチャセットをフィーチャストアに登録します。ローカルでさまざまなフィーチャ定義を試し、サニティテストを行ったら、フィーチャストアに登録できます。そのためには、フィーチャセットのアセット定義をフィーチャストアに登録します。.
+
+![A screenshot of a computer Description automatically
+generated](./media/image54.png)
+
+3\. 次の 2
+つのセルを実行して、登録された機能セットと健全性テストを取得します。![A
+screenshot of a computer Description automatically
+generated](./media/image55.png)
+
+### タスク 4: トレーニング実験を実行する
+
+1\. 次のセルを実行して、SDK から機能を検出します。![A screenshot of a
+computer Description automatically generated](./media/image56.png)
+
+2\.
+前の手順では、ローカルでの実験とテストのために、未登録の特徴量セットと登録済みの特徴量セットの組み合わせから特徴量を選択しました。これでクラウドでの実験の準備が整いました。選択した特徴量を特徴量取得仕様として保存し、学習/推論用の
+mlops/cicd
+フローで使用することで、モデルのリリース時の俊敏性が向上します。
+
+3.次のセルを実行して、モデルの特徴量を選択します。![A screenshot of a
+computer program Description automatically
+generated](./media/image57.png)
+
+4\.
+次のセルを実行し、選択した機能を機能取得仕様としてエクスポートします。![A
+screenshot of a computer program Description automatically
+generated](./media/image58.png)
+
+### タスク 5: パイプラインを使用してクラウドでトレーニングし、問題がなければモデルを登録します。
+
+このステップでは、トレーニング
+パイプラインを手動でトリガーします。本番環境では、ソース
+リポジトリの特徴量取得仕様の変更に基づいて、CI/CD
+パイプラインによってトリガーされる可能性があります。
+
+1\. 次のセルを実行して、トレーニング パイプラインを実行します。![A
+screenshot of a computer Description automatically
+generated](./media/image59.png)
+
+![A screenshot of a computer program Description automatically
+generated](./media/image60.png)
+
+2\.
+Studioの左側のペインで「Jobs」を右クリックし、新しいタブで開きます。実験「training_on_fraud_model」を選択します。![A
+screenshot of a computer Description automatically
+generated](./media/image61.png)
+
+3\.
+トレーニングジョブをクリックして詳細を確認します。実験は完了するまで約5～15分かかります。![A
+screenshot of a computer Description automatically
+generated](./media/image62.png)
+
+![A screenshot of a computer Description automatically
+generated](./media/image63.png)
+
+4\.
+完了するまでお待ちください。完了したら、左側のペインから「Models」を選択します。リストから「fraud_model」を選択します。これが今作成されたモデルです。![A
+screenshot of a computer Description automatically
+generated](./media/image64.png)
+
+> 5.機能セットタブを選択します。ここでは、このモデルが依存するトランザクションとアカウントの機能セットの両方が表示されます。
+
+![A screenshot of a computer Description automatically
+generated](./media/image65.png)
+
+6\. +++https://ml.azure.com/home+++
+でフィーチャーストアのUIを開きます。「フィーチャーストア」-\>「featurestore」を選択します。![A
+screenshot of a computer Description automatically
+generated](./media/image66.png)
+
+7\. 左側のペインから「Feature
+sets」を選択し、いずれかの機能セットを選択します。![A screenshot of a
+computer Description automatically generated](./media/image67.png)
+
+8\.
+「Models」タブをクリックします。モデル登録時に指定された特徴量取得仕様に基づいて、特徴量セットを使用しているモデルのリストが表示されます。![A
+screenshot of a computer Description automatically
+generated](./media/image68.png)
+
+概要:
+
+このラボでは、マネージド フィーチャ ストアを使用してフィーチャ
+セットを開発および登録し、フィーチャを使用してモデルをトレーニングする方法を学習しました。
