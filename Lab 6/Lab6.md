@@ -1,391 +1,332 @@
+# ラボ 06 - ハードウェアデータセットに最適な回帰モデルのトレーニング
 
-# Lab 06 - Training the best Regression model for the Hardware dataset
+目的
 
-**Lab Type** – Instructor Led
+このラボでは、AutoML
+を用いて回帰モデルをトレーニングする方法を学習します。ハードウェアパフォーマンスデータセットを用いてモデルをトレーニングし、推論シナリオで使用できるようにデプロイします。回帰の目標は、特定のハードウェアパーツの組み合わせにおけるパフォーマンスを予測することです。
 
-**Expected Duration** – 50 minutes
+想定所要時間 – 60分
 
-Objective
+# エクササイズ 0: 環境を準備しましょう
 
-In this lab, we go over how you can use AutoML for training a Regression
-model. We will use the Hardware Performance dataset to train and deploy
-the model to use in inference scenarios. The Regression goal is to
-predict the performance of certain combinations of hardware parts.
+### **タスク 1: AML ワークスペースを起動する**
 
-# Exercise 0: Get the environment ready
+1\. Azure ポータルにログインします
+(まだログインしていない場合は、+++https://portal.azure.com+++)。
 
-### **Task 1: Launch the AML Workspace**
+2\. Azure ポータル メニューから、\[All resources\] を選択します。
 
-1.  Login to the Azure portal,
-    +++[**https://portal.azure.com**](https://portal.azure.com)+++ if
-    not logged in already.
-
-2.  From the Azure portal menu , select **All resources.**
-
-    ![A screenshot of a computer Description automatically
+![A screenshot of a computer Description automatically
 generated](./media/image1.png)
 
-3.  Select the Azure Machine Learning Workspace (**AzuemlwsXX**).
+3\. Azure Machine Learning ワークスペース (Azuemlws@lab.LabInstanceId)
+を選択します。
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image2.png)
+![A screenshot of a computer AI-generated content may be
+incorrect.](./media/image2.png)
 
-4.  Click on **Launch studio**.
+4\. 「Launch studio」をクリックします。
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image3.png)
+![A screenshot of a computer AI-generated content may be
+incorrect.](./media/image3.png)
 
-5.  Select **Compute** from the left pane to create a Compute instance.
-    Select **+ New**.
+5\.
+左ペインから「Compute」を選択し、コンピューティングインスタンスを作成します。「+
+New」を選択します。![A screenshot of a computer Description
+automatically generated](./media/image4.png)
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image4.png)
+6\. 以下の詳細を入力し、「Review + Create」をクリックします。
 
-6.  Provide the below details and click on **Review + Create**.
+- Compute name - +++**auto-compute**+++
 
-    - Compute name - +++**auto-compute**+++
-    
-    - Virtual machine type – **CPU**
-    
-    - Virtual Machine – **Standard E4ds_v4**
+- Virtual machine type – **CPU**
 
-    ![](./media/image5.png)
+- Virtual Machine – **Standard E4ds_v4**
 
-7.  Select **Create** to create the compute instance.
+![](./media/image5.png)
 
-    ![A screenshot of a computer Description automatically
+> 7.コンピューティングインスタンスを作成するには、\[Create\]
+> を選択します。
+
+![A screenshot of a computer Description automatically
 generated](./media/image6.png)
 
-### **Task 2: Upload the notebook to AML Workspace**
+### **タスク 2: ノートブックをAML Workspaceにアップロードする**
 
-1.  Click on the **Notebook** from the left pane. Click on the three
-    dots next to the **username** under **Users** and select **Upload
-    folder**.
+1.  左ペインから「Notebooks」をクリックします。「Users」の下にあるユーザー名の横にある3つの点をクリックし、「Upload
+    folder」を選択します。
 
-    ![](./media/image7.png)
+![](./media/image7.png)
 
-2.  Select Click to browse and select folder(s) and browse
-    **C:\Labfiles** to select the folder
-    **automl-regression-task-hardware-performance** and click on
-    **Upload.**
+**2. \[Click to browse\] を選択してフォルダーを選択し、C:\Lab
+filesを参照して automl-regression-task-hardware-performance
+フォルダーを選択し、\[Upload\] をクリックします。**
 
-    ![A screenshot of a computer Description automatically generated with
+![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image8.png)
 
-3.  If you get a pop up asking Upload 3 files to this site?, click on
-    **Upload**.
+3\. 「If you get a pop up asking Upload 3 files to this
+site?」というポップアップが表示されたら、「Upload」をクリックします。
 
-    ![A picture containing text, screenshot, display, font Description
+![A picture containing text, screenshot, display, font Description
 automatically generated](./media/image9.png)
 
-4.  Select the checkbox, **I trust contents of these files** and then
-    select **Upload**.
+4\. 「I trust contents of these
+files」チェックボックスを選択し、「Uplaod」を選択します。
 
-    ![A screenshot of a computer Description automatically generated with
+![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image10.png)
 
-5.  Open the Notebook(the .ipynb file),
-    **automl-regression-task-hardware-performance**. The Notebook is
-    automatically connected to the compute that we created earlier. Ensure that the compute is in the **Running** state
+5\. ノートブック（.ipynb
+ファイル）「automl-regression-task-hardware-performance」を開きます。このノートブックは、先ほど作成したコンピューティングに自動的に接続されます。
 
-    ![](./media/img30.png)
+![](./media/image11.png)
 
-## **Exercise 1: Connect to Azure Machine Learning Workspace**
+## **エクササイズ 1: Azure Machine Learning ワークスペースに接続する**
 
-### **Task 1: Import the required libraries**
+### **タスク 1: 必要なライブラリをインポートする**
 
-1.  Execute the cell first cell under **1.1** **Import the required
-    libraries** to import the libraries required for this lab execution
-    by clicking on the Run cell button at the top left of the cell.
+1\. セルの左上にある \[セルの実行\] ボタンをクリックして、「1.1 Import
+the required
+libraries」の下の最初のセルを実行し、このラボ実行に必要なライブラリをインポートします。
 
-2.  Ensure that the execution is successful by looking for a tick symbol
-    at the bottom left of the cell.
+2\. セルの左下にあるチェック
+シンボルを確認して、実行が成功したことを確認します。
 
-    ![A screenshot of a computer screen Description automatically generated
+![A screenshot of a computer screen Description automatically generated
 with low confidence](./media/image12.png)
 
-### **Task 2: Configure workspace details and get a handle to the workspace**
+### **タスク 2: ワークスペースの詳細を設定し、ワークスペースへのハンドルを取得します**
 
-1.  In the cell under **1.2. Configure workspace details and get a
-    handle to the workspace,** replace
+1\. 「1.2. Configure workspace details and get a handle to the
+workspace」の下のセルで、以下の値を置き換えます。
 
-    - SUBSCRIPTION_ID - **your subscription id**
-    
-    - RESOURCE_GROUP – **Your assigned Resourcegroup name**
-    
-    - AML_WORKSPACE_NAME - **AzuremlwsXX(**XX being the random number)
+• SUBSCRIPTION_ID - +++@Lab.CloudSubscription.Id+++
 
-2.  Click on the Run cell option on the top left of the cell and ensure
-    that you get a tick symbol at the bottom left once the execution is
-    successful.
+• RESOURCE_GROUP - 割り当てたリソースグループ名
 
-3.  An output stating, **Found the config file in : /config.json** is
-    displayed below the cell.
+• AML_WORKSPACE_NAME - +++Azuremlws@lab.Lab InstanceId+++
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image13.png)
+2\. セルの左上にある「Run
+cell」オプションをクリックし、実行が成功すると左下にチェックマークが表示されていることを確認します。
 
-### **Task 3: Show Azure ML Workspace information**
+3\. セルの下に、「Found the config file in :
+/config.json」という出力が表示されます。
 
-1.  Execute the next cell (the cell below Show Azure ML Workspace
-    information).
+![](./media/image13.png)
 
-2.  Ensure that the details of the workspace, subscription, location,
-    and Resource group that gets listed as output below the cell are all
-    correct.
+### **タスク 3: Azure ML ワークスペース情報を表示する**
 
-    ![A screenshot of a computer program Description automatically
+1\. 次のセル (Azure ML ワークスペース情報の表示の下のセル)
+を実行します。
+
+2\.
+セルの下に出力として表示されるワークスペース、サブスクリプション、場所、リソース
+グループの詳細がすべて正しいことを確認します。
+
+![A screenshot of a computer program Description automatically
 generated](./media/image14.png)
 
-## **Exercise 2: MLTable with input Training Data**
+## **エクササイズ 2: 入力トレーニングデータを含む MLTable**
 
-### **Task 1: Create MLTable data input**
+### **タスク 1: MLTableデータ入力を作成する**
 
-1.  Execute the next cell, (the one under **2.1 Create MLTable data
-    input**).
+1\. 次のセル（2.1 MLTable データ入力の作成の下のセル）を実行します。
 
-2.  Ensure that the execution is successful.
+2\. 実行が成功したことを確認します。
 
-    ![A picture containing text, font, screenshot, software Description
+![A picture containing text, font, screenshot, software Description
 automatically generated](./media/image15.png)
 
-## **Exercise 3: Configure and run the AutoML Regression training job**
+## **エクササイズ 3: AutoML 回帰トレーニング ジョブを構成して実行する**
 
-1.  Execute the cells under the **4.1 Configure and run the AutoML
-    Regression training job** one by one and ensure that each cell gets
-    executed successfully.
+1\. 4.1 AutoML 回帰トレーニング ジョブを構成して実行の下のセルを 1
+つずつ実行し、各セルが正常に実行されることを確認します。
 
-2.  The cell under **4.2 Run the Command**, submits the AutoML job.
+2\. 4.2 コマンドの実行の下のセルが AutoML ジョブを送信します。
 
-    ![A screenshot of a computer program Description automatically
+![A screenshot of a computer program Description automatically
 generated](./media/image16.png)
 
-3.  You can check the status of the job by clicking on the **Jobs** from
-    the left pane and selecting the experiment that is in the Running
-    state.
+3\.
+左側のペインからジョブをクリックし、実行中の状態にある実験を選択すると、Jobsのステータスを確認できます。
 
-    ![A screenshot of a computer Description automatically
+![A screenshot of a computer Description automatically
 generated](./media/image17.png)
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image18.png)
+![A screenshot of a computer AI-generated content may be
+incorrect.](./media/image18.png)
 
-    >[!Note] **Note:** This takes around 10 to 15 minutes to complete.
+**注:** 完了するまでに約 10 ～ 15 分かかります。
 
-4.	Ensure that the job gets completed successfully.
+4\. ノートブックの次のセルは、AutoMLジョブが終了するまで待機します。
 
-    ![](./media/img31.png)
+5\. それを実行し、実行が完了するまで待ってから次のセルに移動します。
 
-5.	Execute the next cell to get the **Execution Summary**.
+![](./media/image19.png)
 
-    ![](./media/img32.png)
-  	
-6.  Execute the next 2 cells one by one which retrieves the url and the
-    job name.
+6\. 実行が完了したら、次のステップに進みます。
 
-    ![A screenshot of a computer Description automatically
+![](./media/image20.png)
+
+7\. 次の 2 つのセルを 1 つずつ実行して、URL とジョブ名を取得します。![A
+screenshot of a computer Description automatically
 generated](./media/image21.png)
 
-## **Exercise 4: Retrieve the Best Trial (Best Model's trial/run)**
+## **エクササイズ 4: ベストトライアル（ベストモデルのトライアル/実行）を取得する**
 
-1.  Add a cell above the first cell under this exercise.
+1\. この演習の最初のセルの上にセルを追加します。
 
-    ![A screenshot of a computer Description automatically generated with
+![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image22.png)
 
-2.  Copy the below code. Click on **Run cell.**
+**2. 以下のコードをコピーし、「Run cell」をクリックします。**
 
-  +++%pip install azureml-mlflow+++
-  
-  +++%pip install mlflow+++
+> **%pip install azureml-mlflow**
+>
+> **%pip install mlflow**
 
-    ![A screenshot of a computer Description automatically generated with
+![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image23.png)
 
-3.  Continue executing the next 3 cells one by one analyzing each code
-    and its output.
+3\. 次の 3 つのセルを 1 つずつ実行し、各コードとその出力を分析します。
 
-    ![A screenshot of a computer Description automatically generated with
+![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image24.png)
 
-4.  Execute the next cell to **Get the parent run**.
+4\. 次のセルを実行して親実行を取得します。![A screenshot of a computer
+program Description automatically generated with low
+confidence](./media/image25.png)
 
-    ![A screenshot of a computer program Description automatically generated
-with low confidence](./media/image25.png)
+> 5.次のセルを実行して親タグを出力します。
 
-5.  Execute the next cell to **print the parent tags**.
-
-    ![A screenshot of a computer Description automatically generated with
+![A screenshot of a computer Description automatically generated with
 low confidence](./media/image26.png)
 
-6.  Execute the next cell to **Get the AutoML best child run**.
+> 6.次のセルを実行して、AutoML の最適な子実行を取得します。
 
-    ![A screenshot of a computer program Description automatically generated
+![A screenshot of a computer program Description automatically generated
 with medium confidence](./media/image27.png)
 
-7.  Execute the next cell to **Get the best model run’s metrics**.
+7\. 次のセルを実行して、最適なモデル実行のメトリックを取得します。
 
-    ![A screenshot of a computer error Description automatically generated
+![A screenshot of a computer error Description automatically generated
 with low confidence](./media/image28.png)
 
-8.  Execute the next 3 cells to **Download the best model locally**.
+8\. 次の 3
+つのセルを実行して、最適なモデルをローカルにダウンロードします。
 
-    ![A screenshot of a computer Description automatically generated with
+![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image29.png)
 
-## **Exercise 5: Register Best Model and Deploy**
+## **エクササイズ 5: 最適なモデルを登録してデプロイする**
 
-### **Task 1: Create managed online endpoint**
+### **タスク 1: 管理対象オンライン エンドポイントを作成する**
 
-1.  Execute the first 2 cells under this task.
+1\. このタスクの最初の 2 つのセルを実行します。
 
-    ![](./media/image30.png)
+![](./media/image30.png)
 
-2.  Execute the next cell with the code, 
+2\. 次のセルをコードで実行します。
 
-    **ml_client.begin_create_or_update(endpoint).result()**
+**ml_client.begin_create_or_update(endpoint).result()**
 
-    This creates an online endpoint named **regression-\<Currentdate&time\>.**
+これにより、regression-\<Currentdate&time\> という名前のオンライン
+エンドポイントが作成されます。
 
-    ![](./media/img33.png)
+![A screenshot of a computer Description automatically generated with
+low confidence](./media/image31.png)
 
-5.  Check for the notification stating **Endpoint "regression- < Currentdate&time >" update completed** or check the status under **Endpoints**.
+3\.
+エンドポイント「regression-\<Currentdate&time\>」の更新が完了したことを示す通知を確認します。
 
-    ![](./media/img34.png)
+> ![A screenshot of a computer AI-generated content may be
+> incorrect.](./media/image32.png)
 
-### **Task 2: Register best model and deploy**
+### **タスク 2: 最適なモデルを登録してデプロイする**
 
-1.  Execute the first cell under Register best model and deploy -\>
-    **Register model**, to register the model named
-    **hardware-performance-model**.
+> 1\. 「Register best model and deploy -\> Register
+> model」の最初のセルを実行して、hardware-performance-model
+> という名前のモデルを登録します。
+>
+> 2\. 実行が成功したら、次のセルを実行して登録されたモデル ID
+> を取得します。![](./media/image33.png)
 
-2.  Once the execution is successful, execute the next cell to retrieve
-    the registered model id.
+### **タスク 3: デプロイ　**
 
-    ![](./media/image35.png)
+1\. 「Deploy」の下の最初のセルで、instance_type の値を Standard_E4s_v3
+に置き換えます。
 
-### **Task 3: Deploy**
+2\. 次に、セルを実行して最適なモデルをデプロイします。
 
-1.  In the first cell under Deploy, replace the value **instance_type**
-    with **Standard_E4s_v3.**
+![A screenshot of a computer program Description automatically
+generated](./media/image34.png)
 
-2.  Then, execute the cell to deploy the best model.
+3\. 次のセルを実行してデプロイメントを作成します。
 
-    ![A screenshot of a computer program Description automatically
-generated](./media/image36.png)
+![A picture containing text, screenshot, line, font Description
+automatically generated](./media/image35.png)
 
-4.  Execute the next cell to create the deployment.
+4\.
+完了までに約40分かかります。エンドポイントのステータスからも確認できます（左ペインからエンドポイントを選択し、先ほどデプロイした
+regression-XXXXXXX エンドポイントをクリックします）。
 
-    ![A picture containing text, screenshot, line, font Description
-automatically generated](./media/image38.png)
+![A screenshot of a computer AI-generated content may be
+incorrect.](./media/image36.png)
 
-5.  **This will take around 40 minutes to complete**. You can also check
-    for the status from under the **Endpoints**(select **Endpoints**
-    from the left pane and then click on the **regression-XXXXXXX**
-    endpoint that you deployed earlier).
+5\.
+実行が完了し、デプロイメントが成功すると、セルはデプロイメントの詳細を出力します。
 
-    ![](./media/img35.png)
+![](./media/image37.png)
 
-6.  Once the execution is completed and the deployment is successful,
-    the cell outputs the deployment details.
+6\.
+また、エンドポイントの詳細ページで、デプロイメントのステータスが「Succeeded」になります。
 
-    ![](./media/image40.png)
+![A screenshot of a computer AI-generated content may be
+incorrect.](./media/image38.png)
 
-7.  Also, in the Endpoints details page, the deployment status becomes
-    **Succeeded**.
+7\. デプロイメントが 100%
+のトラフィックを処理するように、ノートブックの次のセルを実行します。
 
-    ![](./media/img36.png)
+![A screenshot of a computer Description automatically generated with
+low confidence](./media/image39.png)
 
-8.  Execute the next cell in the notebook for the deployment to take
-    100% traffic.
+8\. エンドポイントの詳細ページで、ライブ トラフィックの割り当てが 100%
+になっていることを確認します。
 
-    ![A screenshot of a computer Description automatically generated with
-low confidence](./media/image42.png)
+![A screenshot of a computer AI-generated content may be
+incorrect.](./media/image40.png)
 
-9.  Check the Live traffic allocation to be 100% in the Endpoints
-    details page.
+## **エクササイズ 6: デプロイメントをテストする**
 
-    ![](./media/img37.png)
+1\. デプロイメントのテストの下のセルを実行します。
 
-## **Exercise 6: Test the deployment**
+2\. 出力を確認します。
 
-1.  Execute the cell under the Test the deployment.
+![](./media/image41.png)
 
-2.  Verify the output.
+３. 残りのセルに従って実行し、エンドポイントを削除します。
 
-    ![](./media/image44.png)
+![](./media/image42.png)
 
-3.  Follow and execute the remaining cells to delete the endpoint.
+![A screenshot of a computer Description automatically generated with
+medium confidence](./media/image43.png)
 
-    ![](./media/image45.png)
+４. 「Endpoints」タブからエンドポイントのステータスを確認します。
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image46.png)
+![A screenshot of a computer Description automatically
+generated](./media/image44.png)
 
-4.  Check for the status of the endpoint from under the Endpoints tab.
+**概要**
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image47.png)
+**このラボでは、以下の方法を学習しました。**
 
-## Exercise 7: Load the best model and try predictions
+**• Python SDK から AML ワークスペースに接続する**
 
-Loading the models locally assume that you are running the notebook in
-an environment compatible with the model. The list of dependencies that
-is expected by the model is specified in the MLFlow model produced by
-AutoML (in the 'conda.yaml' file within the mlflow-model folder).
+**• ファクトリー関数「regression()」を使用して AutoML
+回帰ジョブを作成する**
 
-Since the AutoML model was trained remotelly in a different environment
-with different dependencies to your current local conda environment
-where you are running this notebook, if you want to load the model you
-have several options:
+**• AutoML 回帰トレーニングジョブを送信/実行し、AmlCompute
+を使用してモデルを　　　トレーニングする**
 
-1.  A recommended way to locally load the model in memory and try
-    predictions is to create a new/clean conda environment with the
-    dependencies specified in the conda.yaml file within the MLFlow
-    model's folder, then use MLFlow to load the model and call
-    .predict() as explained in the
-    notebook **mlflow-model-local-inference-test.ipynb** in this same
-    folder.
-
-2.  You can install all the packages/dependencies specified in
-    conda.yaml into your current conda environment you used for using
-    Azure ML SDK and AutoML. MLflow SDK also have a method to install
-    the dependencies in the current environment. However, this option
-    could have risks of package version conflicts depending on what's
-    installed in your current environment.
-
-3.  You can also use: mlflow models serve -m 'xxxxxxx'
-
-## Exercise 8: Clean up the resources
-
-1.  From the Azure portal, select the Resource group **RGForMLOps** and
-    select **Delete resource group**.
-
-    ![A screenshot of a computer Description automatically
-generated](./media/image49.png)
-
-2.  Enter +++RGForMLOps+++ in the text box and click **Enter**.
-
-    ![A screenshot of a computer Description automatically
-generated](./media/image50.png)
-
-3.  Click on **Delete** in the confirmation dialog box.
-
-    ![A screenshot of a computer Description automatically
-generated](./media/image51.png)
-
-4.  Ensure that the Resource group is deleted by the success message.
-
-**Summary**
-
-In this lab, we learnt on how to
-
-- Connect to your AML workspace from the Python SDK
-
-- Create an AutoML regression Job with the 'regression()'
-  factory-function.
-
-- Train the model using AmlCompute by submitting/running the AutoML
-  regression training job
-
-- Obtaining the model and score predictions with it
+**• モデルを取得し、それを使用して予測スコアを計算する**
