@@ -1,783 +1,616 @@
-# **Lab 10 - Using the Responsible AI dashboard to improve performance of machine learning models**
+# **ラボ 10 - Responsible AIダッシュボードを使用して機械学習モデルのパフォーマンスを向上させる**
 
-Lab Type – Instructor led
+**目的**
 
-Expected Duration – 60 minutes
+このラボでは、Responsible AI
+ダッシュボードを使用して機械学習モデルをデバッグし、モデルのパフォーマンスをより公平性、包括性、安全性、信頼性、透明性のあるものに向上させる方法を実践的に学習します。
 
-**Objective**
+このラボでは、Azure Responsible AI (RAI)
+ダッシュボードのモデル概要セクションの使い方を学びます。エラー分析ラボで作成されたコホートを使用して、あるコホートと別のコホートでモデルの動作が優れている理由を調査します。
 
-This lab is to get hands-on learning on how to use the Responsible AI
-dashboard to debug the machine learning models in order to improve the
-model's performance to be more fair, inclusive, safe & reliable, and
-transparent. 
+予定所要時間：60分
 
-In this lab we will explore how to use the **Model Overview** section of
-the Azure Responsible AI (RAI) dashboard. We will use the cohorts
-created from the Error Analysis lab to investigate why the model’s
-behavior is better in one cohort vs another cohort.
+## **エクササイズ 1: リソースの準備**
 
-## **Exercise 1: Getting the resources ready**
+### タスク1: このラボのリポジトリのクローンを作成します
 
-### Task 1: Create the Azure resources
+1\.
+ブラウザからAzureポータル（https://portal.azure.com）にログインします。
 
-1.  Sign in to Azure portal – +++**https://portal.azure.com**+++ using
-    the credentials from the **Resources** tab.
+2\.
+Azureポータルのクラウドシェルアイコンをクリックして、クラウドシェルを開きます。
 
-2.  From the Azure portal home page, select **+ Create a resource**.
-
-    ![A screenshot of a computer Description automatically
+![A screenshot of a computer Description automatically
 generated](./media/image1.png)
 
-3.  On **Create a resource**, use the search bar to find +++**Azure
-    Machine Learning+++**. Select **Azure Machine Learning under
-    Marketplace**.
+3.  Azure Cloud Shell コマンド
+    プロンプトで、以下のコマンドを実行して、Diabetes Hospital
+    Readmission プロジェクトの github リポジトリを複製します。
 
-    ![A screenshot of a computer Description automatically generated](./media/image2.png)
+> **+++git clone
+> <https://github.com/getazureready/RAI-Diabetes-Hospital-Readmission-classification>**+++
+>
+> これにより、リポジトリの内容がローカルに複製されます。![](./media/image2.png)
 
-4.  Under **Marketplace**, click on **Create dropdown and select Azure
-    Machine Learning**.
+４. 以下のコマンドを実行してプロジェクト ディレクトリに変更します。
 
-    ![A screenshot of a software Description automatically generated](./media/image3.png)
+**+++cd RAI-Diabetes-Hospital-Readmission-classification+++**
 
-5.  Provide the following information to configure your new workspace:
+### タスク2: Azure CLIを使用してログインする
 
-    - **Subscription**: Select your **assigned Azure subscription**
+1.  クラウド シェルから以下のコマンドを実行します。
 
-    - **Resource group**: Select **Create New** and give the name as
-      +++**RGForMLOps**+++
+**az login**
 
-    **Workspace Details:**
-    
-    - **Workspace name: +++AzuremlwsXX+++ (Substitute XX with a random
-      number to ensure uniqueness)**
-    
-    - **Region**: Select your nearest region (**North Central US** is
-      selected here)
+![A screenshot of a computer Description automatically generated with
+medium confidence](./media/image3.png)
 
-    - **Container registry: Select Create new. Enter +++AzuremlcrXX+++** (Replace **XX** with a unique number)
-
-    Once you are done configuring the workspace, select **Review + Create**.
-
-    ![A screenshot of a computer AI-generated content may be incorrect.](./media/image4.png)
-
-    ![A screenshot of a computer Description automatically generated](./media/image5.png)
-
-6.  Once the Validation is passed, click on **Create**.
-
-    ![A screenshot of a computer Description automatically
-generated](./media/image6.png)
-
-7.  Click on **Go to resource**, to view the new workspace.
-
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image7.png)
-
-8.  Open the **cloud shell** by clicking on the cloud shell icon on the
-    Azure portal.
-
-    ![A screenshot of a computer Description automatically
-generated](./media/image8.png)
-
-9.  Select **Bash**.
-
-    ![A screenshot of a computer AI-generated content may be
-incorrect.](./media/image9.png)
-
-10. In the **Getting Started** page, select **Mount storage account**,
-    select your **assigned subscription** and click on **Apply**.
-
-    ![A screenshot of a computer AI-generated content may be
-incorrect.](./media/image10.png)
-
-11. In the **Mount storage account** page, select **We will create a
-    storage account for you** and click on **Next**.
-
-    ![A screenshot of a computer account AI-generated content may be
-incorrect.](./media/image11.png)
-
-12. In Azure Cloud Shell command prompt, clone the **Diabetes Hospital
-    Readmission** project github repository by executing the below
-    command.
-
-    +++git clone https://github.com/getazureready/RAI-Diabetes-Hospital-Readmission-classification+++
-
-    This will clone the contents of the repo locally.
-
-    ![A screenshot of a computer program AI-generated content may be incorrect.](./media/image12.png)
-
-13. Change to the project directory by executing the below command.
-
-    **+++cd RAI-Diabetes-Hospital-Readmission-classification+++**
-
-### Task 2: Login using Azure CLI
-
-1.  From the cloud shell, execute the below command.
-
-    **+++az login+++**
-
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image13.png)
-
-2.  Open the url in the console, and type in the code in the browser and
-    continue the prompts to login.
-
-    ![A screenshot of a computer Description automatically generated](./media/image14.png)
-
-3.  Once login is completed in the browser, back in the Cloud Shell,
-    type **Enter** to accept the subscription name.
-
-   ![A screen shot of a computer AI-generated content may be
-incorrect.](./media/image15.png)
-
-4.  Set your environment default to the **created Resource group** and
-    **Azure ML workspace**.
-
-    Replace the placeholders \<Resource-group-name\> and \<Workspace-name\>
-with the names of your Resource group and the Azure Machine Learning
-Workspace created in the last Task and then execute the below command.
-
-    +++az configure --defaults group="<Resource-group-name>" workspace="<Workspace-name>"+++
-
-    The command should look like this after replacing the values.
-
-    **az configure --defaults group="RGForMLOps" workspace="Azuremlws98899"**
-
-    ![](./media/image16.png)
-
-## **Exercise 2: Run jobs for training the model and creating the RAI dashboard**
-
-1.  Execute the below command to register the **training dataset** to
-    the Azure Machine Learning workspace.
-
-    **+++az ml data create -f cloud/train_data.yml+++**
-
-    The data asset gets created and the details are displayed on the cloud
-shell.
-
-    ![A screenshot of a computer AI-generated content may be
-incorrect.](./media/image17.png)
-
-2.  Execute the below command to register the **testing dataset** to the
-    Azure Machine Learning workspace.
-
-    **+++az ml data create -f cloud/test_data.yml+++**
-
-    ![A screenshot of a computer AI-generated content may be
-incorrect.](./media/image18.png)
-
-3.  Create a **compute instance** for running the jobs. Then, copy the
-    compute name at the end of the run to use later.
-
-    Execute the below command, replacing XX in the computeraiXX with a
-random number to create the compute.
-
-    **+++az ml compute create --name computeraiXX --type computeinstance
-–size Standard_E4ds_v4+++**
-
-    ::: secondary
-    **Note:** The Compute creation will take around 10 minutes to complete.
-    :::
-
-    ![A screenshot of a computer AI-generated content may be
-incorrect.](./media/image19.png)
-
-5.  On the Cloud Shell menu, click on **Editor**. This will ask for a
-    confirmation to move to the old
-
-    ![A screenshot of a computer AI-generated content may be incorrect.](./media/image20.png)
-
-5.  Select **Confirm** in the **Switch to Classic Cloud Shell**
-    confirmation dialog box.
-
-    ![A screen shot of a computer AI-generated content may be
-incorrect.](./media/image21.png)
-
-6.  On the Cloud Shell menu, click on the **Open editor** **{ }** pane
-    to edit some of the files.
-
-    ![Open editor](./media/image22.png)
-
-7.  Click on
-    the **RAI-Diabetes-Hospital-Readmission-classification** folder to
-    expand the directory.
-
-    ![Expand directory](./media/image23.png)
-
-8.  Navigate to the **cloud/training_job.yml** file. Then replace the
-    placeholder for the **compute name** with your **compute instance
-    name** that you created. (**computeraiXX**)
-
-    ![Training job update](./media/image24.png)
-
-9.  Right-click anywhere in the file, then select the **Save** option to
-    save the file. 
-
-    ![A screenshot of a computer program Description automatically generated
-with medium confidence](./media/image25.png)
-
-10. Next, navigate to the **cloud/rai_dashboard_pipeline.yml** file.
-    Then update the placeholder for the compute name with your **compute
-    instance name**.
-
-    ![](./media/image26.png)
-
-11. Right-click anywhere in the file, then select the **Save** option to
-    save the file.
-
-12. Right-click anywhere in the file, then select the **Quit** option to
-    close the editor window.
-
-    ![A screenshot of a computer program Description automatically generated
-with medium confidence](./media/image27.png)
-
-13. Back at the Cloud Shell command prompt, submit the job to train the
-    model. Wait for the job to update its run status to **Completed**
-    during the training. Paste the below code block to the Cloud Shell
-    and click on **Enter** to execute it.
-
-    ```
-    run_id=$(az ml job create --name my_training_job -f cloud/training_job.yml --query name -o tsv)
-    
-    # wait for job to finish while checking for status
-    if [[ -z "$run_id" ]]
-    then
-      echo "Job creation failed"
-      exit 3
-    fi
-    status=$(az ml job show -n $run_id --query status -o tsv)
-    if [[ -z "$status" ]]
-    then
-      echo "Status query failed"
-      exit 4
-    fi
-    running=("Queued" "Starting" "Preparing" "Running" "Finalizing")
-    while [[ ${running[*]} =~ $status ]]
-    do
-      sleep 8 
-      status=$(az ml job show -n $run_id --query status -o tsv)
-      echo $status
-    done
-    ```
-    ::: secondary
-    
-    **Note:** If this script does not get pasted properly, paste it to a Notepad and copy from there to the CloudShell.
-    
-    :::
-
-    ::: secondary
-    
-    **Note:** The execution of this script should take around 3 to 5 minutes.
-
-    :::
-
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image28.png)
-
-    ![A screenshot of a computer Description automatically generated](./media/image29.png)
-
-14. Optionally, you can check for the status of the Running job from the
-    **Azure Machine Learning Studio (**<https://ml.azure.com/>**)** -\>
-    **Jobs**
-
-    ![A screenshot of a computer AI-generated content may be incorrect.](./media/image30.png)
-
-15. After the training job has completed successfully, register the
-    model to the Azure Machine Learning workspace. Execute the below
-    command to do that.
-
-    +++az ml model create --name rai_hospital_model --path "azureml://jobs/$run_id/outputs/model_output" --type mlflow_model+++
-
-    This command registers the model to the AML workspace and provides the details in the cloud shell, as in the screenshots below.
-
-    ![A screenshot of a computer program AI-generated content may be incorrect.](./media/image31.png)
-
-    ![A computer screen shot of a black background AI-generated content may be incorrect.](./media/image32.png)
-
-16. Submit the job pipeline to create the **RAI dashboard**. Execute the
-    below command to do that.
-
-    +++az ml job create --file cloud/rai_dashboard_pipeline.yml+++
-
-    This command submits the job and the cloud shell is populated with the
-initial stage of the pipeline which is the **Preparing** state.
-
-    ![A picture containing text, screenshot, software Description
-automatically generated](./media/image33.png)
-
-    ![A picture containing text, screenshot, software, font Description
-automatically generated](./media/image34.png)
-
-    ::: secondary
-    **Note:** This process takes 10 to 15 minutes to complete.
-    :::
-    
-18. Log into **Azure Machine Learning studio** at
-    +++https://ml.azure.com/+++ to monitor the pipeline job for creating the
-    RAI dashboard.
-
-19. Select **Pipelines**. To view the progression of the pipeline job
-    creating the RAI dashboard, click on the job **Display name**.
-
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image35.png)
-
-19. The experiment will be in the **Running** state.
-
-    ![A screenshot of a computer Description automatically
-generated](./media/image36.png)
-
-20. The status changes to **Completed** once it is done and the RAI
-    dashboard is created.
-
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image37.png)
-
-21. Click on the **Models** tab on the left-hand navigation. Then click
-    on the name of the model to open the details page.
-
-    ![](./media/image38.png)
-
-22. Select the **Responsible AI** option in the top menu.
-
-    ![A screenshot of a computer Description automatically generated](./media/image39.png)
-
-23. Now, you're ready to start using the **RAI dashboard**.
-
-## **Exercise 3: Error Analysis:**
-
-The Error Analysis section of the RAI dashboard helps provide an error
-distribution of the feature groups contributing to the error rate of the
-model. Errors are often not distributed evenly across different data
-subgroups and Error Analysis helps you identify features with the
-highest error rates.
-
-### Task 1: Find model errors:
-
-In this task, we are going to explore how to use Error Analysis to find
-errors in the trained model to identify where the errors are. In
-addition, we’ll learn how to create cohorts of data to investigate why a
-model is performing poorly in some cohorts and not in others.
-
-1.  Click on the name **Diabetes Hospital Readmission.**
-
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image40.png)
-
-2.  Ensure that your **compute** is selected and it is in the
-    **Running** state.
-
-    ![A screenshot of a computer AI-generated content may be
-incorrect.](./media/image41.png)
-
-#### **Task 1.1: Identify and create a cohort for the tree path with the highest errors**
-
-To start the analysis, you can observe that the root node shows that out
-of 994 total test data, 168 incorrect predictions were found while
-evaluating the model.
-
-1.  Find the tree path with the highest number of errors. The darker the
-    red shade in the node, the higher the error rate. 
-
-2.  In our case the tree path with the darkest red color is the leaf
-    node that is second from the bottom right.
-
-    ![](./media/image42.png)
-
-3.  **Double click** on this **node** to select the **entire path**
-    leading up to the node. This highlights the path and displays the
-    feature condition for each node in the path.
-
-4.  Create a cohort out of the selected path by clicking on the **Save
-    as a new cohort** button on the upper right-hand side of the Error
-    Analysis section.
-
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image43.png)
-
-5.  Enter the **Cohort name** as **+++Err: Prior_Inpatient >0; Num_meds >11.50 & <= 21.50+++**
-
-    Click on **Save.**
-
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image44.png)
-
-#### **Task 1.2: Identify and create a cohort for the tree path with the least errors**
-
-For contrast purposes, create another cohort with the tree path with the
-least number of errors to see if we can gain insights as to why the
-model performs well in one cohort vs another. The **leaf node** with the
-feature condition **num_lab_procedures ≤ 56.50*,*** on the far left-hand
-side of the tree, is the path of the tree with the least errors.
-
-1.  **Double-click** on the node.
-
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image45.png)
-
-2.  Click on **Save as a new cohort**. The **Filter** in this dataset
-    is: num_lab_procedures \<= 56.50, number_diagnoses \<= 6.50,
-    prior_inpatient \<= 0.00.
-
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image46.png)
-
-3.  **Name** the cohort: **+++Prior_Inpatient = 0; num_diagnoses \<=
-    6.50; lab_procedures \<= 56.50+++** and click on **Save**.
-
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image47.png)
-
-#### **Task 1.3: Use the Feature List to identify the top feature contributing to model errors**
-
-1.  Click on **Feature list**.
-
-    ![](./media/image48.png)
-
-2.  The list is sorted based on contribution of the features to the
-    errors. The higher a feature is on this list, the higher its
-    contribution importance to your model errors.
-
-3.  In our Diabetes Hospital Readmission model, the **Feature List**
-    indicates the following features to be among the top contributors of
-    the model's errors.
-
-    - prior_emergency
-
-    - prior_inpatient
-
-    - number_diagnoses
-
-    - A1Cresult
+> **２. コンソールで URL を開き、ブラウザにコードを入力します。**![A
+> screenshot of a computer Description automatically
+> generated](./media/image4.png)
+>
+> 3\. Azure ログイン資格情報を選択します。![A screenshot of a phone
+> Description automatically generated with medium
+> confidence](./media/image5.png)
+>
+> 4\. 「Continue」をクリックします。![A screenshot of a computer error
+> Description automatically generated with medium
+> confidence](./media/image6.png)
+>
+> 5.ブラウザを閉じてAzureポータルに戻ります
+>
+> ![A screenshot of a computer Description automatically
+> generated](./media/image7.png)
+>
+> 6\. ログインの詳細がクラウド シェルに表示されます。![A screenshot of a
+> computer Description automatically generated](./media/image8.png)
+
+7\. 割り当てられたリソース グループに環境のデフォルトを設定します。
+
+**+++az configure --defaults group="\<resource-group-name\>"
+workspace="Azuremlws@lab.LabInstance.Id"+++**
+
+![](./media/image9.png)
+
+## **エクササイズ 2: モデルをトレーニングし、RAIダッシュボードを作成するためのジョブを実行する**
+
+1.  以下のコマンドを実行して、トレーニング データセットを Azure Machine
+    Learning ワークスペースに登録します。
+
+> **az ml data create -f cloud/train_data.yml**
+
+データアセットが作成され、その詳細がクラウド シェルに表示されます。
+
+![A screenshot of a computer Description automatically generated with
+medium confidence](./media/image10.png)
+
+2.  以下のコマンドを実行して、テスト データセットを Azure Machine
+    Learning ワークスペースに登録します。
+
+> **az ml data create -f cloud/test_data.yml**
+
+![](./media/image11.png)
+
+> 3\.
+> ジョブを実行するためのコンピューティングインスタンスを作成します。実行後に、後で使用するためにコンピューティング名（例：compute-xxxxxxxxxxxx）をコピーします。
+>
+> • 以下のコマンドを実行してコンピューティングを作成します。
+
+**az ml compute create --name compute@lab.Lab Instance.Id --type
+computeinstance --size Standard_E4ds_v4**
+
+![A screen shot of a computer Description automatically generated with
+medium confidence](./media/image12.png)
+
+> 4\. Cloud Shell メニューで、\[Open editor\] { }
+> ペインをクリックして、いくつかのファイルを編集します。![Open
+> editor](./media/image13.png)
+
+5\. RAI-Diabetes-Hospital-Readmission-classification
+フォルダをクリックしてディレクトリを展開します。
+
+![Expand directory](./media/image14.png)
+
+6\. cloud/training_job.yml
+ファイルに移動します。コンピューティング名のプレースホルダーを、先ほどコピーしたコンピューティングインスタンス名に置き換えます。
+
+![Training job update](./media/image15.png)
+
+> 7.ファイル内の任意の場所を右クリックし、\[Save\]オプションを選択してファイルを保存します。 
+
+![A screenshot of a computer program Description automatically generated
+with medium confidence](./media/image16.png)
+
+8\. 次に、cloud/rai_dashboard_pipeline.yml
+ファイルに移動します。コンピューティング名のプレースホルダーを、先ほどコピーしたコンピューティングインスタンス名に更新します。
+
+![Rai pipeline update](./media/image17.png)
+
+9\. ファイル内の任意の場所を右クリックし、\[Save\]
+オプションを選択してファイルを保存します。
+
+10\. ファイル内の任意の場所を右クリックし、\[Quit\]
+オプションを選択してエディター ウィンドウを閉じます。![A screenshot of a
+computer program Description automatically generated with medium
+confidence](./media/image18.png)
+
+10. Cloud Shell
+    コマンドプロンプトに戻り、モデルをトレーニングするジョブを送信します。トレーニング中にジョブの実行ステータスが「Completed」に更新されるまで待ちます。そのためには、以下のコードブロックをコピーしてください。
+
+> **run_id=$(az ml job create --name my_training_job -f
+> cloud/training_job.yml --query name -o tsv)**
+>
+> **\# wait for job to finish while checking for status**
+>
+> **if \[\[ -z "$run_id" \]\]**
+>
+> **then**
+>
+> **echo "Job creation failed"**
+>
+> **exit 3**
+>
+> **fi**
+>
+> **status=$(az ml job show -n $run_id --query status -o tsv)**
+>
+> **if \[\[ -z "$status" \]\]**
+>
+> **then**
+>
+> **echo "Status query failed"**
+>
+> **exit 4**
+>
+> **fi**
+>
+> **running=("Queued" "Starting" "Preparing" "Running" "Finalizing")**
+>
+> **while \[\[ ${running\[\*\]} =~ $status \]\]**
+>
+> **do**
+>
+> **sleep 8**
+>
+> **status=$(az ml job show -n $run_id --query status -o tsv)**
+>
+> **echo $status**
+>
+> **done**
+>
+> 注:
+> このスクリプトが正しく貼り付けられない場合は、手動でコピーして貼り付けてください。
+>
+> 注: このスクリプトの実行には約3～5分かかります。![A screenshot of a
+> computer Description automatically generated with medium
+> confidence](./media/image19.png)
+>
+> ![A screenshot of a computer Description automatically
+> generated](./media/image20.png)
+>
+> 11\. オプションとして、Azure Machine Learning Studio
+> (https://ml.azure.com/) -\>
+> ジョブから実行中のジョブのステータスを確認できます。![A screenshot of
+> a computer AI-generated content may be
+> incorrect.](./media/image21.png)
+>
+> 12\. トレーニングジョブが正常に完了したら、モデルをAzure Machine
+> Learningワークスペースに登録します。以下のコマンドを実行します。
+
+**az ml model create --name rai_hospital_model --path
+"azureml://jobs/$run_id/outputs/model_output" --type mlflow_model**
+
+> このコマンドは、モデルを AML
+> ワークスペースに登録し、以下のスクリーンショットのようにクラウド
+> シェルに詳細を提供します。
+>
+> ![A picture containing text, screenshot, software, multimedia software
+> Description automatically generated](./media/image22.png)
+>
+> ![A picture containing text, font, screenshot Description
+> automatically generated](./media/image23.png)
+
+13\.
+RAIダッシュボードを作成するためのジョブパイプラインを送信します。以下のコマンドを実行します。
+
+az ml job create --file cloud/rai_dashboard_pipeline.yml
+
+このコマンドはジョブを送信し、クラウド
+シェルにパイプラインの初期ステージである「Preparing」状態が入力されます。
+
+![A picture containing text, screenshot, software Description
+automatically generated](./media/image24.png)
+
+![A picture containing text, screenshot, software, font Description
+automatically generated](./media/image25.png)
+
+> 14\. Azure Machine Learning
+> Studio（https://ml.azure.com/）にログインし、RAIダッシュボードを作成するパイプラインジョブを監視します。
+>
+> 15\.
+> 「Pipelines」を選択します。RAIダッシュボードを作成するパイプラインジョブの進行状況を表示するには、ジョブの表示名をクリックします。![A
+> screenshot of a computer Description automatically generated with
+> medium confidence](./media/image26.png)
+
+16. 実験は実行状態になります。
+
+![A screenshot of a computer Description automatically
+generated](./media/image27.png)
+
+17. 完了するとステータスが「Completed」に変わり、RAI
+    ダッシュボードが作成されます。
+
+![A screenshot of a computer Description automatically generated with
+medium confidence](./media/image28.png)
+
+18. 左側のナビゲーションにある「Models」タブをクリックします。次に、モデル名をクリックして詳細ページを開きます。
+
+> ![](./media/image29.png)
+>
+> 19\. 上部のメニューで「Responsible AI」オプションを選択します。![A
+> screenshot of a computer AI-generated content may be
+> incorrect.](./media/image30.png)
+>
+> 20\. これで、RAI ダッシュボードの使用を開始する準備が整いました。
+
+## **エクササイズ 3: エラー分析:**
+
+RAIダッシュボードのエラー分析セクションは、モデルのエラー率に寄与する特徴量グループのエラー分布を示すのに役立ちます。エラーは多くの場合、異なるデータサブグループ間で均等に分布していないため、エラー分析はエラー率が最も高い特徴量を特定するのに役立ちます。
+
+### タスク1: モデルのエラーを検索します。
+
+> このタスクでは、エラー分析を用いて学習済みモデルのエラーを検出し、その発生箇所を特定する方法を学びます。さらに、データのコホートを作成し、モデルのパフォーマンスが一部のコホートでは低く、他のコホートでは低い理由を調査する方法も学びます。
+>
+> 1\. 「Diabetes Hospital
+> Readmission（糖尿病入院再入院）」をクリックします。![A screenshot of a
+> computer Description automatically generated with medium
+> confidence](./media/image31.png)
+>
+> 2.コンピューティングを選択します。
+
+![](./media/image32.png)
+
+#### **タスク1.1: 最もエラーが多いツリーパスのコホートを特定して作成する**
+
+分析を始めるには、ルートノードを見ると、合計994個のテストデータのうち、モデルの評価中に168個の誤った予測が見つかったことがわかります。
+
+1\.
+エラー数が最も多いツリーパスを見つけます。ノードの赤色が濃いほど、エラー率が高くなります。
+
+2\.
+この場合、最も濃い赤色のツリーパスは、右下から2番目のリーフノードです。
+
+![](./media/image33.png)
+
+> ３.
+> このノードをダブルクリックして、そのノードまでのパス全体を選択します。パスがハイライト表示され、パス内の各ノードのフィーチャ条件が表示されます。
+>
+> ４. エラー分析セクションの右上にある「Save as a new cohort
+> button」ボタンをクリックして、選択したパスからコホートを作成します。
+>
+> ![A screenshot of a computer Description automatically generated with
+> medium confidence](./media/image34.png)
+>
+> ５. コホート名を「+++Err: Prior_Inpatient \>0; Num_meds \>11.50 & \<=
+> 21.50+++」と入力します。
+>
+> 「Save」をクリックします。
+>
+> ![A screenshot of a computer Description automatically generated with
+> medium confidence](./media/image35.png)
+
+#### **タスク1.2: エラーが最も少ないツリーパスのコホートを特定して作成する**
+
+> 比較のため、エラー数が最も少ないツリーパスを持つ別のコホートを作成し、あるコホートでモデルが他のコホートと比較して優れたパフォーマンスを発揮する理由について洞察を得られるようにします。ツリーの左端にある、特徴量条件
+> num_lab_procedures ≤ 56.50
+> を持つリーフノードが、エラー数が最も少ないツリーのパスです。
+>
+> 1\. ノードをダブルクリックします。![A screenshot of a computer
+> Description automatically generated with medium
+> confidence](./media/image36.png)
+>
+> 2\. 「Save as a new
+> cohort」をクリックします。このデータセットのフィルターは、「num_lab_procedures
+> \<= 56.50、number_diagnoses \<= 6.50、prior_inpatient \<=
+> 0.00」です。![A screenshot of a computer Description automatically
+> generated with medium confidence](./media/image37.png)
+>
+> 3\. コホートに名前を付けます: +++Prior_Inpatient = 0; num_diagnoses
+> \<= 6.50; ラボ_procedures \<= 56.50+++ し、「Save」をクリックします。
+>
+> ![A screenshot of a computer Description automatically generated with
+> medium confidence](./media/image38.png)
+
+#### **タスク1.3: 特徴リストを使用して、モデルエラーに寄与する主な特徴を特定します。**
+
+1.  Feature listをクリック
+
+![](./media/image39.png)
+
+2.  リストは、特徴量のエラーへの寄与度に基づいてソートされています。リストの上位に位置する特徴量ほど、モデルエラーへの寄与度が高くなります。
+
+3.  当社の糖尿病入院再入院モデルでは、特徴量リストには、以下の特徴量がモデルのエラーの上位に寄与していることが示されています。
+
+    - Age
+
+    - num_medications
+
+    - medicare
+
+    - time_in_hospital
 
     - num_procedures
 
-    - discharge_destination
-
     - insulin
 
-### Task 2: Find errors using Heat map
+    - discharge_destination
 
-From the Feature List, **Age** was one of the top error contributors.
-So, we'll use the Heat map tab to explore which age group of the
-patients are driving the model to perform poorly.
+### タスク2: ヒートマップを使用してエラーを見つける
 
-1.  Select **Heat map** under **Error Analysis**. Select Shift on the
-    confirmation dialog.
-
-    ![A screenshot of a computer Description automatically generated](./media/image49.png)
-
-2.  Under the Heat Map tab, select **Age** in the **Rows: Feature
-    1** drop-down menu to see what factor it plays in the model's
-    errors.
-
-3.  After selecting the **Age**, we can see how the dashboard has a
-    built-in intelligence to divide the feature into different cells
-    with the possible conditions.
-
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image50.png)
-
-2.  **Hover** your mouse over each cell, you can see the number of
-    correct vs incorrect predictions, error coverage and error rate for
-    the data group represented in the cell.
-
-    ![A screenshot of a computer Description automatically generated](./media/image51.png)
-
-3.  The cell with **Over 60 years** has **536** correct
-    and **126** incorrect model predictions. The error coverage
-    is **73.81%**, and error rate **18.79%**
-
-4.  The cell with **30–60 years** has **273** correct
-    and **25** incorrect model predictions. The error coverage
-    is **25.60%**, and error rate **13.61%**.
-
-5.  The cell with* ***30 years or younger*** *has **17** correct
-    and **1** incorrect model predictions.
-
-    We are going to create cohorts for each age group for further analysis in the next lab.
-
-#### ***Task 2.1: Create Cohorts based on the age groups***
-
-1.  Click on the percentage box of **Over 60 years** cell. You'll see a
-    blue border around the square cell.
-
-2.  Click on **Save as a new cohort**.
-
-    ![A screenshot of a computer Description automatically generated](./media/image52.png)
-
-3.  In the Save as a new cohort dialog, enter
-
-    - Cohort name - **+++Age==Over 60 year+++**
-
-    Click on **Save**.
-
-    ![A screenshot of a computer Description automatically
-generated](./media/image53.png)
-
-4.  Repeat the steps 2 and 3, to create a cohort for each of the other
-    two Age cells. Ensure that when you select a Age group, you deselect
-    the other ones and that only that age group is selected.
-
-    - **Cohort #4:** Name - **+++Age == 30–60 years+++**
-    
-    - **Cohort #5:** Name - **+++Age <= 30 years+++**
-
-### Task 3: View the cohorts lists
-
-1.  Click on the **Settings** gear icon on the upper right-hand corner
-    of the Error Analysis section.
-
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image54.png)
-
-2.  This will open a **Cohort Settings** **window pane** with the list
-    of all the cohorts you created.
-
-    ![A screenshot of a computer Description automatically generated](./media/image55.png)
-
-3.  Close the settings window.
-
-## Exercise 4: Using RAI to perform Model Analysis
-
-In this lab we will explore how to use the **Model Overview** section of
-the Azure Responsible AI (RAI) dashboard. We will use the cohorts
-created from the Error Analysis lab to investigate why the model’s
-behavior is better in one cohort vs another cohort.
-
-## **Exercise 4.1: Model Overview**
-
-### Task 1: Review and compare model performance metric table
-
-1.  Scroll down below the Error Analysis to find the Model Overview
-    section.
-
-    ![A screenshot of a computer Description automatically
-generated](./media/image56.png)
-
-2.  Under Model Overview, select the **Dataset Cohorts** pane. This
-    displays the different cohorts created in a table with the model
-    metrics.
-
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image57.png)
-
-3.  Compare the cohort with the most errors **Err: Prior_Inpatient \> 0;
-    Num_Meds \> 11 and ≤ 21.50** verse the least errors
-    **Prior_inpatient = 0; num_diagnose ≤ 6.50; lab_procedures \<
-    56.50.**
-
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image58.png)
-
-4.  Hover the mouse over the box plot line on the chart to see the
-    measurement details.
-
-    ![A screenshot of a computer Description automatically
-generated](./media/image59.png)
-
-5.  Observe that the accuracy score for the **erroneous cohort** is
-    0.806, which is bad. The **False Positive** rate is **very low** and
-    the **False Negative** value is **high**. Meaning, a majority of
-    patients that the model is predicting has a high rate of predicting
-    patients that will not be readmitted as readmitted in 30 days back
-    to the hospital.
-
-    ![A red line in a white sheet Description automatically generated](./media/image60.png)
-
-6.  Next, look at the metrics for the **cohort** with the **least
-    errors** has an accuracy score of 0.94, which is far better than the
-    overall accuracy score of the model with all the data. However, this
-    cohort also has a low **False positive** rate at **0**.
-
-    ![A picture containing text, screenshot, line, number Description
-automatically generated](./media/image61.png)
-
-### Task 2: Examine the Probability distribution chart
-
-1.  Scroll down to see the **Probability distribution**.
-
-2.  The Probability distribution chart shows the model’s probability
-    predicting if patients in the cohorts will be Readmitted or Not
-    readmitted back to the hospital within 30 days.
-
-3.  Compare the probability of the patients not being readmitted for all
-    3 cohorts.
-
-4.  You'll see that the **All data** cohort with all the patients test
-    dataset, show that a majority of the patients will not be readmitted
-    back in the hospital within 30 days, with a median probability of
-    patients not readmitted at 0.854 and upper quartile at 0.986, which
-    is good.
-
-5.  Next, the cohort with the highest error rate: ***Err:
-    Prior_Inpatient \>0; Num_meds \>11.50 & \<= 21.50***, shows a
-    slightly lower probability at 0.89 and a median of 0.719.
-
-6.  Lastly, the cohort with the least error rate: ***Prior_Inpatient =
-    0*; *num_diagnoses \<= 6.50*; *lab_procedures \<= 56.50***, show a
-    probability of patients not readmitted has a median of 0.90 and
-    upper quartile of 0.986.
-
-    ![A screenshot of a computer Description automatically generated](./media/image62.png)
-
-7.  To change the chart to show the probability of patients being
-    Readmitted for the 3 cohorts, click on the **Choose Label** button
-    on the x-axis.
-
-8.  Select the **Probability: Readmitted** radio button. On the pop-up
-    window pane.
-
-9.  Then click on the **Apply** button.
-
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image63.png)
-
-10. Compare the probability of patients being Readmitted for the 3
-    cohorts
-
-    ![A screenshot of a graph Description automatically generated with low confidence](./media/image64.png)
-
-9.  You see that the 3 cohort have a probability of being readmitted
-    less than 0.55. The cohort with the least number of model errors has
-    the lowest probability of 0.179. The cohort with the most errors
-    have the highest probability at 0.543.
-
-### Task 3: Review the Metric visualization chart
-
-Now let's get a deeper understanding of the model's performance by
-switching to the Metric visualizations pane. 
-
-1.  Click on the Metric visualizations tab.
-
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image65.png)
-
-2.  To choose another metric, click on the **Choose metric** on the
-    x-axis to choose **Precision score** from the list of other
-    available metrics. Then click on the **Apply** button. 
-
-    ::: secondary
-    **Note**: Since the trained model is a classification problem, the RAI dashboard will display only classification metrics.
-    :::
-    
-    ![](./media/image66.png)
-
-3.  From reviewing the chart, you will see that the model performance
-    for all test data cohort and erroneous cohort is correct at ~70% of
-    the time. 
-
-4.  The **Precision score** rate for the **least erroneous cohort** is
-    **0.94** for patients with no prior hospitalization and the number
-    of diagnoses is less than 7. This is consistent with the accuracy
-    score.
-
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image67.png)
-
-5.  Finally, change the metric to **Recall** to see how well the model
-    was able to correctly predict that the patients in the cohorts will
-    be readmitted back in the hospital in 30 days.
-
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image68.png)
-
-6.  The recall shows that the **model's prediction** was **correct less
-    than 25%** of the time for all the cohorts for patients being
-    readmitted. This reveals that the model's predictions are not
-    correct a majority of the time when trying to predict patients that
-    will be readmitted within 30 days.
-
-    ![A screenshot of a graph Description automatically generated with low
-confidence](./media/image69.png)
-
-### Task 4: Look at the Confusion Matrix
-
-The Confusion Matrix is helpful to check the rate of the model correctly
-making the right prediction. This will reveal how well the model is
-learning for cases where the patient is Readmitted back in the hospital
-within 30 days vs Not Readmitted.
-
-1.  Click on the **Confusion matrix** tab.
-
-
-2.  You will observe that the **model** is performing **better** with
-    patient that are **Not Readmitted** compare to **Readmitted**.
-
-3.  The number of False Negative should be less that True Negative. This
-    mean out of all the patient data, the model was only able to predict
-    24 patients correctly to be Readmitted back to the hospital in \< 30
-    days.
-
-    - The number of True Positive (TP) is: **802**
-    
-    - The number of False Negative (FN) is: **159**
-    
-    - The number of False Positive (FP) is: **9**
-    
-    - The number of True Negative (TN) is: **24**
-
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image70.png)
-
-## **Exercise 2: Feature Cohort**
-
-Since the cohort with the highest error has patients with the number
-of *Prior_Inpatient \> 0* days and number of medications between 11 and
-22 was where the model had a higher error rate, taking a closer look at
-the *Prior_Inpatient* and *Num_medications* will help isolate where
-there are issues. For this lab, we'll only analyze *Prior_Inpatient*.
-
-1.  Click on the **Feature Cohorts** tab under **Model overview.**
-
-2.  Under the **Feature(s)** drop-down menu, scroll down the list and
-    select the **prior_inpatient** checkbox. This will display 3
-    different feature cohorts and the model performance metrics.
-
-    ![A screenshot of a computer Description automatically generated](./media/image71.png)
-
-3.  The **prior_inpatient** ***\< 3*** cohort has a sample size of
-    **943**. This means a majority of patients in the test data were
-    hospitalized less than 3 times in the past. The **model's accuracy
-    rate** for this cohort is **0.838**, which is good.
-
-4.  Only 39 patients from the test data fall in the **prior_inpatient**
-    ***≥ 3 and \< 6*** cohort. The model's accuracy rate is **0.692**,
-    which is not good.
-
-5.  Lastly, just 12 patients from the test data have a prior
-    hospitalization greater than or equal to 6 days. The **model
-    accuracy** of **0.75** for this cohort is ok.
-
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image72.png)
-
-### Task 1: Feature probability distribution
-
-Similar to the Dataset cohort, you have the ability to view the
-“Probability Distribution”.
-
-1.  You can see that the lesser the diabetic patient’s number of
-    prior_inpatient hospitalizations, the more likely the patient was
-    not going to be readmitted in 30 days. 
-
-    ![A screenshot of a computer Description automatically
-generated](./media/image73.png)
-
-### Task 2: Feature Metrics visualizations
-
-1.  Select **Metrics visualization**. On the x-axis, click on the
-    **Choose metric** button. Then select the **Precision score**
-    metric.
-
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image74.png)
-
-2.  You see that the precision score for patients with **prior_inpatient
-    \< 3** is 0.40, which is very bad. This means that of all the
-    predictions that the model made, only 40% were correct for this
-    cohort.
-
-    ![A blue and white bar graph Description automatically generated](./media/image75.png)
-
-3.  The precision score for the other 2 cohorts are good.
-
-4.  Next, select **Recall score** metric for the x-axis.
-
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image76.png)
-
-5.  On the contrary, you'll see the recall score for patients
-    with **prior_inpatient \< 3** is 0.013. Meaning, for a majority of
-    patients in the test data, the model is having difficulty correctly
-    predicting whether the patient will be readmitted within 30 days or
-    not.
-
-    ![A picture containing screenshot, software, line, text Description automatically generated](./media/image77.png)
-
-    Do not close this window to continue the next lab.
-    
-**Summary**
-
-This lab shows how the traditional model performance metrics (e.g., accuracy, recall, confusion matrix etc) are still very important. By combining RAI insights and traditional performance metric, the dashboard gives us a wholistic tool to analyze and debug the model on a more granular level.
+> 特徴量リストから、年齢がエラーの要因として上位にランクインしていることがわかりました。そこで、「ヒートマップ」タブを使用して、どの年齢層の患者がモデルのパフォーマンスを低下させているのかを調べてみましょう。
+>
+> 1\. 「Error Analysis」の「Heat map」を選択します。![A screenshot of a
+> computer Description automatically generated](./media/image40.png)
+>
+> 2\. 「Heat Map」タブの「Rows: Feature
+> 1」ドロップダウンメニューで「Age」を選択し、モデルの誤差に年齢がどのような要因として作用しているかを確認します。
+>
+> 3\.
+> 「Age」を選択すると、ダッシュボードにインテリジェンスが組み込まれており、考えられる条件に基づいて特徴量を複数のセルに分割していることがわかります。![A
+> screenshot of a computer Description automatically generated with
+> medium confidence](./media/image41.png)
+>
+> 4\. 各セルの上にマウスを移動すると、セルに表示されているデータ
+> グループの正しい予測と誤った予測の数、エラー範囲、エラー率が表示されます。![A
+> screenshot of a computer Description automatically
+> generated](./media/image42.png)
+
+5\.
+60歳以上のセルでは、モデル予測が536件正解、126件誤答です。エラーカバレッジは73.81%、エラー率は18.79%です。
+
+6\.
+30～60歳のセルでは、モデル予測が273件正解、25件誤答です。エラーカバレッジは25.60%、エラー率は13.61%です。
+
+7\. 30歳以下のセルでは、モデル予測が17件正解、1件誤答です。
+
+今回の観察結果から、年齢がモデルの誤答に大きな役割を果たしていることが示されたため、次のラボでさらに分析を行うために、各年齢層ごとにコホートを作成します。
+
+#### ***タスク2.1: 年齢層に基づいてコホートを作成する***
+
+> 1\.
+> 60歳以上のセルのパーセンテージボックスをクリックします。四角いセルの周囲に青い枠線が表示されます。
+>
+> 2\. 「Save as a new cohort」をクリックします。![A screenshot of a
+> computer Description automatically generated](./media/image43.png)
+
+3\. 「Save as a new cohort」ダイアログで、次の情報を入力します。
+
+• コホート名 - +++年齢==60歳以上+++
+
+「Save」をクリックします。![A screenshot of a computer Description
+automatically generated](./media/image44.png)
+
+4\. 手順 2 と 3 を繰り返して、他の 2 つの Age
+セルごとにコホートを作成します。
+
+- **Cohort \#4:** Name - **+++Age == 30–60 years+++**
+
+- **Cohort \#5:** Name - **+++Age \<= 30 years+++**
+
+### タスク3: コホートリストを表示する
+
+> 1\. Error
+> Analysisセクションの右上隅にある設定歯車アイコンをクリックします。![A
+> screenshot of a computer Description automatically generated with
+> medium confidence](./media/image45.png)
+>
+> 2\. 作成したすべてのコホートのリストを含むCohort Settingsウィンドウ
+> ペインが開きます。
+>
+> ![A screenshot of a computer Description automatically
+> generated](./media/image46.png)
+
+## エクササイズ 4: RAIを使用してモデル分析を実行する
+
+**このラボでは、Azure Responsible AI (RAI)
+ダッシュボードのモデル概要セクションの使い方を学びます。エラー分析ラボで作成されたコホートを用いて、あるコホートと別のコホートでモデルの動作が優れている理由を調査します。**
+
+## **エクササイズ 4.1: モデルの概要**
+
+### タスク1: モデルのパフォーマンス メトリック テーブルを確認して比較する
+
+1\. 「Error Analysis」の下までスクロールして、「Model
+Overview」セクションを見つけます。
+
+![A screenshot of a computer Description automatically
+generated](./media/image47.png)
+
+> 2\. 「Model Overview」で、「Dataset
+> Cohorts」ペインを選択します。作成された様々なコホートが、モデルメトリクスとともに表形式で表示されます。![A
+> screenshot of a computer Description automatically generated with
+> medium confidence](./media/image48.png)
+
+**3.エラーが最も多いコホート（Err: Prior_Inpatient \> 0; Num_Meds \> 11
+and ≤ 21.50）とエラーが最も少ないコホート（Prior_inpatient = 0;
+num_diagnose ≤ 6.50; Lab_procedures \< 56.50）を比較します。**
+
+![A screenshot of a computer Description automatically generated with
+medium confidence](./media/image49.png)
+
+4\. グラフ上のボックス
+プロット線の上にマウスを移動すると、測定の詳細が表示されます。![A
+screenshot of a computer Description automatically
+generated](./media/image50.png)
+
+> 5\.
+> 誤ったコホートの精度スコアが0.806であることに注目してください。これは悪い値です。偽陽性率は非常に低く、偽陰性率が高いです。つまり、モデルが予測する患者の大多数は、30日以内に再入院する患者ではなく、再入院しない患者を高い確率で予測していることになります。![A
+> red line in a white sheet Description automatically
+> generated](./media/image51.png)
+
+6\.
+次に、エラーが最も少ないコホートの指標を見てみましょう。精度スコアは0.94で、これはすべてのデータを含むモデルの全体的な精度スコアよりもはるかに優れています。ただし、このコホートの偽陽性率は0と低くなっています。![A
+picture containing text, screenshot, line, number Description
+automatically generated](./media/image52.png)
+
+### タスク2: 確率分布図を調べる
+
+> 1\. 下にスクロールして確率分布を確認します。
+>
+> 2\.
+> 確率分布チャートは、各コホート内の患者が30日以内に再入院するかどうかを予測するモデルの確率を示しています。
+>
+> 3\. 3つのコホートすべてで、患者が再入院しない確率を比較します。
+>
+> 4\.
+> 全患者のテストデータセットを含む「全データ」コホートを見ると、大多数の患者が30日以内に再入院しないことがわかります。再入院しない確率の中央値は0.854、上位四分位値は0.986と良好です。
+>
+> 5\. 次に、エラー率が最も高いコホート（Err: Prior_Inpatient \>0;
+> Num_meds \>11.50 & \<=
+> 21.50）では、確率はわずかに低く0.89、中央値は0.719です。
+>
+> 6\. 最後に、エラー率が最も低いコホート（Prior_Inpatient =
+> 0、num_diagnoses \<= 6.50、ラボ_procedures \<=
+> 56.50）では、患者が再入院しない確率の中央値は 0.90、上位四分位数は
+> 0.986 です。![A screenshot of a computer Description automatically
+> generated](./media/image53.png)
+>
+> 7\.
+> 3つのコホートにおける患者の再入院確率を表示するようにグラフを変更するには、X軸の「ラベルを選択」ボタンをクリックします。
+>
+> 8\.
+> ポップアップウィンドウペインで「確率：再入院」ラジオボタンをクリックします。
+>
+> 9\. 次に「Apply」ボタンをクリックします。![A screenshot of a computer
+> Description automatically generated with medium
+> confidence](./media/image54.png)
+>
+> 10\. 3つのコホートにおける患者の再入院確率を比較する![A screenshot of
+> a graph Description automatically generated with low
+> confidence](./media/image55.png)
+>
+> 11\.
+> 3つのコホートの再入学確率は0.55未満であることがわかります。モデルエラーが最も少ないコホートの再入学確率は0.179と最も低く、エラーが最も多いコホートの再入学確率は0.543と最も高くなります。
+
+### タスク3: メトリック視覚化チャートを確認する
+
+> それでは、「Metric
+> visualizations」ペインに切り替えて、モデルのパフォーマンスをより深く理解してみましょう。
+>
+> 1\. 「Metric visualizations」タブをクリックします。![A screenshot of a
+> computer Description automatically generated with medium
+> confidence](./media/image56.png)
+>
+> 2\. 別の指標を選択するには、X軸の「Choose
+> metric」をクリックし、利用可能な指標のリストから「Precision
+> score」を選択します。「Apply」ボタンをクリックします。
+>
+> 注:
+> トレーニング済みモデルは分類問題であるため、RAIダッシュボードには分類指標のみが表示されます。
+> ![](./media/image57.png)
+
+3\.
+グラフを見ると、すべてのテストデータコホートとエラーコホートにおいて、モデルのパフォーマンスが約70%の確率で正確であることがわかります。
+
+4\.
+入院歴がなく、診断数が7未満の患者の場合、エラーが最も少ないコホートの適合率スコアは0.94です。これは、正確性スコアと一致しています。![A
+screenshot of a computer Description automatically generated with medium
+confidence](./media/image58.png)
+
+> 5\. 最後に、メトリックを「Recall」に変更して、コホート内の患者が 30
+> 日以内に再入院することをモデルがどの程度正確に予測できたかを確認します。![A
+> screenshot of a computer Description automatically generated with
+> medium confidence](./media/image59.png)
+
+6\.
+再現率を見ると、再入院する患者について、全コホートにおいてモデルの予測が25%未満の確率で正しかったことがわかります。これは、30日以内に再入院する患者を予測する場合、モデルの予測が大部分の確率で正しくないことを示しています。
+
+![A screenshot of a graph Description automatically generated with low
+confidence](./media/image60.png)
+
+### タスク4: 混同マトリックスを見てください
+
+> 混同行列は、モデルが正しい予測を行っている割合を確認するのに役立ちます。これにより、患者が30日以内に再入院した場合と再入院しなかった場合のモデル学習状況が明らかになります。
+>
+> 1\. 「Confusion Matrix」タブをクリックします。
+>
+> 2\.
+> 再入院していない患者の方が再入院した患者よりもモデルのパフォーマンスが向上していることがわかります。
+>
+> 3\.
+> 偽陰性の数は真陰性の数より少なくなるはずです。これは、すべての患者データのうち、モデルが30日以内に再入院すると正しく予測できたのは24人だけだったことを意味します。
+
+- The number of True Positive (TP) is: **802**
+
+- The number of False Negative (FN) is: **159**
+
+- The number of False Positive (FP) is: **9**
+
+- The number of True Negative (TN) is: **24**
+
+> ![A screenshot of a computer Description automatically generated with
+> medium confidence](./media/image61.png)
+
+## **エクササイズ 2: 特集コホート**
+
+> エラー率が最も高かったコホートでは、Prior_Inpatient
+> の数が0日を超え、投薬数が11～22の患者が含まれ、モデルのエラー率が高かったため、Prior_Inpatient
+> と Num_medications
+> を詳しく調べることで、問題箇所を特定するのに役立ちます。このラボでは、Prior_Inpatient
+> のみを分析します。
+>
+> 1\. 「Feature Cohorts」タブをクリックします。
+>
+> 2\.
+> 「Feature(s)」ドロップダウンメニューで、リストを下にスクロールし、「prior_inpatient」チェックボックスをオンにします。これにより、3つの異なる特徴コホートとモデルのパフォーマンス指標が表示されます。![A
+> screenshot of a computer Description automatically
+> generated](./media/image62.png)
+>
+> 3\. prior_inpatient \<
+> 3コホートのサンプルサイズは943です。これは、テストデータに含まれる患者の大多数が過去に3回未満しか入院していないことを意味します。このコホートにおけるモデルの精度は0.838で、良好です。
+>
+> 4\. テストデータでは、prior_inpatient ≥ 3かつ\<
+> 6コホートに該当する患者はわずか39人です。モデルの精度は0.692で、良好ではありません。
+>
+> 5\.
+> 最後に、テストデータでは、過去に6日以上の入院歴がある患者はわずか12人です。このコホートにおけるモデルの精度は0.75で、良好です。![A
+> screenshot of a computer Description automatically generated with
+> medium confidence](./media/image63.png)
+
+### タスク1: 特徴確率分布
+
+データセットコホートと同様に、「Probability
+Distribution」を表示できます。
+
+1\.
+糖尿病患者の過去の入院回数が少ないほど、30日以内に再入院する可能性が低いことがわかります。
+
+![A screenshot of a computer Description automatically
+generated](./media/image64.png)
+
+### タスク2: 特徴メトリクスの視覚化
+
+> 1\. 「Metrics visualization」を選択します。X軸で「Choose
+> metric」ボタンをクリックします。次に、「Precision
+> score」メトリクスを選択します。![A screenshot of a computer
+> Description automatically generated with medium
+> confidence](./media/image65.png)
+>
+> 2\. prior_inpatient \< 3
+> の患者の適合率スコアは0.40と非常に悪いことがわかります。これは、モデルが行ったすべての予測のうち、このコホートにおいて正しかったのはわずか40%だったことを意味します。![A
+> blue and white bar graph Description automatically
+> generated](./media/image66.png)
+>
+> 3\. 他の2つのコホートの適合率スコアは良好です。
+>
+> 4\. 次に、X軸に「Recall score」メトリックを選択します。![A screenshot
+> of a computer Description automatically generated with medium
+> confidence](./media/image67.png)
+>
+> 5\. 一方、prior_inpatient \< 3
+> の患者の再現スコアは0.013です。これは、テストデータ内の患者の大多数について、モデルが30日以内に患者が再入院するかどうかを正しく予測することが困難であることを意味します。![A
+> picture containing screenshot, software, line, text Description
+> automatically generated](./media/image68.png)
+>
+> **概要**
+
+このラボでは、従来のモデルパフォーマンス指標（例：精度、再現率、混同行列など）が依然として非常に重要であることが示されます。RAIの洞察と従来のパフォーマンス指標を組み合わせることで、ダッシュボードはより詳細なレベルでモデルを分析およびデバッグするための包括的なツールを提供します。
