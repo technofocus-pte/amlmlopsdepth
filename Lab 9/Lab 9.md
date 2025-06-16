@@ -1,477 +1,403 @@
+# **ラボ 09 - GitHub で MLOps を設定する**
 
-# **Lab 09 - Setting up MLOps with GitHub**
+**目的:**
 
-**Lab Type:** Instructor led
+Azure Machine Learning を使用すると、GitHub Actions
+と統合して機械学習のライフサイクルを自動化できます。
 
-**Expected Duration:** 50 minutes
+このラボでは、Azure Machine Learning
+を使用して、線形回帰分析を実行し、ニューヨーク市のタクシー料金を予測するエンドツーエンドの
+MLOps
+パイプラインを構築する方法を学習します。このパイプラインは、それぞれ異なる機能を提供するコンポーネントで構成されています。これらのコンポーネントはワークスペースに登録し、バージョン管理を行い、さまざまな入出力で再利用できます。
 
-**Objective:**
+予定所要時間: 60 分
 
-Azure Machine Learning allows you to integrate with **GitHub
-Actions** to automate the machine learning lifecycle.
+現在、Azure Machine Learning の MLOps
+フェーズにいます。![](./media/image1.png)
 
-In this lab, you will learn about using Azure Machine Learning to set up
-an end-to-end MLOps pipeline that runs a linear regression to predict
-taxi fares in NYC. The pipeline is made up of components, each serving
-different functions, which can be registered with the workspace,
-versioned, and reused with various inputs and outputs.
+## **エクササイズ 1: Azureリソースの準備**
 
-We are at the MLOps phase of the Azure Machine Learning
+### **タスク 1: Azure Machine Learning ワークスペースを作成する**
 
-![](./media/image1.png)
+1\. まだログインしていない場合は、+++https://portal.azure.com+++ で
+Azure Portal にサインインします。
 
-## **Exercise 1: Getting the Azure resources ready**
-
-### **Task 1: Create an Azure Machine Learning workspace**
-
-1.  Sign in to the Azure portal at +++https://portal.azure.com+++ if
-    not already logged in.
-
-2.  From the Azure portal home page, select **+ Create a resource**.
-
-    ![A screenshot of a computer Description automatically
+2\. Azure Portal のホーム ページで、\[+Create a resource\]
+を選択します。![A screenshot of a computer Description automatically
 generated](./media/image2.png)
 
-3.  On the **Create a resource** page, use the search bar to find
-    +++Azure Machine Learning+++
+> ３. 「Create a resource」ページで、検索バーを使用して「+++Azure
+> Machine Learning+++」を検索します。
+>
+> ４. 「Machine Learning」を選択します。![](./media/image3.png)
+>
+> 5\.
+> 「Marketplace」の下で、「Create」ドロップダウンをクリックし、「Azure
+> Machine Learning」を選択します。![A screenshot of a computer
+> Description automatically generated](./media/image4.png)
+>
+> 6\. 新しいワークスペースを構成するには、次の情報を入力します。
 
-4.  Select **Machine Learning**.
+- **Subscription**: 割り当てられたAzureサブスクリプションを選択します
 
-    ![](./media/image3.png)
+- **Resource group**: 割り当てられたリソース グループを選択します。
 
-5.  Under **Marketplace**, click on **Create dropdown** and select
-    **Azure Machine Learning**.
+> **Workspace Details:**
 
-    ![A screenshot of a computer Description automatically generated](./media/image4.png)
+- **Workspace name:** +++**Azuremlws@lab.Lab Instance.Id**+++
 
-7.  Provide the following information to configure your new workspace:
+- **Region**: 最寄りの地域を選択してください（ここではNorth Central
+  USを選択しています）
 
-    - **Subscription**: Select your **assigned Azure subscription**
+&nbsp;
 
-    - **Resource group**: Click on **Create New** and enter
-      +++**RGForMLOps**+++ as the name.
+- **Container registry: Create newを選択します。+++azuremlcr@lab.Lab
+  Instance.Id+++を入力します。**
 
-    **Workspace Details:**
-
-    - **Workspace name: +++AzuremlwsXX**+++ (Replace **XX** with a unique
-      number)
-    
-    - **Region**: Select your nearest region (North Central US is used
-        here)
-    
-    - **Container registry:** Select **Create new**. Enter
-      +++**AzuremlcrXX**+++ (Replace **XX** with a unique number)
-
-    ![A screenshot of a computer Description automatically
+![A screenshot of a computer Description automatically
 generated](./media/image5.png)
 
-7.  Once you are done configuring the workspace, select **Review +
-    Create**.
-
-    ![A screenshot of a computer Description automatically
+![A screenshot of a computer Description automatically
 generated](./media/image6.png)
 
-8.  Once the Validation is passed, click on **Create**.
+7\. 検証に合格したら、「Create」をクリックします。
 
-    ![A screenshot of a computer Description automatically
+![A screenshot of a computer Description automatically
 generated](./media/image7.png)
 
-9.  Click on **Go to resource**, to view the new workspace.
+8\. 「Go to resource」をクリックして、新しいワークスペースを表示します。
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image8.png)
+![A screenshot of a computer Description automatically
+generated](./media/image8.png)
 
-10. **On the Microsoft.MachineLEarningServices | Overview page**,
-    select **Launch studio** under **Work with your model in Azure
-    Machine Learning studio**.
+9\. Microsoft.MachineLEarningServices | 概要ページで、Azure Machine
+Learning Studio でモデルを操作するの下の \[Launch studio\]
+を選択します。
 
-    ![A screenshot of a computer Description automatically
+![A screenshot of a software update Description automatically
 generated](./media/image9.png)
 
-### **Task 2: Create a compute**
+### **タスク 2: コンピューティングを作成する**
 
-1.  Once the Azure Machine Learning Studio opens, click on **Compute**
-    under **Manage** from the left pane.
-
-    ![A screenshot of a computer Description automatically
+![A screenshot of a computer Description automatically
 generated](./media/image10.png)
 
-2.  Select the **Compute clusters** tab and click on **+ New**.
+1\. 「Compute clusters」タブを選択し、「+New」をクリックします。
 
-    ![](./media/image11.png)
+![](./media/image11.png)
 
-3.  On the **Create compute cluster** screen, enter the below details.
+2\. 「Create compute cluster」画面で、以下の詳細を入力します。
 
-    -  Location – Select the **Region** in which you had created your
-        Azure Machine Learning Workspace
+1.  Location – Azure Machine Learning
+    ワークスペースを作成したリージョンを選択します
 
-    -  Virtual machine tier – **Dedicated**
+2.  Virtual machine tier – **Dedicated**
 
-    -  Virtual machine type – **CPU**
+3.  Virtual machine type – **CPU**
 
-    -  Virtual machine size –Select **Standard_E4s_v3** (Check Select
-        from all options to find the VM Size)
+4.  Virtual machine size – **Standard_E4s_v3** を選択します (VM
+    サイズを見つけるには、すべてのオプションから選択をチェックします)
 
-    Click on **Next**.
+> 「Next」をクリックします。
+>
+> ![A screenshot of a computer Description automatically
+> generated](./media/image12.png)
 
-    ![A screenshot of a computer Description automatically generated](./media/image12.png)
+3\. 「Advanced Settings」ページで、以下の詳細を入力します。
 
-4.  On the **Advanced Settings** page, enter the below details.
+1.  Compute name – +++**cpu-cluster@lab.Lab InstanceId**+++
 
-    -  Compute name – +++**cpu-cluster**+++
-    
-    -  Minimum number of nodes – 0
-    
-    -  Maximum number of nodes – 1
+2.  Minimum number of nodes – 0
 
-    Click on **Create**.
+3.  Maximum number of nodes – 1
 
-    ![](./media/image13.png)
+> 「Create」をクリックします。
 
-    >[!Note] **Note:** The compute takes around 10 minutes to come up to the Running
-state.
+![A screenshot of a computer Description automatically
+generated](./media/image13.png)
 
-    ![A screenshot of a computer Description automatically generated](./media/image14.png)
+**注:** コンピューティングが実行状態になるまでに約 10 分かかります。
 
-## **Exercise 2: Retrieve the Azure resources and Create a Service Principal**
+![A screenshot of a computer Description automatically
+generated](./media/image14.png)
 
-1.  From the Azure portal (<https://portal.azure.com>), open the
-    Resourcegroup **RGForMLOps** and make a note of the names of the
-    following resources,
+## **エクササイズ 2: Azureリソースを取得する**
 
-    -  **Azure Machine Learning Workspace**
+1.  Azureポータル（https://portal.azure.com）からリソースグループを開き、以下のリソースの名前をメモします。
 
-    -  **Application Insights**
+    1.  **Azure Machine Learning Workspace**
 
-    -  **Key Vault**
+    2.  **Application Insights**
 
-    -  **Container Registry**
+    3.  **Key Vault**
 
-    -  **Storage account**
+    4.  **Container Registry**
 
-    And save them locally in a notepad to be updated in the config file.
+    5.  **Storage account**
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image15.png)
+> そして、設定ファイルで更新されるように、メモ帳にローカルに保存します。
 
-2.	In the Azure portal, click on the **[>_] (Cloud Shell)** button at the top of the page to the right of the search box. A Cloud Shell pane will open at the bottom of the portal. The first time you open the Cloud Shell, you may be prompted to choose the type of shell you want to use (**Bash** or **PowerShell**). Select **Bash**. If you don't see this option, then skip this step.
-   
-	![](./media/Pict1.png)
+![A screenshot of a computer Description automatically
+generated](./media/image15.png)
 
-	![](./media/Pict2.png)
+## **エクササイズ 3: GitHubアカウントとリソースを準備する**
 
-3.	In the **Getting Started** dialog, select **Mount storage account**, select your **subscription** and then click on **Apply**.
-   
-	![](./media/Pict3.png)
+**注:** GitHub
+のアカウントをまだお持ちでない場合は、ここから作成してください
++++https://github.com/+++ -\> サインアップ。
 
-4.	In the **Mount storage account** dialog, select **we will create a storage account for you** and click on **Next**.
+### **タスク 2: mlopsデモのリポジトリをGitHubアカウントにフォークします**
 
-	![](./media/Pict4.png)
+1\. ブラウザを開き、このリンクを入力します -
++++https://github.com/getazureready/mlops-v2-gha-demo+++
 
-	![](./media/Pict5.png)
+2\. 右上の「Fork」をクリックします。![A screenshot of a chat Description
+automatically generated with medium confidence](./media/image16.png)
 
-5.	Ensure the type of shell indicated on the top left of the Cloud Shell pane is switched to **Bash**. If it's **PowerShell**, switch to **Bash** by using the drop-down menu.
+3\. 「Create a new fork」ページが開きます。「Create
+fork」をクリックします。
 
-	![](./media/Pict6.png)
-
-6.	**Execute** the below command to create a **Service Principal**, replacing **< Subscription ID >** with your **Subscription ID**.
-
-    ```
-    az ad sp create-for-rbac --name mlOpsSP --role contributor  --scopes /subscriptions/< Subscription ID >
-    ```
-    
-    **Save** the output completely to a notepad.
-
-	![](./media/Pict7.png)
-
-## **Exercise 3: Getting the GitHub account and resources ready**
-
->[!Note] **Note:** If you do not have an account with GitHub already, create one
-from here +++**https://github.com/**+++ -> **Signup**.
-
-### **Task 2: Fork the repo mlops demo into your GitHub account**
-
-1.  Open a browser and enter this link -
-    +++https://github.com/getazureready/mlops-v2-gha-demo+++
-
-2.  Click on **Fork** on the top right.
-
-    ![A screenshot of a chat Description automatically generated with medium
-confidence](./media/image16.png)
-
-3.  This opens a **Create a new fork** page. Click on **Create fork.**
-
-    ![A screenshot of a computer Description automatically
+![A screenshot of a computer Description automatically
 generated](./media/image17.png)
 
-4.  From your GitHub project, select **Settings**.
+> 4.GitHubプロジェクトから設定を選択します
 
-    ![A screenshot of a computer Description automatically generated with
+![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image18.png)
 
-5.  Select **Actions** under **Secrets and variables.**
+**5. 「Secrets and variables」の下の「Actions」を選択します。**
 
-    ![A screenshot of a computer Description automatically
+![A screenshot of a computer Description automatically
 generated](./media/image19.png)
 
-6.  Select **New repository secret**.
+6\. 「New repository secret」を選択します。
 
-    ![A screenshot of a computer Description automatically generated with
+![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image20.png)
 
-7.  Name this secret as **+++AZURE_CREDENTIALS+++**. Paste the below block of details in the **Secret** field, replacing the place holders of **appId**, **password**, **subscription id** and **tenant** with the values from the output obtained, when the Service Principal was created. You saved it earlier in the notepad. Select **Add secret**.
-    
-    ```
-    {
-      "clientId": "< appId >",
-      "clientSecret": "< password >",
-      "subscriptionId": "< Your Subscription ID >",
-      "tenantId": "< tenant >",
-      "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
-      "resourceManagerEndpointUrl": "https://management.azure.com/",
-      "activeDirectoryGraphResourceId": "https://graph.windows.net/",
-      "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
-      "galleryEndpointUrl": "https://gallery.azure.com/",
-      "managementEndpointUrl": "https://management.core.windows.net/"
-    }
-    ```
+7\.
+このシークレットに「+++AZURE_CREDENTIALS+++」という名前を付け、以下のサービスプリンシパルの出力をシークレットの内容として貼り付けます。このサービスプリンシパルは事前に作成されています。「Add
+secret」を選択してください。
 
-    ![A screen shot of a computer Description automatically generated with low confidence](./media/image21.png)
+> {
+>
+> "clientId": "+++@ラボ .Variable(spAppId)+++",
+>
+>   "clientSecret": "+++@ラボ .Variable(spClientSecret)+++",
+>
+>   "subscriptionId": "+++@ラボ.CloudSubscription.Id+++",
+>
+>   "tenantId": "+++@ラボ.CloudSubscription.TenantId+++",
+>
+>   "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+>
+>   "resourceManagerEndpointUrl": "https://management.azure.com/",
+>
+>   "activeDirectoryGraphResourceId": "https://graph.windows.net/",
+>
+>   "sqlManagementEndpointUrl":
+> "https://management.core.windows.net:8443/",
+>
+>   "galleryEndpointUrl": "https://gallery.azure.com/",
+>
+>   "managementEndpointUrl": "https://management.core.windows.net/"
+>
+> }
+>
+> ![A screen shot of a computer Description automatically generated with
+> low confidence](./media/image21.png)
 
-9.  The secret **AZURE_CREDENTIALS** that is added, gets displayed under
-    **Repository secrets**.
+8\. 追加されたシークレット AZURE_CREDENTIALS は、リポジトリ
+シークレットの下に表示されます。
 
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image22.png)
+![A screenshot of a computer Description automatically generated with
+medium confidence](./media/image22.png)
 
-10.  Click on **New repository secret**.
+9\. 「New repository secret」をクリックします。![](./media/image23.png)
 
-    ![](./media/image23.png)
+10\. 以下の詳細を入力してください。
 
-11. Provide the below details.
+1.  Name – +++ARM_CLIENT_ID+++
 
-    -  Name – **+++ARM_CLIENT_ID+++**
+2.  Secret – +++@lab.Variable(spAppId)+++
 
-    -  Secret – **< App ID >**
+> ![A screenshot of a computer secret Description automatically
+> generated with low confidence](./media/image24.png)
 
-    ![A screenshot of a computer secret Description automatically generated with low confidence](./media/image24.png)
+11\. 次の値に対して手順 9 と 10 を繰り返して、追加の GitHub
+シークレットを作成します。
 
-12. Repeat steps 9 and 10 for the following values, creating additional
-    GitHub secrets.
+- +++ARM_CLIENT_SECRET+++ - +++@lab .Variable(spClientSecret)+++
 
-    - **+++ARM_CLIENT_SECRET+++** - **< Password>**
+- +++ARM_SUBSCRIPTION_ID+++ - +++@lab.CloudSubscription.Id+++
 
-    - **+++ARM_SUBSCRIPTION_ID+++** - **< Your Azure subscription id >**
+- +++ARM_TENANT_ID+++ - +++@lab.CloudSubscription.TenantId+++
 
-    - **+++ARM_TENANT_ID+++** - **< Tenant >**
+## **エクササイズ 4: 機械学習環境パラメータを構成する**
 
-## **Exercise 4: Configure Machine Learning environment parameters**
+1\. シークレット ページから、左上にある GitHub ID の横にある
+mlops-v2-gha-demo をクリックして、リポジトリ
+ページに移動します。![](./media/image25.png)
 
-1. From the secrets page, navigate to the repository page by clicking
-on **mlops-v2-gha-demo** next to your GitHub id on the top left.
+2\.
+ルートにあるconfig-infra-prod.ymlファイルを選択し、「Edit」（鉛筆アイコン）をクリックします。
 
-    ![](./media/image25.png)
-
-2.  Select the **config-infra-prod.yml** file in the root. Click on
-    **Edit** (The pencil icon).
-
-    ![A screenshot of a computer Description automatically
+![A screenshot of a computer Description automatically
 generated](./media/image26.png)
 
-3.  Change the values,
+> 3\. 値を変更する
 
-    -  **Namespace** – **mlopsliteXX**(Replace XX with a random number)
+6.  **Namespace** –
+    **mlopsliteXX**（XXをランダムな数字に置き換えてください）
 
-    -  **Postfix** – **c**
+7.  **Postfix** – **c**
 
-    -  **location** – **Same as your workspace region**
+8.  **location** – **Same as your workspace region**
 
-    Click on **Commit changes**.
+> 「Commit changes」をクリックします。
+>
+> 「pipeline reference」セクションで、Azure リソースの値を、演習 2
+> で取得して保存した値に置き換えます。
+>
+> ![A screenshot of a computer Description automatically
+> generated](./media/image27.png)
 
-    Under the **For pipeline reference section**, replace the **values** of the Azure Resources with the values that we fetched and saved in Exercise 2.
+4\. 変更のコミット ペインで変更のコミットをクリックします。![A
+screenshot of a computer Description automatically generated with medium
+confidence](./media/image28.png)
 
-    ![A screenshot of a computer Description automatically generated](./media/image27.png)
+5..github/workflows から deploy-model-training-pipeline-classical.yml
+を開きます。編集（鉛筆アイコン）をクリックします。
 
-4.  Click on **Commit changes** in the commit changes pane.
-
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image28.png)
-
-5.  Open **deploy-model-training-pipeline-classical.yml** from
-    **.github/workflows**. Click on **Edit**(The pencil icon).
-
-    ![A screenshot of a computer Description automatically generated with
+![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image29.png)
 
-6.  In the contents of the file, replace the value of **Size** with
-    **+++Standard_E4s_v3+++**
+> 6\. ファイルの内容で、Size の値を +++Standard_E4s_v3+++
+> に置き換えます。
+>
+> 「変更をコミット」を選択します。 ![A screenshot of a computer
+> Description automatically generated with medium
+> confidence](./media/image30.png)
 
-    Select **Commit changes**.
+7\. mlops/azureml/deploy/online から online-deployment.yml
+ファイルを開きます。「Edit」（鉛筆アイコン）をクリックします。
 
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image30.png)
+![](./media/image31.png)
 
-7.  Open the file **online-deployment.yml** from
-    **mlops/azureml/deploy/online.** Click on **Edit**(the pencil icon).
+8\. instance_typeの値を+++Standard_E4s_v3+++に置き換えます。「Commit
+changes」をクリックします。
 
-    ![](./media/image31.png)
-
-8.  Replace the value of **instance_type** as **+++Standard_E4s_v3+++**.
-    Click on **Commit changes**.
-
-    ![A screenshot of a computer Description automatically generated with
+![A screenshot of a computer Description automatically generated with
 low confidence](./media/image32.png)
 
-9.  Open **tf-gha-deploy-infra.yml** file under **.github/workflows**.
-    Click on **Edit** and replace Azure with +++CoursesTF+++ in lines 9
-    and 14.
+> 9\. github/workflows にある tf-gha-deploy-infra.yml
+> ファイルを開きます。「Edit」をクリックし、9行目と14行目の「Azure」を「+++CoursesTF+++」に置き換えます。
+>
+> \[Commit changes\]を選択します。
 
-    Select **Commit changes**.
-
-    ![A screenshot of a computer Description automatically
+![A screenshot of a computer Description automatically
 generated](./media/image33.png)
 
-10. From the top menu bar, select **Actions**. Click on **I understand
-    my workflows, go ahead and enable them**.
+10\. 上部のメニューバーから「Actions」を選択します。「I understand my
+workflows」をクリックし、有効化します。
 
-    ![A screenshot of a computer Description automatically
+![A screenshot of a computer Description automatically
 generated](./media/image34.png)
 
-11. This displays the pre-defined GitHub workflows associated with your
-    project.
+11\. プロジェクトに関連付けられた定義済みの GitHub
+ワークフローが表示されます。
 
-    ![A screenshot of a computer Description automatically generated with
+![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image35.png)
 
-## **Exercise 5: Deploy Machine Learning infrastructure**
+## **エクササイズ 5: 機械学習インフラストラクチャを導入する**
 
-1.  Select **tf-gha-deploy-infra.yml**. Click on **Runworkflow**.
+**1. tf-gha-deploy-infra.yml
+を選択します。「Runworkflow」をクリックします。**
 
-    Select
+**• ブランチ – main を選択します。**
 
-    - Branch – **main**
-    
-    Select **Run workflow**
+**「Run workflow」を選択します。**
 
-    ![A screenshot of a computer Description automatically generated with
+![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image36.png)
 
-2.  This would deploy the Machine Learning infrastructure using GitHub
-    Actions and Terraform.
+2\. これにより、GitHub Actions と Terraform
+を使用して機械学習インフラストラクチャがデプロイされます。
 
-3.  Track the status of the job and confirm that the execution is
-    successful.
+3\. ジョブのステータスを追跡し、実行が成功したことを確認します。
 
-    ![A screenshot of a computer Description automatically generated with
+![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image37.png)
 
-    >[!Note] **Note:** This workflow takes around 5 minutes to complete.
+**注:** このワークフローは完了までに約5分かかります.
 
-**Sample Training and Deployment Scenario:**
+## **エクササイズ 6: モデルトレーニングパイプラインのデプロイ**
 
-The solution accelerator includes code and data for a sample end-to-end
-machine learning pipeline which runs a linear regression to predict taxi
-fares in NYC. The pipeline is made up of components, each serving
-different functions, which can be registered with the workspace,
-versioned, and reused with various inputs and outputs. Sample pipelines
-and workflows for the Computer Vision and NLP scenarios will have
-different steps and deployment steps.
+次に、モデルトレーニングパイプラインを新しい機械学習ワークスペースにデプロイします。
 
-This training pipeline contains the following steps:
+このパイプラインは、コンピューティングクラスターインスタンスを作成し、必要な
+Docker イメージと Python
+パッケージを定義するトレーニング環境を登録し、トレーニングデータセットを登録し、前のセクションで説明したトレーニングパイプラインを開始します。 
 
-- Prepare Data
+1\. tf-gha-deploy-infra.yml ワークフロー ページから、\[Actions\]
+をクリックします。
 
-- Train Model
-
-- Evaluate Model
-
-- Register Model
-
-## **Exercise 6: Deploying the Model Training Pipeline**
-
-Next, you will deploy the model training pipeline to your new Machine
-Learning workspace.
-
-This pipeline will create a compute cluster instance, register a
-training environment defining the necessary Docker image and python
-packages, register a training dataset, then start the training pipeline
-described in the last section. 
-
-1.  From the **tf-gha-deploy-infra.yml** workflow page, Click on
-    **Actions**.
-
-    ![A screenshot of a computer Description automatically
+![A screenshot of a computer Description automatically
 generated](./media/image38.png)
 
-2.  This displays the pre-defined GitHub workflows associated with your
-    project. Select **deploy-model-training-pipeline** from the list.
+> 2.プロジェクトに関連付けられた定義済みのGitHubワークフローが表示されます。リストからdeploy-model-training-pipelineを選択してください。
 
-    ![A screenshot of a computer Description automatically generated with
+![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image39.png)
 
-3.  Click on **Run workflow** -\> **Run workflow**.
+3\. 「Run workflow -\> Run workflow」をクリックします。
 
-    ![A screenshot of a computer Description automatically generated with
+![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image40.png)
 
-4.  Click on the pipeline that has just started, to track the progress.
+4\. 開始したばかりのパイプラインをクリックして、進行状況を追跡します。
 
-    ![A picture containing text, software, web page, font Description
+![A picture containing text, software, web page, font Description
 automatically generated](./media/image41.png)
 
-5.  This pipeline takes around 15 to 45 minutes to complete.
+5\. このパイプラインが完了するまでに約 15 ～ 45 分かかります。
 
-    ![A screenshot of a computer Description automatically generated with
+![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image42.png)
 
-6.  A screenshot of the successful pipeline execution is below.
+6\. パイプラインの実行が成功したスクリーンショットを以下に示します。
 
-    ![](./media/image43.png)
+![](./media/image43.png)
 
-7.  This execution will register the model in the Machine Learning
-    workspace.
+7\. この実行により、モデルが機械学習ワークスペースに登録されます。
 
-8.  Login to the AzureMachineLearning studio at <https://ml.azure.com/>
-    and click on **Data** from the left pane to check that the
-    **taxi-data** has been added there. This is done as part of the
-    **register-dataset** job of the workflow.
+8\. https://ml.azure.com/ にあるAzureMachineLearning
+Studioにログインし、左側のペインで「Data」をクリックして、タクシーデータが追加されていることを確認します。これは、ワークフローのregister-datasetジョブの一部として実行されます。
 
-    ![A screenshot of a computer Description automatically
+![A screenshot of a computer Description automatically
 generated](./media/image44.png)
 
-9.  Click on **Jobs** from the left pane and select
-    **taxi-fare-training**. This is executed in the **run-pipeline** job
-    of the workflow.
+9\.
+左ペインから「Jobs」をクリックし、「taxi-fare-training」を選択します。これはワークフローのrun-pipelineジョブで実行されます。
 
-    ![](./media/image45.png)
+![](./media/image45.png)
 
-10. Select the latest execution’s Display name.
+10\. 最新の実行の表示名を選択します。
 
-    ![A screenshot of a computer Description automatically generated with
+![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image46.png)
 
-11. Explore the stages and the details involved in the training.
+11\. トレーニングに含まれる段階と詳細を確認します。
 
-    ![A screenshot of a computer Description automatically
+![A screenshot of a computer Description automatically
 generated](./media/image47.png)
 
-With the trained model registered in the Machine learning workspace, you
-are ready to deploy the model for scoring.
+トレーニング済みのモデルが機械学習ワークスペースに登録されたら、スコアリング用にモデルをデプロイする準備が整います。
 
-## **Exercise 7: Delete Resources**
+**概要**
 
-1.  From the left pane of the AML workspace, select **Compute**.
-
-2.  Select the **Compute clusters** tab, select the compute and then
-    click on **Delete**.
-
-    ![A screenshot of a computer Description automatically generated](./media/image48.png)
-
-3. A notification for successful compute deletion is obtained once the deletion is completed.
-
-    ![A screen shot of a computer Description automatically generated with
-medium confidence](./media/image49.png)
-
-**Summary**
-
-In this lab we have learnt on using Azure Machine Learning to set up an
-end-to-end MLOps pipeline, which prepared the data and deployed the
-model training pipeline to your new Machine Learning workspace.
+このラボでは、Azure Machine Learning を使用してエンドツーエンドの MLOps
+パイプラインを設定し、データを準備してモデル トレーニング
+パイプラインを新しい Machine Learning
+ワークスペースにデプロイする方法を学習しました。
