@@ -1,429 +1,379 @@
+# **ラボ 04 – Azure Machine Learning Studio でコード不要の AutoML を使用して分類モデルをトレーニングする**
 
-# **Lab 04 – Training a classification model with no-code AutoML in the Azure Machine Learning Studio**
+**目的**
 
-**Lab Type** – Instructor Led
+このラボでは、Azure Machine Learning Studio の Azure Machine Learning
+Automated ML を用いて、コード不要の AutoML
+で分類モデルをトレーニングする方法を学習します。この分類モデルは、顧客が金融機関の定期預金に加入するかどうかを予測します。Automated
+Machine Learning
+は、アルゴリズムとハイパーパラメータの様々な組み合わせを迅速に反復処理し、選択した成功指標に基づいて最適なモデルを見つけるのに役立ちます。
 
-**Expected Duration** – 60 minutes
+想定所要時間 – 60 分
 
-**Objective**
+現在、Azure Machine Learning
+のモデルデプロイフェーズにいます。![](./media/image1.png)
 
-In this lab, we will learn how to train a classification model with
-no-code AutoML using Azure Machine Learning automated ML in the Azure
-Machine Learning studio. This classification model predicts if a client
-will subscribe to a fixed term deposit with a financial institution.
-Automated machine learning rapidly iterates over many combinations of
-algorithms and hyperparameters to help you find the best model based on
-a success metric of your choosing.
+## **エクササイズ1: Create an Azure Machine Learning workspace**
 
-We are at the **Deploy Model** phase of the Azure Machine Learning.
+1\. \[Resources\] タブの資格情報を使用して、Azure Portal
+(+++https://portal.azure.com+++) にサインインします。
 
-  ![](./media/image1.png)
-
-## **Exercise 1: Getting the Azure resources ready**
-
-### **Task 1: Create an Azure Machine Learning workspace**
-
-1.  Sign in to Azure portal – +++**https://portal.azure.com**+++ using
-    the credentials from the **Resources** tab.
-
-2.  From the Azure portal home page, select **+ Create a resource**.
-
-  ![A screenshot of a computer Description automatically
+2\. Azure Portal のホーム ページで、\[+Create a resource\]
+を選択します。![A screenshot of a computer Description automatically
 generated](./media/image2.png)
 
-3.  On **Create a resource**, use the search bar to find +++**Azure
-    Machine Learning**+++. Select **Azure Machine Learning** under
-    **Marketplace**.
+3.リソースの作成で、検索バーを使用して「+++Azure Machine
+Learning+++」を検索します。MarketplaceでAzure Machine
+Learningを選択します。
 
-  ![A screenshot of a computer Description automatically generated](./media/image3.png)
+> ![A screenshot of a computer Description automatically
+> generated](./media/image3.png)
+>
+> 4\.
+> 「Marketplace」の下で、「Create」ドロップダウンをクリックし、「Azure
+> Machine Learning」を選択します。![A screenshot of a software
+> Description automatically generated](./media/image4.png)
+>
+> 5\. 新しいワークスペースを構成するには、次の情報を入力します。
 
-4.  Under **Marketplace**, click on **Create** dropdown and select
-    **Azure Machine Learning**.
+- **Subscription**: 割り当てられたAzureサブスクリプションを選択します
 
-  ![A screenshot of a software Description automatically generated](./media/image4.png)
+- **Resource group**: 割り当てられたリソースグループを選択します
 
-5.  Provide the following information to configure your new workspace:
+> ![A screenshot of a computer Description automatically
+> generated](./media/image5.png)
 
-    - **Subscription**: Select your **assigned Azure subscription**
+**Workspace Details:**
 
-    - **Resource group**: Select **Create New** and give the name as
-      +++**RGForMLOps**+++
+- **Workspace name: +++Azuremlws@lab.Lab InstanceId+++**
 
-    **Workspace Details:**
+&nbsp;
 
-    - **Workspace name: +++AzuremlwsXX+++ (Substitute XX with a random
-  number to ensure uniqueness)**
+- **Region**: • 地域を選択 ここではNorth Central USが使用されています
 
-    - **Region**: **East US**/**East US2**/**North Central US** (Select one
-  of these 3)
+- **Container registry: Create newを選択します. +++Azuremlcr@lab.Lab
+  InstanceId**+++ を入力します
 
-    - **Container registry:** Select **Create new.** Enter
-  **+++AzuremlcrXX**+++ (Replace **XX** with a unique number)
+![A screenshot of a computer Description automatically
+generated](./media/image6.png)
 
-    Once you are done configuring the workspace, select **Review + Create**.
+> ![A screenshot of a computer Description automatically
+> generated](./media/image7.png)
 
-  ![](./media/image5.png)
+６. ワークスペースの構成が完了したら、\[Review + Create\]
+を選択します。![A screenshot of a computer Description automatically
+generated](./media/image8.png)
 
-  ![A screenshot of a computer Description automatically generated](./media/image6.png)
+７. 検証に合格したら、「Create」をクリックします。
 
-6.  Once the Validation is passed, click on **Create**.
+![A screenshot of a computer Description automatically
+generated](./media/image9.png)
 
-  ![A screenshot of a computer Description automatically generated](./media/image7.png)
+8\. 「Go to
+resource」をクリックして、新しいワークスペースを表示します。![A
+screenshot of a computer Description automatically
+generated](./media/image10.png)
 
-7.  Click on **Go to resource**, to view the new workspace.
+9\. Microsoft.MachineLEarningServices | 概要ページで、Azure Machine
+Learning Studio でモデルを操作するの下の \[Launch studio\]
+を選択します。![A screenshot of a computer Description automatically
+generated](./media/image11.png)
 
-  ![A screenshot of a computer Description automatically generated with medium confidence](./media/image8.png)
+## **エクササイズ2: 自動MLジョブを作成する**
 
-8.  **On the Microsoft.MachineLEarningServices | Overview page**,
-    select **Launch studio** under **Work with your model in Azure
-    Machine Learning studio**.
+1\. Azure Machine Learning Studio タブに移動します。
 
-  ![A screenshot of a computer Description automatically generated](./media/image9.png)
+2\. 左側のペインで、「Authoring」セクションの「Automated
+ML」を選択します。
 
-### **Task 2: Retrieve the Storage account key**
+3\. 「+ New Automated ML job」をクリックします。![](./media/image12.png)
 
-1.  From the Azure portal, (+++<https://portal.azure.com>+++) home page,
-    open the Resource group and click on the **Storage account
-    (azuermlwsXXXXXX).**
+### **タスク 1: Create data asset**
 
-  ![A screenshot of a computer Description automatically generated](./media/image10.png)
+1\. \[Basic settings\] ページで、新しい実験名を
++++MarketingExperiment+++ と入力し、他のデフォルトを受け入れて \[Next\]
+をクリックします。![](./media/image13.png)
 
-2.  Select **Access keys** from **Security + networking** on the left
-    pane.
+2\. \[task type & data\] ページで、\[タスク タイプの選択\] で
+\[Classification\] を選択し、\[Select task type\] で \[+ Create\]
+を選択します。![A screenshot of a computer Description automatically
+generated](./media/image14.png)
 
-  ![A screenshot of a computer Description automatically generated](./media/image11.png)
+3\. 「Create data asset」ページで、以下の詳細を入力します。
 
-3.  Copy the value of the **Key** field under **key1.** Save it in a
-    notepad for use in the next steps.
+- **Name** – +++marketingdata+++
 
-  ![A screenshot of a computer Description automatically generated](./media/image12.png)
+- **Type** – **Tabular**
 
-## **Exercise 2: Create an Automated ML job**
+- **Next**をクリックします
 
-1.  Navigate to the Azure Machine Learning Studio tab.
+![A screenshot of a computer Description automatically generated with
+medium confidence](./media/image15.png)
 
-2.  From the left pane, select **Automated ML** under
-    the **Authoring** section.
+４. 「Data source」ペインで、「From local
+files」を選択し、「Next」をクリックします。
 
-3.  Click on **+ New Automated ML job**.
+![A screenshot of a computer Description automatically
+generated](./media/image16.png)
 
-    ![](./media/image13.png)
+5\. 「Destination storage
+type」で、ワークスペース作成時に自動的に設定されたデフォルトのデータストア（workspaceblobstore）を選択します。データファイルをこの場所にアップロードすると、ワークスペースで使用できるようになります。「Next」を選択します。
 
-### **Task 1: Create data asset**
+![A screenshot of a computer Description automatically
+generated](./media/image17.png)
 
-1.  On the **Basic settings** page, accept the defaults and click
-    **Next**.
+6\. 「File or folder selection」で、「Upload files or folder \> Upload
+files」を選択します。C:/Labfiles から bankmarketing_train.csv
+ファイルを選択します。「Next」を選択します。![A screenshot of a computer
+Description automatically generated](./media/image18.png)
 
-    ![A screenshot of a computer Description automatically generated](./media/image14.png)
+> 7.アップロードが完了すると、ファイルの種類に応じてデータプレビューエリアにデータが表示されます。設定フォームでデータの値を確認し、「Next」を選択します。
 
-2.  In the Task type & data page, select **Classification** under
-    **Select task type** and select **+ Create** under **Select data.**
+[TABLE]
 
-    ![A screenshot of a computer Description automatically generated](./media/image15.png)
+> ![A screenshot of a computer Description automatically
+> generated](./media/image19.png)
 
-3.  In the Create data asset page, provide the below details.
+8\.
+スキーマフォームでは、この実験で使用するデータの詳細設定が可能です。この例では、day_of_week
+のトグルスイッチをオンにして、データに含めないようにします。「Next」を選択します。
 
-    - **Name** – +++marketingdata+++
-    
-    - **Type** – **Tabular**
-    
-    - Click on **Next**.
+![A screenshot of a computer Description automatically
+generated](./media/image20.png)
 
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image16.png)
+> 9.レビューフォームで情報を確認し、「Create」を選択してデータ資産の作成を完了します。
 
-4.  On the **Data source** pane, select **From local files** and click
-    on **Next**.
+![A screenshot of a computer Description automatically
+generated](./media/image21.png)
 
-    ![A screenshot of a computer Description automatically generated](./media/image17.png)
+10\. 「Create a new Automated ML
+job」ページに戻ると、データアセット作成の成功メッセージが表示されます。作成したマーケティングデータデータアセットを選択し、「Next」をクリックします。
 
-5.  In **Destination storage type,** select the default datastore that
-    was automatically set up during your workspace creation:
-    **workspaceblobstore**. You upload your data file to this location
-    to make it available to your workspace. Select **Next**.
+注:
+マーケティングデータが表示されない場合は、「更新」をクリックしてリストに表示してください。![A
+screenshot of a computer Description automatically
+generated](./media/image22.png)
 
-    ![A screenshot of a computer Description automatically generated](./media/image18.png)
+### **タスク 2: ジョブの構成**
 
-6.  In **File or folder selection**, select **Upload files or
-    folder** \> **Upload files**. Choose
-    the **bankmarketing_train.csv** file from **C:/Labfiles**. Select
-    **Next**.
+1.  タスク設定ページで、予測対象のターゲット列としてy（文字列）を選択します。この列は、顧客が定期預金に加入したかどうかを示します。
 
-    ![A screenshot of a computer Description automatically generated](./media/image19.png)
+2.  「View additional configuration
+    settings」を選択し、以下のフィールドに入力します。これらの設定は、トレーニングジョブをより適切に制御するためのものです。それ以外の場合は、実験の選択とデータに基づいてデフォルトが適用されます。
 
-7.  When the upload finishes, the **Data preview** area is populated
-    based on the file type. In the **Settings** form, review the values
-    for your data. Then select **Next**.
+- Primary metric – AUCWeighted
 
-    | Field | Value |
-    |:----|:---|
-    | File format | Delimited |
-    | Delimiter | Comma |
-    | Encoding | UTF-8 |
-    | Column headers | All files have same headers |
-    | Skip rows | None |
+- Explain best model – Enable
 
-    ![A screenshot of a computer Description automatically generated](./media/image20.png)
+- Use all supported models - Enable
 
-9.  The **Schema** form allows for further configuration of your data
-    for this experiment. For this example, select the toggle switch for
-    the **day_of_week**, so as to not include it. Select **Next**.
+- Blocked models – None
 
-    ![A screenshot of a computer Description automatically generated](./media/image21.png)
+![A screenshot of a computer AI-generated content may be
+incorrect.](./media/image23.png)
 
-10.  In the **Review** form, verify that the information and
-    select **Create** to complete the creation of your **data asset**.
+3\. \[Limits\] を選択し、\[Experiment timeout(minutes)\] フィールドに
++++60+++ と入力します。
 
-    ![A screenshot of a computer Description automatically generated](./media/image22.png)
+![A screenshot of a computer AI-generated content may be
+incorrect.](./media/image24.png)
 
-11. Back in the **Submit an Automated ML job** page, a **success**
-    message for the data asset creation gets displayed. Select the
-    created **marketingdata** data asset and click on **Next**.
+![A screenshot of a test AI-generated content may be
+incorrect.](./media/image25.png)
 
-    >[!Note] **Note:** If the **marketingdata** is not displayed, click on Refresh to get it listed.
+4\. 「Validate and test」で以下の値を入力し、「Next」をクリックします。
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image23.png)
+- Validation type - **k-fold cross-validationを選択します。**
 
-### **Task 2: Configure job**
+- Number of cross validations – **2を選択します。**
 
-1.  In the **Task Settings** page, select **y (String)** as the target
-    column, which is what you want to predict. This column indicates
-    whether the client subscribed to a term deposit or not.
+![A screenshot of a computer Description automatically
+generated](./media/image26.png)
 
-2.	Select **View additional configuration settings** and populate the fields as follows and select **Save**. These settings are to better control the training job. Otherwise, defaults are applied based on experiment selection and data.
+５. 「Compute」ページで、「Select compute type」として「Compute
+cluster」を選択し、「+ New」をクリックします。
 
-    - Primary metric – AUCWeighted
-    
-    - Explain best model – Enable
-  
-    - Use all supported models - Enable
-    
-    - Blocked models – None
+![A screenshot of a computer Description automatically
+generated](./media/image27.png)
 
-    ![](./media/img17.png)
+6\. 「Create compute
+cluster」ペインで、以下の詳細を選択し、「Next」をクリックします。
 
-3.	Select **Limits** and enter +++**60**+++ for the **Experiment timeout(minutes)** field.
+- Location – **North Central US** (Azure Machine Learning
+  ワークスペースの場所と同じ)
 
-    ![](./media/img18.png)
+- Virtual machine tier – **Dedicated**
 
-    ![](./media/img39.png)
-  	
-4.  Under **Validate and test**, provide the below values and click on
-    **Next**.
+- Virtual machine type - **CPU**
 
-    - Validation type - Select **k-fold cross-validation**
-    
-    - Number of cross validations – Select **2**
+- Virtual machine size -**Standard_DS12_v2**
 
-    ![A screenshot of a computer Description automatically generated](./media/image25.png)
+![A screenshot of a computer Description automatically
+generated](./media/image28.png)
 
-5.  In the Compute page, select the Select compute type as **Compute
-    cluster** and click on **+ New**.
+7\. 詳細設定で以下の詳細を入力し、「Create」を選択します。
 
-    ![A screenshot of a computer Description automatically generated](./media/image26.png)
+- Compute name - +++automl-compute+++
 
-6.  In the **Create compute cluster** pane, select the below details and click **Next**.
+- Minimum number of nodes - 0
 
-    - Location - **Same as your Azure ML Workspace region**(It is **NorthCentral US** here)
-    
-    - Virtual machine tier – **Dedicated**
-    
-    - Virtual machine type - **CPU**
-    
-    - Virtual machine size -Select **Standard_DS12_v2** (Click on **Select from all options**, search for !!**DS12**!! to find the option easier)
+- Maximum number of nodes – 1
 
-    ![](./media/img19.png)
+> ![A screenshot of a computer Description automatically
+> generated](./media/image29.png)
+>
+> 8\.
+> コンピューティングのプロビジョニングが成功したら、「Next」を選択します。![A
+> screenshot of a computer Description automatically
+> generated](./media/image30.png)
+>
+> 9\. \[Review\] ページで、\[Submit the training job\] を選択します。![A
+> screenshot of a computer Description automatically
+> generated](./media/image31.png)
 
-6.  In the Advanced settings, provide the below details and select
-    **Create**.
+10\.
+実験の準備が始まると、概要画面が開き、上部にステータスが表示されます。このステータスは実験の進行に合わせて更新されます。また、実験のステータスをお知らせする通知がスタジオ内に表示されます。![A
+screenshot of a computer Description automatically
+generated](./media/image32.png)
 
-    - Compute name - +++automl-compute+++
-    
-    - Minimum number of nodes - 0
-    
-    - Maximum number of nodes – 1
+> 注: トレーニングの所要時間は約 40 分です。
 
-    ![A screenshot of a computer Description automatically generated](./media/image28.png)
+## **エクササイズ3: モデルを探索する**
 
-7.  Select **Next** once the compute provisioning succeeds.
+> トレーニングの進行中は、関連するモデルを調べることができます。
+>
+> 1\. 「Models + child
+> jobs」タブに移動して、テストされたアルゴリズム（モデル）を確認します。![A
+> screenshot of a computer Description automatically
+> generated](./media/image33.png)
 
-    ![A screenshot of a computer Description automatically generated](./media/image29.png)
+2\. StandardScalerWrapper、XGBoostClassifier モデルを選択します。![A
+screenshot of a computer Description automatically
+generated](./media/image34.png)
 
-8.  In the **Review** page, select **Submit the training job**.
+3\. 「Metrics」をクリックし、「Metrics」タブで詳細を確認します。
 
-    ![A screenshot of a computer Description automatically generated](./media/image30.png)
+![A screenshot of a computer Description automatically generated with
+medium confidence](./media/image35.png)
 
-9.  The **Overview** screen opens with the **Status** at the top as the
-    experiment preparation begins. This status updates as the experiment
-    progresses. Notifications also appear in the studio to inform you of
-    the status of your experiment.
+> 4\.
+> すべての実験モデルが完了するまで、完了したモデルのアルゴリズム名を選択してパフォーマンスの詳細を確認してください。ジョブに関する情報を確認するには、「Overview」タブと「Metrics」タブを選択してください。
+>
+> 重要:
+> モデルのトレーニングには約40分かかります。トレーニングが完了するまで、次のラボに進んでください。ステータスが「Completed」に変わったら、このラボを再開してください。
 
-    ![A screenshot of a computer Description automatically generated](./media/image31.png)
+## **エクササイズ4: モデルの説明**
 
-    >[!Note] **Note:** The training takes around 40 minutes to complete.
+モデルの説明はオンデマンドで生成できます。「説明（プレビュー）」タブに含まれるモデルの説明ダッシュボードには、これらの説明の概要が表示されます。
 
-## **Exercise 3: Explore models**
+1\. \[Models + child jobs\] タブ (親ジョブから)
+で、MaxAbsScaler、LightGBM を選択します。![A screenshot of a computer
+Description automatically generated](./media/image36.png)
 
-While the training is in progress, you can explore the models associated
-with.
+2\. 「Explain model」タブを選択します。
 
-1.  Navigate to the **Models + child** jobs tab to see the algorithms
-    (models) tested.
+![A screenshot of a computer Description automatically
+generated](./media/image37.png)
 
-    ![A screenshot of a computer Description automatically generated](./media/image32.png)
+> 3\. 開いたモデルの説明ペインで、
 
-2.  Select the **StandardScalerWrapper, XGBoostClassifier** model.
+1.  Select compute type - **Compute cluster**
 
-    ![A screenshot of a computer Description automatically generated](./media/image33.png)
+2.  Select AzureML compute instance - Select **automl-compute**
 
-3.  Click on **Metrics** and explore the details under the Metrics tab.
+「Create」を選択します。
 
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image34.png)
+![A screenshot of a computer Description automatically
+generated](./media/image38.png)
 
-4.  While you wait for all of the experiment models to finish, select
-    the **Algorithm name** of a completed model to explore its
-    performance details. Select the **Overview** and
-    the **Metrics** tabs for information about the job.
+4\.
+成功メッセージが表示されます。「説明（プレビュー）」タブを選択します。このタブは、説明可能性の実行が完了すると表示されます。![A
+screenshot of a computer Description automatically generated with medium
+confidence](./media/image39.png)
 
-    >[!Alert] **Important:** The model training takes around 40 minutes to complete. Please proceed with the next lab while this is in progress. Resume to this lab once the status changes to **Completed**.
+5\.
+左側のペインを展開します。「Features」の下にある「raw」と表示されている行を選択します。「Aggregate
+feature
+importance」タブを選択します。このグラフには、選択したモデルの予測に影響を与えたデータ特徴が表示されます。
 
-## **Exercise 4: Model Explanations**
+![A screenshot of a computer Description automatically
+generated](./media/image40.png)
 
-The model explanations can be generated on demand. The model
-explanations dashboard that's part of the **Explanations (preview)** tab
-summarizes these explanations.
+この例では、期間がこのモデルの予測に最も影響を与えるようです。
 
-1.  Under the Models + child jobs tab(from the parent job), select
-    **MaxAbsScaler, LightGBM.**
+## **エクササイズ5: 最適なモデルを導入する**
 
-    ![A screenshot of a computer Description automatically generated](./media/image35.png)
+自動機械学習インターフェースを使用すると、最適なモデルをWebサービスとしてデプロイできます。デプロイとは、モデルを統合して新しいデータに基づいて予測を行い、潜在的な機会領域を特定できるようにすることです。この実験では、Webサービスへのデプロイは、金融機関が潜在的な定期預金顧客を特定するための反復的でスケーラブルなWebソリューションを手に入れることを意味します。
 
-2.  Select the **Explain model** tab.
+実験の実行が完了すると、「Details」ページに「Best model
+summary」セクションが表示されます。この実験では、AUCWeightedメトリックに基づいて、VotingEnsembleが最適なモデルと見なされます。
 
-    ![A screenshot of a computer Description automatically generated](./media/image36.png)
+1\. 左側のペインで「Jobs」を選択し、作成した実験を選択します。![A
+screenshot of a computer Description automatically generated with medium
+confidence](./media/image41.png)
 
-3.  On the Explain model pane that opens up, select
+2\. 実験の表示名をクリックします。![](./media/image42.png)
 
-    -  Select compute type - **Compute cluster**
+3\. ステータスが「Completed」になっているかどうかを確認します。![A
+screenshot of a computer Description automatically
+generated](./media/image43.png)
 
-    -  Select AzureML compute instance - Select **automl-compute**
+> 4\. 実験の実行が完了すると、「Details」ページに「Best model
+> summary」セクションが表示されます。この実験では、AUC_weighted
+> 指標に基づいて、VotingEnsemble が最適なモデルと判断されています。![A
+> screenshot of a computer Description automatically
+> generated](./media/image44.png)
 
-    Select **Create**.
+このモデルをデプロイしますが、デプロイには約20分かかりますのでご注意ください。デプロイプロセスには、モデルの登録、リソースの生成、Webサービス用の設定など、いくつかの手順が含まれます。
 
-    ![A screenshot of a computer Description automatically generated](./media/image37.png)
+> 5\. VotingEnsemble を選択して、モデル固有のページを開きます。
 
-4.  Success message is displayed. Select the **Explanations(preview)**
-    tab. This tab populates after the explainability run completes.
+![A screenshot of a computer AI-generated content may be
+incorrect.](./media/image45.png)
 
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image38.png)
+> 6.左上の\[Deploy\]メニューを選択し、\[Deploy to web
+> service\]を選択します。
 
-5.	On the left, **expand** the list of explanations to select and  then select the entry whose **Features** is **raw**.
-
-    ![](./media/img20.png)
-
-    ![](./media/img21.png)
-  	
-6.  Select the **Aggregate feature importance** tab.
-    This chart shows which data features influenced the predictions of
-    the selected model.
-
-    ![](./media/img22.png)
-
-In this example, the **duration** appears to have the most influence on
-the predictions of this model.
-
-## **Exercise 5: Deploy the best model**
-
-The automated machine learning interface allows you to deploy the best
-model as a web service. *Deployment* is the integration of the model so
-it can predict on new data and identify potential areas of opportunity.
-For this experiment, deployment to a web service means that the
-financial institution now has an iterative and scalable web solution for
-identifying potential fixed term deposit customers.
-
-After the experiment run is complete, the **Details** page is populated
-with a **Best model summary** section. In this experiment
-context, **VotingEnsemble** is considered the best model, based on
-the **AUCWeighted** metric.
-
-1.	Select **Jobs** from the left pane and select the **default experiment**.
-
-    ![](./media/img23.png)
-
-2.  Click on the display name of the experiment.
-
-    ![](./media/image41.png)
-
-3.  Now the status is **Completed**.
-
-    ![A screenshot of a computer Description automatically generated](./media/image42.png)
-
-4.  Once the experiment run is complete, the **Details** page is
-    populated with a **Best model summary** section. In this experiment
-    context, **VotingEnsemble** is considered the best model, based on
-    the **AUC_weighted** metric.
-
-    ![A screenshot of a computer Description automatically generated](./media/image43.png)
-
-We deploy this model, but be advised, deployment takes about 20 minutes
-to complete. The deployment process entails several steps including
-registering the model, generating resources, and configuring them for
-the web service.
-
-5.  Select **VotingEnsemble** to open the model-specific page.
-
-    ![](./media/img24.png)
-
-6.  Select the **Deploy** menu in the top-left and select **Deploy to
-    web service**.
-
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image45.png)
-
-7.  Populate the **Deploy a model** pane as follows:
-
-    | Field | Value |
-    |:---|:------|
-    | Deployment name | +++my-automl-deploy+++ |
-    | Deployment description | +++My first automated machine learning experiment deployment+++ |
-    | Compute type | Select Azure Container Instance (ACI) |
-    | Enable authentication | Disable. |
-    | Use custom deployments | Disable. Allows for the default driver file (scoring script) and environment file to be auto-generated. |
-    
-    Click on **Deploy**.
-
-    ![A screenshot of a computer Description automatically generated with
+![A screenshot of a computer Description automatically generated with
 medium confidence](./media/image46.png)
 
-8.  A success message stating **Model deployment is successfully
-    triggered** is displayed on the Model screen and the status is
-    **Running**.
+> 7\. \[Deploy a model\] ペインに次のように入力します。
 
-    ![](./media/image47.png)
+[TABLE]
 
-9.  Once the deployment is complete, the status changes to
-    **Completed**.
+> 「Deploy」をクリックします
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image48.png)
+![A screenshot of a computer Description automatically generated with
+medium confidence](./media/image47.png)
 
-    Now you have an operational web service to generate predictions.
+> 8\. Model deployment is successfully
+> triggeredメッセージがモデル画面に表示され、ステータスはRunningになります。
 
-## **Exercise 6: Delete the resources**
+![](./media/image48.png)
 
-### **Task 1: Delete Endpoint**
+9\. デプロイが完了すると、ステータスが「Completed」に変わります。![A
+screenshot of a computer Description automatically
+generated](./media/image49.png)
 
-1.  From the left pane of AML Studio, click on **Endpoints**.
+> これで、予測を生成するための運用可能な Web サービスができました。
 
-2.  Select the endpoint, **my-automl-deploy** and click on **Delete**.
+## **エクササイズ6: リソースを削除する**
 
-    ![](./media/image49.png)
+### **タスク 1: エンドポイントの削除**
 
-3.  Select **Delete** in the Delete real-time endpoint dialog.
+1\. AML Studio の左側のペインで、「Endpoints」をクリックします。
 
-4.  You should receive a success message once the endpoint is deleted.
+2\.
+エンドポイント「my-automl-deploy」を選択し、「Delete」をクリックします。
 
-**Summary**
+![](./media/image50.png)
 
-In this lab, we have learnt on training a classification model with no
-code AutoML in the Azure Machine Learning studio and deploy the best
-model as a web service.
+3\. 「Delete real-time endpoint」ダイアログで「Delete」を選択します。
+
+4\. エンドポイントが削除されると、成功メッセージが表示されます。
+
+**概要**
+
+このラボでは、Azure Machine Learning スタジオでコード不要の AutoML
+を使用して分類モデルをトレーニングし、最適なモデルを Web
+サービスとしてデプロイする方法を学習しました。
