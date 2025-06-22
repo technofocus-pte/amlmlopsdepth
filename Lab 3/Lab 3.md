@@ -1,4 +1,4 @@
-<img width="635" alt="image" src="https://github.com/user-attachments/assets/08662419-06de-4b19-a1a3-0e75c53b1e8c" /># Lab 03 - Develop and register a feature set with managed feature store and train models by using features
+# Lab 03 - Develop and register a feature set with managed feature store and train models by using features
 
 This lab describes how to create a feature set specification with custom
 transformations. It then uses that feature set to generate training
