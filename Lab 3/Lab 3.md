@@ -270,6 +270,14 @@ search/browse the feature store.
 
     ![A screenshot of a computer Description automatically generated](./media/image32.png)
 
+4. Select Enable materialization store.
+
+   <img width="405" alt="image" src="https://github.com/user-attachments/assets/c73cf4d4-8080-49c7-97f4-b5ab4c8fb755" />
+
+6. Select the **Store name** as the **Stotage account** that starts with **featurestore**, select the resource starting with **featurescontaine** under **Azure Data Lake Gen2 file system** name and then select **Enable**.
+
+   <img width="405" alt="image" src="https://github.com/user-attachments/assets/3b5afb93-2564-4552-ad73-74d9a55625c0" />
+
 ### Task 7: Generate a training data dataframe using the registered features
 
 1.  Navigate back to the Azure Machine Learning Studio.
