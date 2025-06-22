@@ -550,7 +550,7 @@ on changes to the feature-retrieval spec in the source repository.
 
 1. Navigate to the **training_pipeline.yaml** file in the path **featurestore -> project -> fraud_model -> pipelines**.
    
-2. Replace the **compute name** in the lines **44, 66 and 83** with the **name** of your **cluster**, **cpu-cluster-fsXX**.
+2. Replace the **compute name** in the lines **44, 66 and 83** with the **name** of your **cluster**, **cpu-cluster-fsXX** (the name of the cluster that we created in Lab 1).
 
       ![](./media/img15.png)
 
@@ -558,9 +558,11 @@ on changes to the feature-retrieval spec in the source repository.
 
       ![](./media/img16.png)
 
-4.	**Save** and **close** the file and navigate back to the Notebook.
+4.	**Save** and **close** the file.
    
-5.  **Execute** the next cell to **run the training pipeline.**
+5.	Open **Compute** from the left pane and Start the cluster.
+   
+7.  **Execute** the next cell to **run the training pipeline.**
 
     ![A screenshot of a computer Description automatically
 generated](./media/image59.png)
@@ -568,13 +570,13 @@ generated](./media/image59.png)
     ![A screenshot of a computer program Description automatically
 generated](./media/image60.png)
 
-6.  From the left pane of the studio, right click on **Jobs** and open
+8.  From the left pane of the studio, right click on **Jobs** and open
     in a new tab. Select the experiment, **training_on_fraud_model**.
 
     ![A screenshot of a computer Description automatically
 generated](./media/image61.png)
 
-7.  Click on the **training job** and explore the details. The
+9.  Click on the **training job** and explore the details. The
     experiment should take around 5 to 15 minutes to get completed.
 
     ![A screenshot of a computer Description automatically
@@ -583,7 +585,7 @@ generated](./media/image62.png)
     ![A screenshot of a computer Description automatically
 generated](./media/image63.png)
 
-8.  Wait for it to complete. Once completed, select **Models** from the
+10.  Wait for it to complete. Once completed, select **Models** from the
     left pane. Select **fraud_model** from the list. This is the model
     that has been created now.
 
