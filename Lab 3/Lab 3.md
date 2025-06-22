@@ -1,4 +1,4 @@
-# Lab 03 - Develop and register a feature set with managed feature store and train models by using features
+<img width="635" alt="image" src="https://github.com/user-attachments/assets/08662419-06de-4b19-a1a3-0e75c53b1e8c" /># Lab 03 - Develop and register a feature set with managed feature store and train models by using features
 
 This lab describes how to create a feature set specification with custom
 transformations. It then uses that feature set to generate training
@@ -560,9 +560,11 @@ on changes to the feature-retrieval spec in the source repository.
 
 4.	**Save** and **close** the file.
    
-5.	Open **Compute** from the left pane and Start the cluster.
-   
-7.  **Execute** the next cell to **run the training pipeline.**
+5.	Open **Compute** from the left pane and **Start** the cluster.
+
+    <img width="635" alt="image" src="https://github.com/user-attachments/assets/e984019d-7532-48c8-9266-30c39203fbf1" />
+
+6.  Back in the notebook, **Execute** the next cell to **run the training pipeline.**
 
     ![A screenshot of a computer Description automatically
 generated](./media/image59.png)
