@@ -773,10 +773,10 @@ that does the actual inferencing.
 1.  Now deploy your machine learning model as a web service in Azure
     cloud, an online endpoint.
 
-2.  Select **Models** from the left pane, select the **credit_defaults_model**. Select **Deploy** -> **Real-time endpoint**.
+2.  Select **Models** from the left pane, select the **credit_defaults_model**. Select **Use this model** -> **Real-time endpoint**.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image89.png)
+    <img width="581" alt="image" src="https://github.com/user-attachments/assets/0a79890d-6e80-4a5d-ae52-cc56c8f6e420" />
+
 
 3.  Provide the below details and select **Create**.
 
