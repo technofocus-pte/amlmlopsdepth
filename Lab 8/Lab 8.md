@@ -75,8 +75,7 @@ generated](./media/image9.png)
 
     ![](./media/image11.png)
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image12.png)
+    <img width="633" alt="image" src="https://github.com/user-attachments/assets/0fd4042b-f64f-4781-a017-0b781c4638b1" />
 
     >[!Note] **Note:** This will take 10 to 15 minutes to complete
 
