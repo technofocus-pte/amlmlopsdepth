@@ -73,7 +73,7 @@ generated](./media/image9.png)
 
 1.  Execute the first cell of the notebook to install the dependencies
 
-    ![](./media/image11.png)
+    <img width="390" alt="image" src="https://github.com/user-attachments/assets/9343de59-ed8c-45af-98b5-9d0c70c483d1" />
 
     <img width="633" alt="image" src="https://github.com/user-attachments/assets/0fd4042b-f64f-4781-a017-0b781c4638b1" />
 
