@@ -16,29 +16,20 @@ In this exercise, we will create the gpt-35-turbo models deployments
 using the Azure OpenAI resource we created in the previous lab.
 
 1.  From the Azure Machine Learning Studio, select **Model Catalog**
-    from the left pane. Search for +++**gpt-4**+++ and select
-    **gpt-4** from the models list.
+    from the left pane. Search for +++**text-embedding**+++ and select
+    **text-embedding-002** from the models list.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image31.png)
+    <img width="572" alt="image" src="https://github.com/user-attachments/assets/b5e80424-9262-420c-a71a-bfdbb1acbd07" />
 
 2.  Ensure that the AOAI resource **AOAI-PF@lab.LabInstanceId** is
     selected in the **Azure OpenAI resource** field. Select **Deploy**
     to deploy the model.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image32.png)
+    <img width="606" alt="image" src="https://github.com/user-attachments/assets/21740a20-2a26-4779-a7a5-e169abd4cbee" />
 
 3.  Accept the **Deployment name** and select **Deploy**.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image33.png)
-
-4.  Repeat the model deployment for **text-embedding-ada-002** with the
-    deployment name as +++**text-embedding-ada-002-2**+++
-
-    ![A screenshot of a computer Description automatically
-generated](./media/image4.png)
+    <img width="422" alt="image" src="https://github.com/user-attachments/assets/48c056d6-a835-485b-9081-70e59abd59e2" />
 
 ## Exercise 2: Set up the environment
 
@@ -129,15 +120,15 @@ generated](./media/image16.png)
 generated](./media/image17.png)
 
 7.  Now that your Workspace has a connection to Azure OpenAI we will
-    make sure the gpt-4 model has been deployed ready for
+    make sure the gpt-4o model has been deployed ready for
     inference.
 
 8.  **Execute** the next cell to set the model and **deployment** names.
     Replace the values of the model name and the deployment name if you
     have given different names while creating the model and deployment.
 
-    ![A screenshot of a computer code Description automatically
-generated](./media/image34.png)
+    <img width="593" alt="image" src="https://github.com/user-attachments/assets/2417f1a3-e70d-4323-84b7-b6722b7210f5" />
+
 
 9.  Finally we will combine the deployment and model information into a
     uri form which the AzureML embeddings components expect as input.
