@@ -1,403 +1,450 @@
+# Atelier 07 : Développer et tester un flux d'invite à partir d'Azure Machine Learning Studio
 
-# Lab 07: Develop and test prompt flow from Azure Machine Learning Studio
+**Objectif :**
 
-**Objective:**
+Dans cet atelier, nous allons découvrir le parcours utilisateur
+principal de l'utilisation du flux d'invite dans Azure Machine Learning
+Studio. Vous apprendrez à activer le flux d'invite dans votre espace de
+travail Azure Machine Learning, à créer et à développer un flux
+d'invite, à tester et à évaluer le flux, puis à le déployer en
+production.
 
-In this lab, we will learn the main user journey of using prompt flow in
-Azure Machine Learning studio. You learn how to enable prompt flow in
-your Azure Machine Learning workspace, create and develop a prompt flow,
-test and evaluate the flow, and then deploy it to production.
+Durée prévue – 60 minutes
 
-## Task 1: Getting the Azure resources ready
+## Tâche 1 : Préparation des ressources Azure
 
-### Task 1.1: Create an Azure Machine Learning workspace
+### Tâche 1.1 : Créer un espace de travail Azure Machine Learning
 
-This task focuses on creating an Azure Machine Learning workspace. You
-will discover how to set up a dedicated workspace to organize and manage
-their machine learning projects effectively. This workspace serves as a
-central hub for collaboration, experimentation, and deployment.
+Cette tâche se concentre sur la création d'un espace de travail Azure
+Machine Learning. Vous découvrirez comment mettre en place un espace de
+travail dédié pour organiser et gérer efficacement leurs projets de
+machine learning. Cet espace de travail sert de plaque tournante
+centrale pour la collaboration, l'expérimentation et le déploiement.
 
-1.  Sign in to the Azure portal at +++<https://portal.azure.com>+++ and
-    login with your admin tenant credentials.
+1.  Connectez-vous au portail Azure à l'adresse
+    +++<https://portal.azure.com>+++ et connectez-vous avec vos
+    informations d'identification de locataire administrateur.
 
-2.  From the Azure portal home page, select **+ Create a resource**.
+2.  Dans la page d'accueil du portail Azure, sélectionnez **+ Create a
+    resource**.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image1.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image1.png)
 
-3.  On the **Create a resource** page, use the search bar to find
-    +++Azure Machine Learning**+++** and select **Azure** **Machine
-    Learning**.
+3.  Dans la page **Create a resource**, utilisez la barre de recherche
+    pour trouver +++Azure Machine Learning+++ et sélectionnez **Azure
+    Machine Learning**.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image2.png)
+> ![Une capture d'écran d'un ordinateur Description générée
+> automatiquement](./media/image2.png)
 
-4.  Under **Marketplace**, click on **Create dropdown** and select
-    **Azure Machine Learning**.
+4.  Sous **Marketplace**, cliquez sur **Create dropdown** et
+    sélectionnez **Azure Machine Learning**.
 
-    ![A screenshot of a computer Description automatically generated](./media/image3.png)
+> ![Une capture d'écran d'un ordinateur Description générée
+> automatiquement](./media/image3.png)
 
-5.  Provide the following information to configure your new workspace:
+5.  Fournissez les informations suivantes pour configurer votre nouvel
+    espace de travail :
 
-    - **Subscription**: Select your **assigned Azure subscription**
+    - **Subscription** : sélectionnez l**'abonnement Azure qui vous a
+      été attribué**
 
-    - **Resource group**: Select **Click New** and give the name as
-      +++**RGForMLOps**+++
-    
-    ![A screenshot of a computer Description automatically generated](./media/image4.png)
+    - **Resource Group** : sélectionnez le **Resource Group qui vous est
+      attribué**.
 
-    **Workspace Details:**
+> ![Une capture d'écran d'un ordinateur Description générée
+> automatiquement](./media/image4.png)
+>
+> **Workspace Details:**
 
-    - **Workspace name:** +++**AzuremlwsXX**+++ **(Substitute XX with a
-      random number to ensure uniqueness)**
-    
-    - **Region**: Select your nearest region **(North Central US** is
-      selected here)
+- **Workspace name:** +++**Azuremlws@lab.LabInstanceId**+++
 
-    - **Container registry: Select Create new. Enter +++azuremlcrXX+++**
-      (Replace **XX** with a unique number)
+- **Region** : sélectionnez la région la plus proche **(North Central
+  US** est sélectionné ici)
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image5.png)
+&nbsp;
 
-6.  Once you are done configuring the workspace, select **Review +
-    Create**.
+- **Container registry: Select Create new. Enter
+  +++azuremlcr@lab.LabInstanceId+++**
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image6.png)
+> ![Une capture d'écran d'un ordinateur Description générée
+> automatiquement](./media/image5.png)
 
-7.  Once the Validation is passed, click on **Create**.
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image6.png)
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image7.png)
+6.  Une fois que vous avez terminé de configurer l'espace de travail,
+    sélectionnez **Review + Create**.
 
-8.  Click on **Go to resource**, to view the new workspace.
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image7.png)
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image8.png)
+7.  Une fois la Validation passée, cliquez sur **Create**.
+
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image8.png)
+
+8.  Cliquez sur **Go to resource**, pour afficher le nouvel espace de
+    travail.
+
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image9.png)
 
 9.  **On the Microsoft.MachineLEarningServices | Overview page**,
-    select **Launch studio** under **Work with your model in Azure
+    sélectionnez **Launch studio** sous **Work with your model in Azure
     Machine Learning studio**.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image9.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image10.png)
 
-### Task 1.2: Create a compute
+### Tâche 1.2 : Créer un Calcul (Compute)
 
-This task demonstrates the creation of a compute resource in Azure. You
-will explore different compute options, such as virtual machines or
-managed compute clusters, and understand how to configure and provision
-resources to execute machine learning workloads efficiently.
+Cette tâche illustre la création d'une ressource de calcul (compute)
+dans Azure. Vous explorerez différentes options de calcul (compute),
+telles que les machines virtuelles ou les clusters de calcul (compute)
+gérés, et comprendrez comment configurer et provisionner des ressources
+pour exécuter efficacement des charges de travail de machine learning.
 
-1.  Once the **Azure Machine Learning Studio** opens, click on
-    **Compute** under **Manage** from the left pane.
+1.  Une fois qu’**Azure Machine Learning Studio** s'ouvre, cliquez sur
+    **Compute** sous **Manage** dans le volet gauche.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image10.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image11.png)
 
-2.  Click on **+ New** on the **Compute instances** screen.
+2.  Cliquez sur **+ New** sur l'écran **Compute instances**.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image11.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image12.png)
 
-3.  On the Create compute instance screen, enter the below details.
+3.  Sur l'écran Créer une instance de calcul (compute), entrez les
+    détails ci-dessous.
 
-    -  Compute name – +++**pfcompute**+++
+    1.  Compute name – +++**pfcompute**+++
 
-    -  Virtual machine type – **CPU**
+    2.  Virtual machine type – **CPU**
 
-    -  Virtual machine size – Select **Standard_E4ds_v4**
+    3.  Virtual machine size – Sélect **Standard_E4ds_v4**
 
-    Click on **Review + Create**.
+> Cliquez sur **Review + Create**.
 
-    >[!Note] **Note:** Make a note of this compute name for later use.
+**Remarque :** Notez ce nom de calcul (compute) pour une utilisation
+ultérieure.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image12.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image13.png)
 
-4.  Click on **Create** in the next screen to create the compute.
+4.  Cliquez sur **Create** dans l'écran suivant pour créer le calcul
+    (compute).
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image13.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image14.png)
 
-    >[!Note] **Note:** The compute takes around 10 minutes to come up to the Running
-state.
+**Remarque :** Le calcul (compute) prend environ 10 minutes pour
+atteindre l'état En cours d'exécution.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image14.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image15.png)
 
-    >[!Alert] **Important:** Once the Compute is up and running you can continue with
-the next tasks. But, if you are taking a break from the lab execution,
-please ensure to **stop** the compute instance and start it again when
-you start after the break.
+**Important :** Une fois que le calcul (compute) est opérationnel, vous
+pouvez passer aux tâches suivantes. Toutefois, si vous faites une pause
+dans l'exécution du laboratoire, assurez-vous **stop** l'instance de
+calcul (compute) et de la redémarrer lorsque vous démarrez après
+l'interruption.
 
-### Task 1.3: Create Azure OpenAI resource
+### Tâche 1.3 : Créer une ressource Azure OpenAI
 
-1.  From the Azure portal +++https://portal.azure.com+++, search for ans
-    select +++**AzureOpenAI**+++.
+1.  À partir du portail Azure +++https://portal.azure.com+++, recherchez
+    et sélectionnez +++**AzureOpenAI**+++.
 
-    ![](./media/image15.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image16.png)
 
-2.  Click on **+ Create**.
+2.  Cliquez sur **+ Create**.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image16.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image17.png)
 
-3.  Fill in the below details and click on **Next**.
+3.  Remplissez les détails ci-dessous et cliquez sur **Next**.
 
-    - Resource group - Select +++**RGForMLOps**+++
-    
-    - Region – Select any nearest region (North Central US is being used
-      here)
-    
-    - Name - +++**AOAI-PF9898**+++
-    
-    - Pricing tier - **Standard**
+- Resource Group : sélectionnez le Resource Group qui vous est attribué
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image17.png)
+- Région : sélectionnez une région (North Central US est utilisé ici)
 
-4.  Accept the defaults in the next pages and click on **Create** in the
-    **Review + create** page.
+- Nom - +++**AOAI-PF@lab.LabInstanceId**+++
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image18.png)
+- Niveau tarifaire - **Standard**
 
-5.  Click on **Go to resource** once the deployment is complete.
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image18.png)
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image19.png)
+4.  Acceptez les valeurs par défaut dans les pages suivantes et cliquez
+    sur **Create** dans la page **Review + submit**.
 
-6.  Select **Keys and Endpoint** from the left pane.
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image19.png)
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image20.png)
+5.  Cliquez sur **Go to resource** une fois le déploiement terminé.
 
-7.  Copy the **Key** and the **Endpoint** and save it in a notepad for
-    use in a later part of the lab.
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image20.png)
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image21.png)
+6.  Sélectionnez **Keys and Endpoint** dans le volet gauche.
 
-8.  From the **Azure Machine Learning Studio**, select **Model catalog**
-    from the left pane.
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image21.png)
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image22.png)
+7.  Copiez la **Key** et **Endpoint**, puis enregistrez-les dans un
+    bloc-notes pour les utiliser ultérieurement dans le Lab.
 
-9.  Select **gpt-4o** and click on Deploy to deploy the model.
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image22.png)
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image23.png)
+8.  Dans Azure **Machine Learning Studio**, sélectionnez **Model
+    catalog** dans le volet gauche, puis **gpt-4o**.
 
-10. Accept the deployment name and select **Deploy**. Keep a note of
-    this name for future usage.
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image23.png)
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image24.png)
+9.  Cliquez sur **Deploy** pour déployer le modèle.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image25.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image24.png)
 
-## Task 2: Set up a Prompt flow connection
+10. Acceptez le nom du déploiement et sélectionnez **Deploy**. Gardez
+    une note de ce nom pour une utilisation future.
 
-1.  From the left navigation pane of the Azure Machine Learning Studio,
-    select **Prompt flow**. Select **Connections** from the menu bar.
-    Select the drop down next to **Create** and select **Azure OpenAI**.
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image25.png)
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image26.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image26.png)
 
-2.  In the Add Azure OpenAI connection wizard, provide the below details
-    and select **Save**.
+## Tâche 2 : Configurer une connexion de flux d'invite
 
-    - Name – +++**AoaiML_pf**+++
-    
-    - Provider – Select **Azure OpenAI**
-    
-    - Subscription ID – Select your **assigned subscription**
-    
-    - Azure OpenAI Account Names – Select **AOAI-PF9898**
-    
-    - Auth Mode – Select **API Key**
-    
-    - API Key – Provide the **key** that we saved the **Azure OpenAI
-      resource**
-    
-    - API base – Provide the **endpoint** that we saved from the **Azure
-      OpenAI resource**
+1.  Dans le volet de navigation de gauche d'Azure Machine Learning
+    Studio, sélectionnez **Prompt flow**. Sélectionnez **Connexions**
+    dans la barre de menus. Sélectionnez la liste déroulante en regard
+    de **Create**, puis sélectionnez **Azure OpenAI.**
 
-    ![A screenshot of a computer Description automatically generated](./media/image27.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image27.png)
 
-    ![A screenshot of a computer Description automatically generated](./media/image28.png)
+2.  Dans l'Assistant Ajouter une connexion Azure OpenAI, fournissez les
+    détails ci-dessous et sélectionnez **Save**.
 
-3.  Check that the connection creation is successful.
+- Name – +++**AoaiML_pf**+++
 
-    ![A screenshot of a computer Description automatically generated](./media/image29.png)
+- Provider – Sélectionnez **Azure OpenAI**
 
-## Task 3: Create and develop your prompt flow
+- Subscription ID – Sélectionnez l**'abonnement (subscription) qui vous
+  a été attribué**
 
-1.  In the **Flows** tab of the **Prompt flow** home page,
-    select **Create** to create the prompt flow. The **Create a new
-    flow** page shows flow types you can create, built-in samples you
-    can clone to create a flow, and ways to import a flow.
+- Azure OpenAI Account Name – Sélectionnez **AOAI-PF@lab.LabInstanceId**
 
-    ![A screenshot of a computer Description automatically generated](./media/image30.png)
+- Auth Mode - Sélectionnez **API Key**
 
-2.  Select **Clone** under the **WebClassification** category.
+- API Key : indiquez la **key** que nous avons enregistrée dans **Azure
+  OpenAI resource**
 
-    In the **Explore gallery**, you can browse the built-in samples and
-    select **View detail** on any tile to preview whether it's suitable for
-    your scenario.
-    
-    This lab uses the **Web Classification** sample to walk through the main
-    user journey.
-    
-    Web Classification is a flow demonstrating multiclass classification
-    with a LLM. Given a URL, the flow classifies the URL into a web category
-    with just a few shots, simple summarization, and classification prompts.
-    For example, given a URL https://www.imdb.com, it classifies the URL
-    into Movie.
+- API base – Fournir le **endpoint** que nous avons enregistré à partir
+  de la **ressource Azure OpenAI**
 
-    ![A screenshot of a computer Description automatically generated](./media/image31.png)
+> ![Une capture d'écran d'un ordinateur Description générée
+> automatiquement](./media/image28.png)
 
-3.  Accept the name populated for **Folder name** and then select
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image29.png)
+
+3.  Vérifiez que la création de la connexion a réussi.
+
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image30.png)
+
+## Tâche 3 : Créer et développer votre flux d'invites
+
+1.  Dans l'onglet **Flow** de la page d'accueil de **Prompt flow**,
+    sélectionnez **Create** pour créer le flux d'invite. La page
+    **Create a new flow** affiche les types de flux que vous pouvez
+    créer, les exemples intégrés que vous pouvez cloner pour créer un
+    flux et les méthodes d'importation d'un flux.
+
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image31.png)
+
+2.  Sélectionnez **Clone** dans la catégorie **WebClassification**.
+
+Dans **Explore gallery**, vous pouvez parcourir les exemples intégrés et
+sélectionner **View détail** sur n'importe quelle vignette pour savoir
+si elle convient à votre scénario.
+
+Cet atelier utilise **Web classification** pour parcourir le parcours
+principal de l'utilisateur.
+
+La classification Web est un flux illustrant la classification
+multiclasse avec un LLM. À partir d'une URL, le flux classe l'URL dans
+une catégorie Web en quelques clichés, un résumé simple et des invites
+de classification. Par exemple, étant donné une URL
+https://www.imdb.com, il classe l'URL dans Film.
+
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image32.png)
+
+3.  Acceptez le nom renseigné pour **Folder name**, puis sélectionnez
     **Clone**.
 
-    ![A screenshot of a computer Description automatically generated](./media/image32.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image33.png)
 
-4.  A compute session is necessary for flow execution. The compute
-    session manages the computing resources required for the application
-    to run, including a Docker image that contains all necessary
-    dependency packages.
+4.  Une session de calcul (compute) est nécessaire pour l'exécution du
+    flux. La session de calcul (compute) gère les ressources de calcul
+    (compute) nécessaires à l'exécution de l'application, y compris une
+    image Docker qui contient tous les packages de dépendances
+    nécessaires.
 
-5.  On the flow authoring page, start a compute session by
-    selecting **Start compute session**.
+5.  Sur la page de création de flux, démarrez une session de calcul
+    (compute) en sélectionnant Démarrer **Start compute session**.
 
-    ![A screenshot of a computer Description automatically generated](./media/image33.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image34.png)
 
-    >[!Note] **Note:** It will take around **10 minutes** to get the compute session
-in the Running state.
+**Remarque :** Il faudra environ **10 minutes** pour que la session de
+calcul (compute) passe à l'état En cours d'exécution.
 
-    ![A screenshot of a computer Description automatically generated](./media/image34.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image35.png)
 
-## Task 4: Inspect the flow authoring page
+## Tâche 4 : Inspecter la page de création de flux
 
-The compute session can take a few minutes to start. While the compute
-session is starting, view the parts of the flow authoring page.
+Le démarrage de la session de calcul (compute) peut prendre quelques
+minutes. Pendant le démarrage de la session de Calcul (Compute),
+affichez les parties de la page de création de flux.
 
-- The **Flow** or *flatten* view on the left side of the page is the
-  main working area, where you can author the flow by adding or removing
-  nodes, editing and running nodes inline, or editing prompts. In
-  the **Inputs** and **Outputs** sections, you can view, add or remove,
-  and edit inputs and outputs.
+- La vue **Flow** ou *Aplatir* sur le côté gauche de la page est la zone
+  de travail principale, où vous pouvez créer le flux en ajoutant ou en
+  supprimant des nœuds, en modifiant et en exécutant des nœuds en ligne
+  ou en modifiant des invites. Dans les **sections Inputs** et
+  **Outputs**, vous pouvez afficher, ajouter ou supprimer et modifier
+  les entrées et les sorties.
 
-When you cloned the current Web Classification sample, the inputs and
-outputs were already set. The input schema for the flow is name: url;
-type: string, a URL of string type. You can change the preset input
-value to another value like https://www.imdb.com manually.
+Lorsque vous avez cloné l'exemple de classification Web actuel, les
+entrées et les sorties étaient déjà définies. Le schéma d'entrée du flux
+est name : url ; type : string, une URL de type chaîne. Vous pouvez
+remplacer la valeur d'entrée prédéfinie par une autre valeur comme
+https://www.imdb.com manuellement.
 
-- **Files** at top right shows the folder and file structure of the
-  flow. Each flow folder contains a *flow.dag.yaml* file, source code
-  files, and system folders. You can create, upload, or download files
-  for testing, deployment, or collaboration.
+- La section **Files** en haut à droite affiche la structure des
+  dossiers et des fichiers du flux. Chaque dossier de flux contient un
+  fichier *flow.dag.yaml, des fichiers de* code source et des dossiers
+  système. Vous pouvez créer, charger ou télécharger des fichiers à des
+  fins de test, de déploiement ou de collaboration.
 
-- The **Graph** view at lower right is for visualizing what the flow
-  looks like. You can zoom in or out, or use auto layout.
+- La vue **Graph** en bas à droite permet de visualiser à quoi ressemble
+  le flux. Vous pouvez effectuer un zoom avant ou arrière, ou utiliser
+  la mise en page automatique.
 
-You can edit files inline in the **Flow** or flatten view, or you can
-turn on the **Raw file mode** toggle and select a file from **Files** to
-open the file in a tab for editing.
+Vous pouvez modifier des fichiers en ligne dans la vue **Flow** ou
+Aplatir, ou vous pouvez activer **Raw file mode** et sélectionner un
+fichier dans **Files** pour l'ouvrir dans un onglet à des fins de
+modification.
 
-You can edit files inline in the **Flow** or flatten view, or you can
-turn on the **Raw file mode** toggle and select a file from **Files** to
-open the file in a tab for editing.
+Vous pouvez modifier des fichiers en ligne dans la vue **Flow** ou
+Aplatir, ou vous pouvez activer **Raw file mode** et sélectionner un
+fichier dans **Files** pour l'ouvrir dans un onglet à des fins de
+modification.
 
-![A screenshot of a computer Description automatically
-generated](./media/image35.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image36.png)
 
-## Task 5: Set up LLM nodes
+## Tâche 5 : Configurer les nœuds LLM
 
-For each LLM node, you need to select a **Connection** to set the LLM
-API keys. Select your Azure OpenAI connection.
+Pour chaque nœud LLM, vous devez sélectionner une **connexion** pour
+définir les clés API LLM. Sélectionnez votre connexion Azure OpenAI.
 
-Depending on the connection type, you must select
-a **deployment_name** or a model from the dropdown list. For an Azure
-OpenAI connection, select a deployment. 
+Selon le type de connexion, vous devez sélectionner un
+**deployment_name** ou un modèle dans la liste déroulante. Pour une
+connexion Azure OpenAI, sélectionnez un déploiement. 
 
-1.  For the summarize_text_content, fill in the below details.
+1.  Pour la summarize_text_content, remplissez les détails ci-dessous.
 
-    Connection – Select **AoaiML_pf**
-    
-    Api – Select **chat**
-    
-    deployment name – Select **gpt-4o-2024-11-20**
+Connection – Sélectionnez **AoaiML_pf**
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image36.png)
+Api – Sélectionnez **chat**
 
-2.  Set up connection similarly for the LLM nodes **classify_with_llm**.
+deployment name – Sélectionnez **gpt-4o-2024-11-20**
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image37.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image37.png)
 
-3.  To test and debug a single node, select the **Run** icon at the top
-    of a node in the **Flow** view. You can expand **Inputs** and change
-    the flow input URL to test the node behavior for different URLs.
+2.  Établissez une connexion similaire pour les nœuds LLM
+    **classify_with_llm**.
 
-4.  The run status appears at the top of the node. After the run
-    completes, run output appears in the node **Output** section.
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image38.png)
 
-5.  Move to the starting of the flow and execute the
-    **fetch_text_content_from url** and execute the block.
+3.  Pour tester et déboguer un seul nœud, sélectionnez l’icône **Run**
+    en haut d'un nœud dans la vue **Flow**. Vous pouvez développer
+    **Inputs** et modifier l'URL d'entrée de flux pour tester le
+    comportement du nœud pour différentes URL.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image38.png)
+4.  L'état de l'exécution s'affiche en haut du nœud. Une fois
+    l'exécution terminée, la sortie de l'exécution apparaît dans la
+    section **Output** du nœud .
 
-    The **Graph** view also shows the single run node status.
+5.  Passez au début du flux et exécutez l’URL
+    **fetch_text_content_from** et exécutez le bloc.
 
-6.  Under **Inputs** section, provide the value for the **Value** field
-    as
-    +++https://play.google.com/store/apps/details?id=com.spotify.music+++
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image39.png)
 
-    Select **Run** from the top right, to test and debug the whole flow.
+La vue **Graph** indique également l'état du nœud d'exécution unique.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image39.png)
+6.  Dans la section **Inputs,** indiquez la valeur du champ **Valeur**
+    sous la forme
+    **+++https://play.google.com/store/apps/details?id=com.spotify.music+++**
 
-## Task 5: View flow outputs
+Sélectionnez **Run** en haut à droite pour tester et déboguer l'ensemble
+du flux.
 
-You can also set flow outputs to check outputs of multiple nodes in one
-place. Flow outputs help you:
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image40.png)
 
-- Check bulk test results in a single table.
-    
-- Define evaluation interface mapping.
-    
-- Set deployment response schema.
+## Tâche 5 : Afficher les sorties de flux
 
-1.  Select **View outputs** in the top banner or the top menu bar to
-    view detailed input, output, flow execution, and orchestration
-    information.
+Vous pouvez également définir des sorties de flux pour vérifier les
+sorties de plusieurs nœuds au même endroit. Les sorties de flux vous
+aident à :
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image40.png)
+- Vérifiez les résultats des tests en bloc dans un seul tableau.
 
-2.  On the Outputs tab of the Outputs screen, note that the flow
-    predicts the input URL with a **category** and **evidence**.
+- Définissez le mappage de l'interface d'évaluation.
 
-    ![A screenshot of a computer Description automatically generated](./media/image41.png)
+- Définissez le schéma de réponse de déploiement.
 
-4.  Select the **Trace** tab on the **Outputs** screen and then
-    select **flow** under **node name** to see detailed flow overview
-    information in the right pane. Expand **flow** and select any step
-    to see detailed information for that step.
+1.  Sélectionnez **View outputs** dans le bandeau supérieur ou la barre
+    de menus supérieure pour afficher des informations détaillées sur
+    l'entrée, la sortie, l'exécution du flux et l'orchestration.
 
-    ![A screenshot of a computer Description automatically generated](./media/image42.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image41.png)
 
-**Summary:**
+2.  Dans l'onglet Sorties de l'écran Sorties, notez que le flux prédit
+    l'URL d'entrée avec une **category** et **une évidence**. ![Une
+    capture d'écran d'un ordinateur Description générée
+    automatiquement](./media/image42.png)
 
-In this lab, we have learnt to classify the URL into a web category with
-simple summarization, and classification prompts using prompt flow in
-Azure Machine Learning Studio.
+3.  Sélectionnez l'onglet **Trace** dans l'écran **Outputs**, puis
+    sélectionnez **flow** sous **node name** pour afficher des
+    informations détaillées sur la vue d'ensemble du flux dans le volet
+    droit. Développez **flow** et sélectionnez n'importe quelle étape
+    pour afficher des informations détaillées sur cette étape.
+
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image43.png)
+
+**Résumé :**
+
+Dans cet atelier, nous avons appris à classer l'URL dans une catégorie
+web à l'aide d'un résumé simple et à utiliser des invites de
+classification à l'aide d'un flux d'invites dans Azure Machine Learning
+Studio.
