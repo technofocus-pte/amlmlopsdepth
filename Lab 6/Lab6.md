@@ -1,391 +1,358 @@
+# Atelier 06 - Entraînement du meilleur modèle de régression pour l'ensemble de données matérielles
 
-# Lab 06 - Training the best Regression model for the Hardware dataset
+Objectif
 
-**Lab Type** – Instructor Led
+Dans cet atelier, nous allons voir comment utiliser AutoML pour
+entraîner un modèle de régression. Nous utiliserons le jeu de données
+Performances matérielles pour entraîner et déployer le modèle à utiliser
+dans des scénarios d'inférence. L'objectif de la régression est de
+prédire les performances de certaines combinaisons de pièces
+matérielles.
 
-**Expected Duration** – 50 minutes
+Durée prévue – 60 minutes
 
-Objective
+# Exercice 0 : Préparez l'environnement
 
-In this lab, we go over how you can use AutoML for training a Regression
-model. We will use the Hardware Performance dataset to train and deploy
-the model to use in inference scenarios. The Regression goal is to
-predict the performance of certain combinations of hardware parts.
+### **Tâche 1 : Lancer l'espace de travail AML**
 
-# Exercise 0: Get the environment ready
+1.  Connectez-vous au portail Azure,
+    +++[**https://portal.azure.com**](https://portal.azure.com)+++ si
+    vous n'êtes pas déjà connecté.
 
-### **Task 1: Launch the AML Workspace**
+2.  Dans le menu du portail Azure, sélectionnez **All resources.**
 
-1.  Login to the Azure portal,
-    +++[**https://portal.azure.com**](https://portal.azure.com)+++ if
-    not logged in already.
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image1.png)
 
-2.  From the Azure portal menu , select **All resources.**
+3.  Sélectionnez l'espace de travail (workspace) Azure Machine Learning
+    (**Azuemlws@lab.LabInstanceId**).
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image1.png)
+![Une capture d'écran d'un ordinateur Le contenu généré par l'IA peut
+être incorrect.](./media/image2.png)
 
-3.  Select the Azure Machine Learning Workspace (**AzuemlwsXX**).
+4.  Cliquez sur **Launch studio**.
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image2.png)
+![Une capture d'écran d'un ordinateur Le contenu généré par l'IA peut
+être incorrect.](./media/image3.png)
 
-4.  Click on **Launch studio**.
+5.  Sélectionnez **Compute** dans le volet gauche pour créer une
+    instance de calcul. Sélectionnez **+ New**.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image3.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image4.png)
 
-5.  Select **Compute** from the left pane to create a Compute instance.
-    Select **+ New**.
+6.  Fournissez les détails ci-dessous et cliquez sur **Review +
+    Create**.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image4.png)
+- Compute name - +++**auto-Compute+++**
 
-6.  Provide the below details and click on **Review + Create**.
+- Virtual machine type – **CPU**
 
-    - Compute name - +++**auto-compute**+++
-    
-    - Virtual machine type – **CPU**
-    
-    - Virtual Machine – **Standard E4ds_v4**
+- Virtual Machine – **Standard E4ds_v4**
 
-    ![](./media/image5.png)
+![](./media/image5.png)
 
-7.  Select **Create** to create the compute instance.
+7.  Sélectionnez **Create** pour créer l'instance de calcul (compute).
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image6.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image6.png)
 
-### **Task 2: Upload the notebook to AML Workspace**
+### **Tâche 2 : Charger le bloc-notes dans AML Workspace**
 
-1.  Click on the **Notebook** from the left pane. Click on the three
-    dots next to the **username** under **Users** and select **Upload
-    folder**.
+1.  Cliquez sur **Notebooks** dans le volet de gauche. Cliquez sur les
+    trois points à côté du **username** sous **Users** et sélectionnez
+    **Upload folder**.
 
-    ![](./media/image7.png)
+![](./media/image7.png)
 
-2.  Select Click to browse and select folder(s) and browse
-    **C:\Labfiles** to select the folder
-    **automl-regression-task-hardware-performance** and click on
+2.  Sélectionnez Cliquez pour parcourir et sélectionnez le(s) dossier(s)
+    et parcourez **C :\Labfiles** pour sélectionner le dossier
+    **automl-regression-task-hardware-performance** et cliquez sur
     **Upload.**
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image8.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement avec un niveau de confiance moyen](./media/image8.png)
 
-3.  If you get a pop up asking Upload 3 files to this site?, click on
-    **Upload**.
+3.  Si vous obtenez une fenêtre contextuelle vous demandant de
+    télécharger 3 fichiers sur ce site, cliquez sur **Upload**.
 
-    ![A picture containing text, screenshot, display, font Description
-automatically generated](./media/image9.png)
+![Une image contenant du texte, une capture d'écran, un affichage, une
+police Description générée automatiquement](./media/image9.png)
 
-4.  Select the checkbox, **I trust contents of these files** and then
-    select **Upload**.
+4.  Cochez la case **I trust contents of these files**, puis
+    sélectionnez **Upload**.
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image10.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement avec un niveau de confiance moyen](./media/image10.png)
 
-5.  Open the Notebook(the .ipynb file),
-    **automl-regression-task-hardware-performance**. The Notebook is
-    automatically connected to the compute that we created earlier. Ensure that the compute is in the **Running** state
+5.  Ouvrez Notebook(the .ipynb file),
+    **automl-regression-task-hardware-performance**. Le bloc-notes est
+    automatiquement connecté au calcul que nous avons créé précédemment.
 
-    ![](./media/img30.png)
+![](./media/image11.png)
 
-## **Exercise 1: Connect to Azure Machine Learning Workspace**
+## **Exercice 1 : Se connecter à Azure Machine Learning Workspace**
 
-### **Task 1: Import the required libraries**
+### **Tâche 1 : Importer les bibliothèques requises**
 
-1.  Execute the cell first cell under **1.1** **Import the required
-    libraries** to import the libraries required for this lab execution
-    by clicking on the Run cell button at the top left of the cell.
+1.  Exécutez la première cellule de la cellule sous **1.1** **Import the
+    required libraries** pour importer les bibliothèques requises pour
+    cette exécution de labo en cliquant sur le bouton Exécuter la
+    cellule en haut à gauche de la cellule.
 
-2.  Ensure that the execution is successful by looking for a tick symbol
-    at the bottom left of the cell.
+2.  Assurez-vous que l'exécution est réussie en recherchant un symbole
+    de coche en bas à gauche de la cellule.
 
-    ![A screenshot of a computer screen Description automatically generated
-with low confidence](./media/image12.png)
+![Une capture d'écran d'un écran d'ordinateur Description générée
+automatiquement avec un niveau de confiance faible](./media/image12.png)
 
-### **Task 2: Configure workspace details and get a handle to the workspace**
+### **Tâche 2 : Configurer les détails de l'espace de travail et obtenir un handle pour l'espace de travail**
 
-1.  In the cell under **1.2. Configure workspace details and get a
-    handle to the workspace,** replace
+1.  Dans la cellule sous **1.2. Configure workspace details and get a
+    handle to the workspace,** remplacer
 
-    - SUBSCRIPTION_ID - **your subscription id**
-    
-    - RESOURCE_GROUP – **Your assigned Resourcegroup name**
-    
-    - AML_WORKSPACE_NAME - **AzuremlwsXX(**XX being the random number)
+- SUBSCRIPTION_ID - +++**@lab.CloudSubscription.Id**+++
 
-2.  Click on the Run cell option on the top left of the cell and ensure
-    that you get a tick symbol at the bottom left once the execution is
-    successful.
+- RESOURCE_GROUP : **Your assigned Resourcegroup name**
 
-3.  An output stating, **Found the config file in : /config.json** is
-    displayed below the cell.
+- AML_WORKSPACE_NAME – +++**Azuremlws@lab.LabInstanceId**+++
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image13.png)
+2.  Cliquez sur l'option Exécuter la cellule en haut à gauche de la
+    cellule et assurez-vous d'obtenir une coche en bas à gauche une fois
+    l'exécution réussie.
 
-### **Task 3: Show Azure ML Workspace information**
+3.  Une sortie indiquant « **Found the config file in : /config.json** »
+    s'affiche sous la cellule.
 
-1.  Execute the next cell (the cell below Show Azure ML Workspace
-    information).
+![](./media/image13.png)
 
-2.  Ensure that the details of the workspace, subscription, location,
-    and Resource group that gets listed as output below the cell are all
-    correct.
+### **Tâche 3 : Afficher les informations de l'espace de travail Azure ML**
 
-    ![A screenshot of a computer program Description automatically
-generated](./media/image14.png)
+1.  Exécutez la cellule suivante (la cellule située sous Afficher les
+    informations de l'espace de travail Azure ML).
 
-## **Exercise 2: MLTable with input Training Data**
+2.  Assurez-vous que les détails de l'espace de travail, de
+    l'abonnement, de l'emplacement et du groupe de ressources
+    répertoriés en tant que sortie sous la cellule sont tous corrects.
 
-### **Task 1: Create MLTable data input**
+![Une capture d'écran d'un programme informatique Description générée
+automatiquement](./media/image14.png)
 
-1.  Execute the next cell, (the one under **2.1 Create MLTable data
+## **Exercice 2 : MLTable avec données d'entraînement d'entrée**
+
+### **Tâche 1 : Créer une entrée de données MLTable**
+
+1.  Exécutez la cellule suivante (celle sous **2.1 Create MLTable data
     input**).
 
-2.  Ensure that the execution is successful.
+2.  Assurez-vous que l'exécution est réussie.
 
-    ![A picture containing text, font, screenshot, software Description
-automatically generated](./media/image15.png)
+![Une image contenant du texte, une police, une capture d'écran, un
+logiciel Description générée automatiquement](./media/image15.png)
 
-## **Exercise 3: Configure and run the AutoML Regression training job**
+## **Exercice 3 : Configurer et exécuter le travail d'entraînement AutoML Regression**
 
-1.  Execute the cells under the **4.1 Configure and run the AutoML
-    Regression training job** one by one and ensure that each cell gets
-    executed successfully.
+1.  Exécutez les cellules sous **4.1 Configure and run the AutoML
+    Regression training job** une par une et assurez-vous que chaque
+    cellule est exécutée correctement.
 
-2.  The cell under **4.2 Run the Command**, submits the AutoML job.
+2.  La cellule sous **4.2 Run the Command** soumet le travail AutoML.
 
-    ![A screenshot of a computer program Description automatically
-generated](./media/image16.png)
+![Une capture d'écran d'un programme informatique Description générée
+automatiquement](./media/image16.png)
 
-3.  You can check the status of the job by clicking on the **Jobs** from
-    the left pane and selecting the experiment that is in the Running
-    state.
+3.  Vous pouvez vérifier l'état de la tâche en cliquant sur **Jobs**
+    dans le volet gauche et en sélectionnant l'expérience qui est à
+    l'état En cours d'exécution.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image17.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image17.png)
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image18.png)
+![Une capture d'écran d'un ordinateur Le contenu généré par l'IA peut
+être incorrect.](./media/image18.png)
 
-    >[!Note] **Note:** This takes around 10 to 15 minutes to complete.
+**Remarque :** cela prend environ 10 à 15 minutes.
 
-4.	Ensure that the job gets completed successfully.
+4.  La cellule suivante du bloc-notes attend que la tâche AutoML soit
+    terminée.
 
-    ![](./media/img31.png)
+5.  Exécutez-le et attendez la fin de l'exécution pour passer à la
+    cellule suivante.
 
-5.	Execute the next cell to get the **Execution Summary**.
+![](./media/image19.png)
 
-    ![](./media/img32.png)
-  	
-6.  Execute the next 2 cells one by one which retrieves the url and the
-    job name.
+6.  Ne passez à l'étape suivante qu'une fois l'exécution terminée.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image21.png)
+![](./media/image20.png)
 
-## **Exercise 4: Retrieve the Best Trial (Best Model's trial/run)**
+7.  Exécutez les 2 cellules suivantes une par une qui récupère l'url et
+    le nom du travail.
 
-1.  Add a cell above the first cell under this exercise.
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image21.png)
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image22.png)
+## **Exercice 4 : Récupérer le meilleur essai (essai/course du meilleur modèle)**
 
-2.  Copy the below code. Click on **Run cell.**
+1.  Ajoutez une cellule au-dessus de la première cellule sous cet
+    exercice.
 
-  +++%pip install azureml-mlflow+++
-  
-  +++%pip install mlflow+++
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement avec un niveau de confiance moyen](./media/image22.png)
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image23.png)
+2.  Copiez le code ci-dessous. Cliquez sur **Run cell.**
 
-3.  Continue executing the next 3 cells one by one analyzing each code
-    and its output.
+> **%pip install azureml-mlflow**
+>
+> **%pip install mlflow**
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image24.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement avec un niveau de confiance moyen](./media/image23.png)
 
-4.  Execute the next cell to **Get the parent run**.
+3.  Continuez à exécuter les 3 cellules suivantes une par une en
+    analysant chaque code et sa sortie.
 
-    ![A screenshot of a computer program Description automatically generated
-with low confidence](./media/image25.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement avec un niveau de confiance moyen](./media/image24.png)
 
-5.  Execute the next cell to **print the parent tags**.
+4.  Exécutez la cellule suivante pour **Get the parent run**.
 
-    ![A screenshot of a computer Description automatically generated with
-low confidence](./media/image26.png)
+![Une capture d'écran d'un programme informatique Description générée
+automatiquement avec un niveau de confiance faible](./media/image25.png)
 
-6.  Execute the next cell to **Get the AutoML best child run**.
+5.  Exécutez la cellule suivante pour **print the parent tags**.
 
-    ![A screenshot of a computer program Description automatically generated
-with medium confidence](./media/image27.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement avec un niveau de confiance faible](./media/image26.png)
 
-7.  Execute the next cell to **Get the best model run’s metrics**.
+6.  Exécutez la cellule suivante pour **Get the AutoML best child run**.
 
-    ![A screenshot of a computer error Description automatically generated
-with low confidence](./media/image28.png)
+![Une capture d'écran d'un programme informatique Description générée
+automatiquement avec un niveau de confiance moyen](./media/image27.png)
 
-8.  Execute the next 3 cells to **Download the best model locally**.
+7.  Exécutez la cellule suivante pour **Get the best model run’s
+    metrics**.
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image29.png)
+![Une capture d'écran d'une erreur informatique Description générée
+automatiquement avec un niveau de confiance faible](./media/image28.png)
 
-## **Exercise 5: Register Best Model and Deploy**
+8.  Exécutez les 3 cellules suivantes pour **Download the best model
+    locally**.
 
-### **Task 1: Create managed online endpoint**
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement avec un niveau de confiance moyen](./media/image29.png)
 
-1.  Execute the first 2 cells under this task.
+## **Exercice 5 : Enregistrer le meilleur modèle et déployer**
 
-    ![](./media/image30.png)
+### **Tâche 1 : Créer un point de terminaison en ligne géré**
 
-2.  Execute the next cell with the code, 
+1.  Exécutez les 2 premières cellules sous cette tâche.
 
-    **ml_client.begin_create_or_update(endpoint).result()**
+![](./media/image30.png)
 
-    This creates an online endpoint named **regression-\<Currentdate&time\>.**
+2.  Exécutez la cellule suivante avec le code,
 
-    ![](./media/img33.png)
+**ml_client.begin_create_or_update(endpoint).result()**
 
-5.  Check for the notification stating **Endpoint "regression- < Currentdate&time >" update completed** or check the status under **Endpoints**.
+Cela crée un point de terminaison en ligne nommé
+**regression-\<Currentdate&time\>.**
 
-    ![](./media/img34.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement avec un niveau de confiance faible](./media/image31.png)
 
-### **Task 2: Register best model and deploy**
+3.  Vérifiez si la notification indique que **Endpoint
+    "regression-\<Currentdate&time\>" update completed.**
 
-1.  Execute the first cell under Register best model and deploy -\>
-    **Register model**, to register the model named
+> ![Une capture d'écran d'un ordinateur Le contenu généré par l'IA peut
+> être incorrect.](./media/image32.png)
+
+### **Tâche 2 : Enregistrer le meilleur modèle et le déployer**
+
+1.  Exécutez la première cellule sous Enregistrer le meilleur modèle et
+    déployez -\> **Register model** pour inscrire le modèle nommé
     **hardware-performance-model**.
 
-2.  Once the execution is successful, execute the next cell to retrieve
-    the registered model id.
+2.  Une fois l'exécution réussie, exécutez la cellule suivante pour
+    récupérer l'ID de modèle enregistré.
 
-    ![](./media/image35.png)
+> ![](./media/image33.png)
 
-### **Task 3: Deploy**
+### **Tâche 3 : Déployer**
 
-1.  In the first cell under Deploy, replace the value **instance_type**
-    with **Standard_E4s_v3.**
+1.  Dans la première cellule sous Déployer, remplacez la valeur
+    **instance_type** par **Standard_E4s_v3.**
 
-2.  Then, execute the cell to deploy the best model.
+2.  Ensuite, exécutez la cellule pour déployer le meilleur modèle.
 
-    ![A screenshot of a computer program Description automatically
-generated](./media/image36.png)
+![Une capture d'écran d'un programme informatique Description générée
+automatiquement](./media/image34.png)
 
-4.  Execute the next cell to create the deployment.
+3.  Exécutez la cellule suivante pour créer le déploiement.
 
-    ![A picture containing text, screenshot, line, font Description
-automatically generated](./media/image38.png)
+![Une image contenant du texte, une capture d'écran, une ligne, une
+police Description générée automatiquement](./media/image35.png)
 
-5.  **This will take around 40 minutes to complete**. You can also check
-    for the status from under the **Endpoints**(select **Endpoints**
-    from the left pane and then click on the **regression-XXXXXXX**
-    endpoint that you deployed earlier).
+4.  **Cela prendra environ 40 minutes**. Vous pouvez également vérifier
+    l'état sous **Endpoints** (sélectionnez **Endpoints** dans le volet
+    gauche, puis cliquez sur le point de **regression-XXXXXXX** que vous
+    avez déployé précédemment).
 
-    ![](./media/img35.png)
+![Une capture d'écran d'un ordinateur Le contenu généré par l'IA peut
+être incorrect.](./media/image36.png)
 
-6.  Once the execution is completed and the deployment is successful,
-    the cell outputs the deployment details.
+5.  Une fois l'exécution terminée et le déploiement réussi, la cellule
+    génère les détails du déploiement.
 
-    ![](./media/image40.png)
+![](./media/image37.png)
 
-7.  Also, in the Endpoints details page, the deployment status becomes
-    **Succeeded**.
+6.  De plus, dans la page de détails des points de terminaison, l'état
+    du déploiement devient **Succeeded.**
 
-    ![](./media/img36.png)
+![Une capture d'écran d'un ordinateur Le contenu généré par l'IA peut
+être incorrect.](./media/image38.png)
 
-8.  Execute the next cell in the notebook for the deployment to take
-    100% traffic.
+7.  Exécutez la cellule suivante dans le bloc-notes pour que le
+    déploiement prenne 100 % du trafic.
 
-    ![A screenshot of a computer Description automatically generated with
-low confidence](./media/image42.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement avec un niveau de confiance faible](./media/image39.png)
 
-9.  Check the Live traffic allocation to be 100% in the Endpoints
-    details page.
+8.  Vérifiez que l'allocation du trafic en direct est de 100 % sur la
+    page Détails des points de terminaison.
 
-    ![](./media/img37.png)
+![Une capture d'écran d'un ordinateur Le contenu généré par l'IA peut
+être incorrect.](./media/image40.png)
 
-## **Exercise 6: Test the deployment**
+## **Exercice 6 : Tester le déploiement**
 
-1.  Execute the cell under the Test the deployment.
+1.  Exécutez la cellule sous Tester le déploiement.
 
-2.  Verify the output.
+2.  Vérifiez le résultat.
 
-    ![](./media/image44.png)
+![](./media/image41.png)
 
-3.  Follow and execute the remaining cells to delete the endpoint.
+3.  Suivez et exécutez les cellules restantes pour supprimer le point de
+    terminaison.
 
-    ![](./media/image45.png)
+![](./media/image42.png)
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image46.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement avec un niveau de confiance moyen](./media/image43.png)
 
-4.  Check for the status of the endpoint from under the Endpoints tab.
+4.  Vérifiez l'état du point de terminaison sous l'onglet Endpoints.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image47.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image44.png)
 
-## Exercise 7: Load the best model and try predictions
+**Résumé**
 
-Loading the models locally assume that you are running the notebook in
-an environment compatible with the model. The list of dependencies that
-is expected by the model is specified in the MLFlow model produced by
-AutoML (in the 'conda.yaml' file within the mlflow-model folder).
+Dans cet atelier, nous avons appris à
 
-Since the AutoML model was trained remotelly in a different environment
-with different dependencies to your current local conda environment
-where you are running this notebook, if you want to load the model you
-have several options:
+- Se connecter à votre espace de travail AML à partir du SDK Python
 
-1.  A recommended way to locally load the model in memory and try
-    predictions is to create a new/clean conda environment with the
-    dependencies specified in the conda.yaml file within the MLFlow
-    model's folder, then use MLFlow to load the model and call
-    .predict() as explained in the
-    notebook **mlflow-model-local-inference-test.ipynb** in this same
-    folder.
-
-2.  You can install all the packages/dependencies specified in
-    conda.yaml into your current conda environment you used for using
-    Azure ML SDK and AutoML. MLflow SDK also have a method to install
-    the dependencies in the current environment. However, this option
-    could have risks of package version conflicts depending on what's
-    installed in your current environment.
-
-3.  You can also use: mlflow models serve -m 'xxxxxxx'
-
-## Exercise 8: Clean up the resources
-
-1.  From the Azure portal, select the Resource group **RGForMLOps** and
-    select **Delete resource group**.
-
-    ![A screenshot of a computer Description automatically
-generated](./media/image49.png)
-
-2.  Enter +++RGForMLOps+++ in the text box and click **Enter**.
-
-    ![A screenshot of a computer Description automatically
-generated](./media/image50.png)
-
-3.  Click on **Delete** in the confirmation dialog box.
-
-    ![A screenshot of a computer Description automatically
-generated](./media/image51.png)
-
-4.  Ensure that the Resource group is deleted by the success message.
-
-**Summary**
-
-In this lab, we learnt on how to
-
-- Connect to your AML workspace from the Python SDK
-
-- Create an AutoML regression Job with the 'regression()'
+- Créez une tâche de régression AutoML avec 'regression()'
   factory-function.
 
-- Train the model using AmlCompute by submitting/running the AutoML
-  regression training job
+- Entraînez le modèle à l'aide d'AmlCompute en soumettant/exécutant la
+  tâche d'entraînement de régression AutoML
 
-- Obtaining the model and score predictions with it
+- Obtenir le modèle et les prédictions de score avec celui-ci
