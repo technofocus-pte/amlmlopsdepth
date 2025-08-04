@@ -1,477 +1,451 @@
+# **Atelier 09 - Configuration du MLOps avec GitHub**
 
-# **Lab 09 - Setting up MLOps with GitHub**
+**Objectif :**
 
-**Lab Type:** Instructor led
+Azure Machine Learning vous permet d'intégrer **GitHub Actions** pour
+automatiser le cycle de vie du Machine Learning.
 
-**Expected Duration:** 50 minutes
+Dans cet atelier, vous allez apprendre à utiliser Azure Machine Learning
+pour configurer un pipeline MLOps de bout en bout qui exécute une
+régression linéaire pour prédire les tarifs des taxis à New York. Le
+pipeline est composé de composants, chacun ayant des fonctions
+différentes, qui peuvent être enregistrés dans l'espace de travail,
+versionnés et réutilisés avec diverses entrées et sorties.
 
-**Objective:**
+Durée prévue : 60 minutes
 
-Azure Machine Learning allows you to integrate with **GitHub
-Actions** to automate the machine learning lifecycle.
-
-In this lab, you will learn about using Azure Machine Learning to set up
-an end-to-end MLOps pipeline that runs a linear regression to predict
-taxi fares in NYC. The pipeline is made up of components, each serving
-different functions, which can be registered with the workspace,
-versioned, and reused with various inputs and outputs.
-
-We are at the MLOps phase of the Azure Machine Learning
+Nous sommes à la phase MLOps d'Azure Machine Learning
 
 ![](./media/image1.png)
 
-## **Exercise 1: Getting the Azure resources ready**
+## **Exercice 1 : Préparation des ressources Azure**
 
-### **Task 1: Create an Azure Machine Learning workspace**
+### **Tâche 1 : Créer un espace de travail Azure Machine Learning**
 
-1.  Sign in to the Azure portal at +++https://portal.azure.com+++ if
-    not already logged in.
+1.  Connectez-vous au portail Azure à l'adresse
+    +++<https://portal.azure.com>+++ si vous n'êtes pas déjà connecté.
 
-2.  From the Azure portal home page, select **+ Create a resource**.
+2.  Dans la page d'accueil du portail Azure, sélectionnez **+ Create a
+    resource**.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image2.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image2.png)
 
-3.  On the **Create a resource** page, use the search bar to find
-    +++Azure Machine Learning+++
+3.  Sur la page **Create a resource**, utilisez la barre de recherche
+    pour trouver +++Azure Machine Learning+++
 
-4.  Select **Machine Learning**.
+4.  Sélectionnez **Machine Learning**.
 
-    ![](./media/image3.png)
+> ![](./media/image3.png)
 
-5.  Under **Marketplace**, click on **Create dropdown** and select
-    **Azure Machine Learning**.
+5.  Sous **Marketplace**, cliquez sur **le menu déroulant Create** et
+    sélectionnez **Azure Machine Learning**.
 
-    ![A screenshot of a computer Description automatically generated](./media/image4.png)
+> ![Une capture d'écran d'un ordinateur Description générée
+> automatiquement](./media/image4.png)
 
-7.  Provide the following information to configure your new workspace:
+6.  Fournissez les informations suivantes pour configurer votre nouvel
+    espace de travail :
 
-    - **Subscription**: Select your **assigned Azure subscription**
+    - **Subscription**: sélectionnez l**'abonnement Azure** qui vous **a
+      été attribué**
 
-    - **Resource group**: Click on **Create New** and enter
-      +++**RGForMLOps**+++ as the name.
+    - **Resource group** : sélectionnez le **Resource group** qui vous
+      est attribué.
 
-    **Workspace Details:**
+> **Workspace Details:**
 
-    - **Workspace name: +++AzuremlwsXX**+++ (Replace **XX** with a unique
-      number)
-    
-    - **Region**: Select your nearest region (North Central US is used
-        here)
-    
-    - **Container registry:** Select **Create new**. Enter
-      +++**AzuremlcrXX**+++ (Replace **XX** with a unique number)
+- **Workspace name:** +++**Azuremlws@lab.LabInstance.Id**+++
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image5.png)
+- **Region** : sélectionnez la région la plus proche **(North Central
+  US** est sélectionné ici)
 
-7.  Once you are done configuring the workspace, select **Review +
-    Create**.
+&nbsp;
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image6.png)
+- **Container registry: Select Create new. Enter
+  +++azuremlcr@lab.LabInstance.Id+++**
 
-8.  Once the Validation is passed, click on **Create**.
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image5.png)
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image7.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image6.png)
 
-9.  Click on **Go to resource**, to view the new workspace.
+7.  Une fois la Validation passée, cliquez sur **Create**.
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image8.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image7.png)
 
-10. **On the Microsoft.MachineLEarningServices | Overview page**,
-    select **Launch studio** under **Work with your model in Azure
+8.  Cliquez sur **Go to resource**, pour afficher le nouvel espace de
+    travail.
+
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image8.png)
+
+9.  **On the Microsoft.MachineLEarningServices | Overview page**,
+    sélectionnez **Launch studio** sous **Work with your model in Azure
     Machine Learning studio**.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image9.png)
+![Une capture d'écran d'une mise à jour logicielle Description générée
+automatiquement](./media/image9.png)
 
-### **Task 2: Create a compute**
+### **Tâche 2 : Créer un calcul (compute)**
 
-1.  Once the Azure Machine Learning Studio opens, click on **Compute**
-    under **Manage** from the left pane.
+1.  Une fois qu'Azure Machine Learning Studio s'ouvre, cliquez sur
+    **Compute** sous **Manage** dans le volet gauche.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image10.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image10.png)
 
-2.  Select the **Compute clusters** tab and click on **+ New**.
+2.  Sélectionnez l'onglet **Compute clusters** et cliquez sur **+ New**
 
-    ![](./media/image11.png)
+![](./media/image11.png)
 
-3.  On the **Create compute cluster** screen, enter the below details.
+3.  Sur l'écran **Create compute cluster**, entrez les détails
+    ci-dessous.
 
-    -  Location – Select the **Region** in which you had created your
-        Azure Machine Learning Workspace
+    1.  Location : sélectionnez **Region** dans laquelle vous avez créé
+        votre Azure Machine Learning Workspace
 
-    -  Virtual machine tier – **Dedicated**
+    2.  Virtual machine tier – **Dedicated**
 
-    -  Virtual machine type – **CPU**
+    3.  Virtual machine type – **CPU**
 
-    -  Virtual machine size –Select **Standard_E4s_v3** (Check Select
-        from all options to find the VM Size)
+    4.  Virtual machine size –Sélectionnez **Standard_E4s_v3 (**cochez
+        Sélectionner parmi toutes les options pour trouver la taille de
+        la machine virtuelle**)**
 
-    Click on **Next**.
+> Cliquez sur **Next**.
+>
+> ![Une capture d'écran d'un ordinateur Description générée
+> automatiquement](./media/image12.png)
 
-    ![A screenshot of a computer Description automatically generated](./media/image12.png)
+4.  Sur la page **Advanced Settings**, entrez les détails ci-dessous.
 
-4.  On the **Advanced Settings** page, enter the below details.
+&nbsp;
 
-    -  Compute name – +++**cpu-cluster**+++
-    
-    -  Minimum number of nodes – 0
-    
-    -  Maximum number of nodes – 1
+1.  Compute name : +++**cpu-cluster@lab. LabInstanceId**+++
 
-    Click on **Create**.
+2.  Minimum number of nodes – 0
 
-    ![](./media/image13.png)
+3.  Maximum number of nodes – 1
 
-    >[!Note] **Note:** The compute takes around 10 minutes to come up to the Running
-state.
+> Cliquez sur **Create**.
 
-    ![A screenshot of a computer Description automatically generated](./media/image14.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image13.png)
 
-## **Exercise 2: Retrieve the Azure resources and Create a Service Principal**
+**Remarque :** Le calcul (compute) prend environ 10 minutes pour
+atteindre l'état En cours d'exécution.
 
-1.  From the Azure portal (<https://portal.azure.com>), open the
-    Resourcegroup **RGForMLOps** and make a note of the names of the
-    following resources,
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image14.png)
 
-    -  **Azure Machine Learning Workspace**
+## **Exercice 2 : Récupérer les ressources Azure**
 
-    -  **Application Insights**
+1.  À partir du portail Azure (<https://portal.azure.com>), ouvrez votre
+    groupe de ressources et notez les noms des ressources suivantes :
 
-    -  **Key Vault**
+    1.  **Azure Machine Learning Workspace**
 
-    -  **Container Registry**
+    2.  **Application Insights**
 
-    -  **Storage account**
+    3.  **Key Vault**
 
-    And save them locally in a notepad to be updated in the config file.
+    4.  **Container Registry**
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image15.png)
+    5.  **Storage account**
 
-2.	In the Azure portal, click on the **[>_] (Cloud Shell)** button at the top of the page to the right of the search box. A Cloud Shell pane will open at the bottom of the portal. The first time you open the Cloud Shell, you may be prompted to choose the type of shell you want to use (**Bash** or **PowerShell**). Select **Bash**. If you don't see this option, then skip this step.
-   
-	![](./media/Pict1.png)
+> Et enregistrez-les localement dans un bloc-notes pour les mettre à
+> jour dans le fichier de configuration.
 
-	![](./media/Pict2.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image15.png)
 
-3.	In the **Getting Started** dialog, select **Mount storage account**, select your **subscription** and then click on **Apply**.
-   
-	![](./media/Pict3.png)
+## **Exercice 3 : Préparation du compte et des ressources GitHub**
 
-4.	In the **Mount storage account** dialog, select **we will create a storage account for you** and click on **Next**.
+**Remarque :** Si vous n'avez pas encore de compte GitHub, créez-en un à
+partir d'ici +++https://github.com/+++ -\> **Signup**.
 
-	![](./media/Pict4.png)
+### **Tâche 2 : Forker la démo mlops du dépôt dans votre compte GitHub**
 
-	![](./media/Pict5.png)
+1.  Ouvrez un navigateur et entrez ce lien -
+    +++<https://github.com/getazureready/mlops-v2-gha-demo>+++
 
-5.	Ensure the type of shell indicated on the top left of the Cloud Shell pane is switched to **Bash**. If it's **PowerShell**, switch to **Bash** by using the drop-down menu.
+2.  Cliquez sur **Fork** en haut à droite.
 
-	![](./media/Pict6.png)
+![Une capture d'écran d'un chat Description générée automatiquement avec
+un niveau de confiance moyen](./media/image16.png)
 
-6.	**Execute** the below command to create a **Service Principal**, replacing **< Subscription ID >** with your **Subscription ID**.
+3.  Cela ouvre une page **Create a new fork**. Cliquez sur **Create
+    fork.**
 
-    ```
-    az ad sp create-for-rbac --name mlOpsSP --role contributor  --scopes /subscriptions/< Subscription ID >
-    ```
-    
-    **Save** the output completely to a notepad.
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image17.png)
 
-	![](./media/Pict7.png)
+4.  Dans votre projet GitHub, sélectionnez **Settings**.
 
-## **Exercise 3: Getting the GitHub account and resources ready**
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement avec un niveau de confiance moyen](./media/image18.png)
 
->[!Note] **Note:** If you do not have an account with GitHub already, create one
-from here +++**https://github.com/**+++ -> **Signup**.
+5.  Sélectionnez **Actions** sous **Secrets and variables.**
 
-### **Task 2: Fork the repo mlops demo into your GitHub account**
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image19.png)
 
-1.  Open a browser and enter this link -
-    +++https://github.com/getazureready/mlops-v2-gha-demo+++
+6.  Sélectionnez **New repository secret**.
 
-2.  Click on **Fork** on the top right.
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement avec un niveau de confiance moyen](./media/image20.png)
 
-    ![A screenshot of a chat Description automatically generated with medium
-confidence](./media/image16.png)
+7.  Nommez ce secret sous la forme **+++AZURE_CREDENTIALS+++** et collez
+    la sortie du **Service principal** ci-dessous comme contenu du
+    secret. Ce principal de service est pré-créé pour vous. Sélectionnez
+    **Add secret**.
 
-3.  This opens a **Create a new fork** page. Click on **Create fork.**
+> {
+>
+> "clientId": "+++@lab .Variable(spAppId)+++",
+>
+>   "clientSecret": "+++@lab .Variable(spClientSecret)+++",
+>
+>   "subscriptionId": "+++@lab.CloudSubscription.Id+++",
+>
+>   "tenantId": "+++@lab.CloudSubscription.TenantId+++",
+>
+>   "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+>
+>   "resourceManagerEndpointUrl": "https://management.azure.com/",
+>
+>   "activeDirectoryGraphResourceId": "https://graph.windows.net/",
+>
+>   "sqlManagementEndpointUrl":
+> "https://management.core.windows.net:8443/",
+>
+>   "galleryEndpointUrl": "https://gallery.azure.com/",
+>
+>   "managementEndpointUrl": "https://management.core.windows.net/"
+>
+> }
+>
+> ![Une capture d'écran d'un ordinateur Description générée
+> automatiquement avec un niveau de confiance
+> faible](./media/image21.png)
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image17.png)
+8.  Le secret **AZURE_CREDENTIALS** ajouté s'affiche sous **Repository
+    secrets**.
 
-4.  From your GitHub project, select **Settings**.
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement avec un niveau de confiance moyen](./media/image22.png)
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image18.png)
+9.  Cliquez sur **New repository secret**.
 
-5.  Select **Actions** under **Secrets and variables.**
+![](./media/image23.png)
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image19.png)
+10. Fournissez les détails ci-dessous.
 
-6.  Select **New repository secret**.
+    1.  Name – +++ARM_CLIENT_ID+++
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image20.png)
+    2.  Secret – +++@lab .Variable(spAppId)+++
 
-7.  Name this secret as **+++AZURE_CREDENTIALS+++**. Paste the below block of details in the **Secret** field, replacing the place holders of **appId**, **password**, **subscription id** and **tenant** with the values from the output obtained, when the Service Principal was created. You saved it earlier in the notepad. Select **Add secret**.
-    
-    ```
-    {
-      "clientId": "< appId >",
-      "clientSecret": "< password >",
-      "subscriptionId": "< Your Subscription ID >",
-      "tenantId": "< tenant >",
-      "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
-      "resourceManagerEndpointUrl": "https://management.azure.com/",
-      "activeDirectoryGraphResourceId": "https://graph.windows.net/",
-      "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
-      "galleryEndpointUrl": "https://gallery.azure.com/",
-      "managementEndpointUrl": "https://management.core.windows.net/"
-    }
-    ```
+> ![Une capture d'écran d'un secret informatique Description générée
+> automatiquement avec un niveau de confiance
+> faible](./media/image24.png)
 
-    ![A screen shot of a computer Description automatically generated with low confidence](./media/image21.png)
+11. Répétez les étapes 9 et 10 pour les valeurs suivantes, en créant des
+    secrets GitHub supplémentaires.
 
-9.  The secret **AZURE_CREDENTIALS** that is added, gets displayed under
-    **Repository secrets**.
+    - +++ARM_CLIENT_SECRET+++ - +++@lab . Variable(spClientSecret)+++
 
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image22.png)
+    - +++ARM_SUBSCRIPTION_ID+++ - +++@lab.CloudSubscription.Id+++
 
-10.  Click on **New repository secret**.
+    - +++ARM_TENANT_ID+++++ - +++@lab. CloudSubscription.TenantId+++
 
-    ![](./media/image23.png)
+## **Exercice 4 : Configurer les paramètres de l'environnement Machine Learning**
 
-11. Provide the below details.
+1.  À partir de la page des secrets, accédez à la page du référentiel en
+    cliquant sur **mlops-v2-gha-demo** à côté de votre identifiant
+    GitHub en haut à gauche.
 
-    -  Name – **+++ARM_CLIENT_ID+++**
+![](./media/image25.png)
 
-    -  Secret – **< App ID >**
+2.  Sélectionnez le fichier **config-infra-prod.yml** à la racine.
+    Cliquez sur **Edit** (l'icône en forme de crayon).
 
-    ![A screenshot of a computer secret Description automatically generated with low confidence](./media/image24.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image26.png)
 
-12. Repeat steps 9 and 10 for the following values, creating additional
-    GitHub secrets.
+3.  Modifiez les valeurs,
 
-    - **+++ARM_CLIENT_SECRET+++** - **< Password>**
+    1.  **Namespace** – **mlopsliteXX (**Remplacer XX par un nombre
+        aléatoire)
 
-    - **+++ARM_SUBSCRIPTION_ID+++** - **< Your Azure subscription id >**
+    2.  **Postfix** – **c**
 
-    - **+++ARM_TENANT_ID+++** - **< Tenant >**
+    3.  **location** : **identique à la région de votre Workspace**
 
-## **Exercise 4: Configure Machine Learning environment parameters**
+> Cliquez sur **Commit changes**.
+>
+> Dans **For pipeline reference section**, remplacez les **valeurs
+> (values)** des ressources Azure par les valeurs que nous avons
+> récupérées et enregistrées dans l'exercice 2.
+>
+> ![Une capture d'écran d'un ordinateur Description générée
+> automatiquement](./media/image27.png)
 
-1. From the secrets page, navigate to the repository page by clicking
-on **mlops-v2-gha-demo** next to your GitHub id on the top left.
+4.  Cliquez sur **Commit changes** dans le volet Commit changes.
 
-    ![](./media/image25.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement avec un niveau de confiance moyen](./media/image28.png)
 
-2.  Select the **config-infra-prod.yml** file in the root. Click on
-    **Edit** (The pencil icon).
+5.  Ouvrez **deploy-model-training-pipeline-classical.yml** à partir de
+    **.github/workflows**. Cliquez sur **Edit** (l'icône du crayon).
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image26.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement avec un niveau de confiance moyen](./media/image29.png)
 
-3.  Change the values,
-
-    -  **Namespace** – **mlopsliteXX**(Replace XX with a random number)
-
-    -  **Postfix** – **c**
-
-    -  **location** – **Same as your workspace region**
-
-    Click on **Commit changes**.
-
-    Under the **For pipeline reference section**, replace the **values** of the Azure Resources with the values that we fetched and saved in Exercise 2.
-
-    ![A screenshot of a computer Description automatically generated](./media/image27.png)
-
-4.  Click on **Commit changes** in the commit changes pane.
-
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image28.png)
-
-5.  Open **deploy-model-training-pipeline-classical.yml** from
-    **.github/workflows**. Click on **Edit**(The pencil icon).
-
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image29.png)
-
-6.  In the contents of the file, replace the value of **Size** with
+6.  Dans le contenu du fichier, remplacez la valeur de **Size** par
     **+++Standard_E4s_v3+++**
 
-    Select **Commit changes**.
+Sélectionnez **Commit changes**.
 
-    ![A screenshot of a computer Description automatically generated with medium confidence](./media/image30.png)
+> ![Une capture d'écran d'un ordinateur Description générée
+> automatiquement avec un niveau de confiance
+> moyen](./media/image30.png)
 
-7.  Open the file **online-deployment.yml** from
-    **mlops/azureml/deploy/online.** Click on **Edit**(the pencil icon).
+7.  Ouvrez le fichier **online-deployment.yml** partir de
+    **mlops/azureml/deploy/online.** Cliquez sur **Edit** (l'icône du
+    crayon).
 
-    ![](./media/image31.png)
+![](./media/image31.png)
 
-8.  Replace the value of **instance_type** as **+++Standard_E4s_v3+++**.
-    Click on **Commit changes**.
+8.  Remplacez la valeur de **instance_type** par
+    **+++Standard_E4s_v3+++**. Cliquez sur **Commit changes**.
 
-    ![A screenshot of a computer Description automatically generated with
-low confidence](./media/image32.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement avec un niveau de confiance faible](./media/image32.png)
 
-9.  Open **tf-gha-deploy-infra.yml** file under **.github/workflows**.
-    Click on **Edit** and replace Azure with +++CoursesTF+++ in lines 9
-    and 14.
+9.  Ouvrez **tf-gha-deploy-infra.yml** fichier sous
+    **.github/workflows**. Cliquez sur **Edit** et remplacez Azure par
+    +++CoursesTF+++ aux lignes 9 et 14.
 
-    Select **Commit changes**.
+Sélectionnez **Commit changes**.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image33.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image33.png)
 
-10. From the top menu bar, select **Actions**. Click on **I understand
-    my workflows, go ahead and enable them**.
+10. Dans la barre de menu supérieure, sélectionnez **Actions**. Cliquez
+    sur **Je comprends mes workflow, allez-y et activez-les**.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image34.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image34.png)
 
-11. This displays the pre-defined GitHub workflows associated with your
-    project.
+11. Cela affiche les workflow GitHub prédéfinis associés à votre projet.
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image35.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement avec un niveau de confiance moyen](./media/image35.png)
 
-## **Exercise 5: Deploy Machine Learning infrastructure**
+## **Exercice 5 : Déployer l'infrastructure de Machine Learning**
 
-1.  Select **tf-gha-deploy-infra.yml**. Click on **Runworkflow**.
+1.  Sélectionnez **tf-gha-deploy-infra.yml**. Cliquez sur **Run
+    workflow**.
 
-    Select
+Choisir
 
-    - Branch – **main**
-    
-    Select **Run workflow**
+- Branch – **main**
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image36.png)
+Sélectionnez **Run workflow**
 
-2.  This would deploy the Machine Learning infrastructure using GitHub
-    Actions and Terraform.
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement avec un niveau de confiance moyen](./media/image36.png)
 
-3.  Track the status of the job and confirm that the execution is
-    successful.
+2.  Cela déploie l'infrastructure de Machine Learning à l'aide de GitHub
+    Actions et de Terraform.
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image37.png)
+3.  Suivez l'état de la tâche et confirmez que l'exécution a réussi.
 
-    >[!Note] **Note:** This workflow takes around 5 minutes to complete.
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement avec un niveau de confiance moyen](./media/image37.png)
 
-**Sample Training and Deployment Scenario:**
+**Remarque :** Ce workflow prend environ 5 minutes.
 
-The solution accelerator includes code and data for a sample end-to-end
-machine learning pipeline which runs a linear regression to predict taxi
-fares in NYC. The pipeline is made up of components, each serving
-different functions, which can be registered with the workspace,
-versioned, and reused with various inputs and outputs. Sample pipelines
-and workflows for the Computer Vision and NLP scenarios will have
-different steps and deployment steps.
+## **Exercice 6 : Déploiement du pipeline d'entraînement du modèle**
 
-This training pipeline contains the following steps:
+Ensuite, vous allez déployer le pipeline d'entraînement du modèle dans
+votre nouvel espace de travail Machine Learning.
 
-- Prepare Data
+Ce pipeline crée une instance de cluster de calcul, inscrit un
+environnement d'entraînement définissant l'image Docker et les packages
+python nécessaires, inscrit un jeu de données d'entraînement, puis
+démarre le pipeline d'entraînement décrit dans la dernière section.
 
-- Train Model
-
-- Evaluate Model
-
-- Register Model
-
-## **Exercise 6: Deploying the Model Training Pipeline**
-
-Next, you will deploy the model training pipeline to your new Machine
-Learning workspace.
-
-This pipeline will create a compute cluster instance, register a
-training environment defining the necessary Docker image and python
-packages, register a training dataset, then start the training pipeline
-described in the last section. 
-
-1.  From the **tf-gha-deploy-infra.yml** workflow page, Click on
+1.  Sur la page de workflow tf-gha-deploy-infra.yml, cliquez sur
     **Actions**.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image38.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image38.png)
 
-2.  This displays the pre-defined GitHub workflows associated with your
-    project. Select **deploy-model-training-pipeline** from the list.
+2.  Cela affiche les workflow GitHub prédéfinis associés à votre projet.
+    Sélectionnez **deploy-model-training-pipeline** dans la liste.
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image39.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement avec un niveau de confiance moyen](./media/image39.png)
 
-3.  Click on **Run workflow** -\> **Run workflow**.
+3.  Cliquez sur **Run workflow** -\> **Run workflow**.
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image40.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement avec un niveau de confiance moyen](./media/image40.png)
 
-4.  Click on the pipeline that has just started, to track the progress.
+4.  Cliquez sur le pipeline qui vient de démarrer pour suivre la
+    progression.
 
-    ![A picture containing text, software, web page, font Description
-automatically generated](./media/image41.png)
+![Une image contenant du texte, un logiciel, une page Web, une police
+Description générée automatiquement](./media/image41.png)
 
-5.  This pipeline takes around 15 to 45 minutes to complete.
+5.  Ce pipeline prend environ 15 à 45 minutes.
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image42.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement avec un niveau de confiance moyen](./media/image42.png)
 
-6.  A screenshot of the successful pipeline execution is below.
+6.  Vous trouverez ci-dessous une capture d'écran de l'exécution réussie
+    du pipeline.
 
-    ![](./media/image43.png)
+![](./media/image43.png)
 
-7.  This execution will register the model in the Machine Learning
-    workspace.
+7.  Cette exécution enregistre le modèle dans l'espace de travail
+    Machine Learning.
 
-8.  Login to the AzureMachineLearning studio at <https://ml.azure.com/>
-    and click on **Data** from the left pane to check that the
-    **taxi-data** has been added there. This is done as part of the
-    **register-dataset** job of the workflow.
+8.  Connectez-vous au studio AzureMachineLearning à l'adresse
+    <https://ml.azure.com/> et cliquez sur **Data** dans le volet gauche
+    pour vérifier que les **taxi-data** y ont été ajoutées. Cette
+    opération est effectuée dans le cadre de la tâche
+    **register-dataset** du workflow.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image44.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image44.png)
 
-9.  Click on **Jobs** from the left pane and select
-    **taxi-fare-training**. This is executed in the **run-pipeline** job
-    of the workflow.
+9.  Cliquez sur **Jobs** dans le volet de gauche et sélectionnez
+    **taxi-fare-training**. Ceci est exécuté dans la tâche
+    **run-pipeline** du workflow.
 
-    ![](./media/image45.png)
+![](./media/image45.png)
 
-10. Select the latest execution’s Display name.
+10. Sélectionnez le nom d'affichage de la dernière exécution.
 
-    ![A screenshot of a computer Description automatically generated with
-medium confidence](./media/image46.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement avec un niveau de confiance moyen](./media/image46.png)
 
-11. Explore the stages and the details involved in the training.
+11. Explorez les étapes et les détails de la formation.
 
-    ![A screenshot of a computer Description automatically
-generated](./media/image47.png)
+![Une capture d'écran d'un ordinateur Description générée
+automatiquement](./media/image47.png)
 
-With the trained model registered in the Machine learning workspace, you
-are ready to deploy the model for scoring.
+Une fois le modèle formé inscrit dans l'espace de travail Machine
+Learning, vous êtes prêt à déployer le modèle pour l'évaluation.
 
-## **Exercise 7: Delete Resources**
+**Résumé**
 
-1.  From the left pane of the AML workspace, select **Compute**.
-
-2.  Select the **Compute clusters** tab, select the compute and then
-    click on **Delete**.
-
-    ![A screenshot of a computer Description automatically generated](./media/image48.png)
-
-3. A notification for successful compute deletion is obtained once the deletion is completed.
-
-    ![A screen shot of a computer Description automatically generated with
-medium confidence](./media/image49.png)
-
-**Summary**
-
-In this lab we have learnt on using Azure Machine Learning to set up an
-end-to-end MLOps pipeline, which prepared the data and deployed the
-model training pipeline to your new Machine Learning workspace.
+Dans cet atelier, nous avons appris à utiliser Azure Machine Learning
+pour configurer un pipeline MLOps de bout en bout, qui a préparé les
+données et déployé le pipeline d'entraînement de modèle dans votre
+nouvel espace de travail Machine Learning.
